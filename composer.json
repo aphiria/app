@@ -1,0 +1,39 @@
+{
+  "name": "opulence/app",
+  "description": "The Opulence skeleton application",
+  "keywords": [
+    "PHP",
+    "skeleton",
+    "API"
+  ],
+  "authors": [
+    {
+      "name": "David Young",
+      "email": "dave@opulencephp.com",
+      "role": "Architect"
+    }
+  ],
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "App\\": "src"
+    },
+    "exclude-from-classmap": [
+      "**/Tests/"
+    ]
+  },
+  "require": {
+    "ext-mbstring": "*",
+    "opulence/api": "1.0.*@dev",
+    "php": "^7.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~7.3"
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.0.x-dev"
+    }
+  },
+  "minimum-stability": "dev"
+}

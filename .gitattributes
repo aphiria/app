@@ -1,0 +1,8 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Ignore files directories on export
+.travis.yml export-ignore
+CHANGELOG.md export-ignore
+LICENSE.md export-ignore
+README.md export-ignore
