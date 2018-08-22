@@ -11,9 +11,9 @@ use Monolog\Logger;
 use Opulence\Api\Exceptions\ExceptionHandler;
 use Opulence\Api\Exceptions\ExceptionResponseFactory;
 use Opulence\Api\Exceptions\ExceptionResponseFactoryRegistry;
-use Opulence\Net\Http\Formatting\ResponseWriter;
 use Opulence\Net\Http\HttpException;
 use Opulence\Net\Http\RequestContext;
+use Opulence\Net\Http\ResponseWriter;
 
 /**
  * ----------------------------------------------------------

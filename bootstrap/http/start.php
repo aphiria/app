@@ -9,9 +9,9 @@
 use Opulence\Api\Handlers\ContainerDependencyResolver;
 use Opulence\Api\Handlers\ControllerRequestHandler;
 use Opulence\Ioc\Container;
-use Opulence\Net\Http\Formatting\ResponseWriter;
 use Opulence\Net\Http\RequestFactory;
 use Opulence\Net\Http\RequestContextFactory;
+use Opulence\Net\Http\ResponseWriter;
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 
