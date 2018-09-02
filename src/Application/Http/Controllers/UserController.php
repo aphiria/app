@@ -23,7 +23,7 @@ class UserController extends Controller
 {
     public function createManyUsers(): array
     {
-        return $this->readRequestBodyAsArrayOfType(User::class);
+        return $this->readRequestBodyAs(User::class . '[]');
     }
 
     public function createUser(User $user, bool $override = false): User
