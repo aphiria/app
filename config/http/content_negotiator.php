@@ -1,7 +1,7 @@
 <?php
 /*
  * Opulence
- * 
+ *
  * @link      https://www.opulencephp.com
  * @copyright Copyright (C) 2018 David Young
  * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
@@ -32,7 +32,8 @@ $mediaTypeFormatters = [
  * Supported languages
  * ----------------------------------------------------------
  *
- * Specify the language tags you support (RFC 5646)
+ * Specify the language tags you support
+ * @link https://tools.ietf.org/html/rfc5646
  */
 $supportedLanguages = [
     'en-US'

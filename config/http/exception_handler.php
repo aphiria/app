@@ -1,7 +1,7 @@
 <?php
 /*
  * Opulence
- * 
+ *
  * @link      https://www.opulencephp.com
  * @copyright Copyright (C) 2018 David Young
  * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
@@ -11,8 +11,9 @@ use Monolog\Logger;
 use Opulence\Api\Exceptions\ExceptionHandler;
 use Opulence\Api\Exceptions\ExceptionResponseFactory;
 use Opulence\Api\Exceptions\ExceptionResponseFactoryRegistry;
+use Opulence\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
 use Opulence\Net\Http\HttpException;
-use Opulence\Net\Http\RequestContext;
+use Opulence\Net\Http\IHttpRequestMessage;
 use Opulence\Net\Http\ResponseWriter;
 
 /**
@@ -32,14 +33,19 @@ $logger->pushHandler(new ErrorLogHandler());
  * ----------------------------------------------------------
  *
  * Register any custom exception response factories, keyed by exception type
+ *
+ * @var NegotiatedResponseFactory $negotiatedResponseFactory
  */
 $exceptionResponseFactoryRegistry = new ExceptionResponseFactoryRegistry();
 $exceptionResponseFactoryRegistry->registerFactories([
-    HttpException::class => function (HttpException $ex, RequestContext $requestContext) {
+    HttpException::class => function (HttpException $ex, IHttpRequestMessage $request) {
         return $ex->getResponse();
     }
 ]);
-$exceptionResponseFactory = new ExceptionResponseFactory($exceptionResponseFactoryRegistry);
+$exceptionResponseFactory = new ExceptionResponseFactory(
+    $negotiatedResponseFactory,
+    $exceptionResponseFactoryRegistry
+);
 
 /**
  * ----------------------------------------------------------
@@ -76,12 +82,12 @@ $exceptionsNotLogged = [
  * ----------------------------------------------------------
  */
 $exceptionHandler = new ExceptionHandler(
-    $logger,
     $exceptionResponseFactory,
-    new ResponseWriter(),
+    $logger,
     $loggedLevels,
     $thrownLevels,
-    $exceptionsNotLogged
+    $exceptionsNotLogged,
+    new ResponseWriter()
 );
 $exceptionHandler->registerWithPhp();
 

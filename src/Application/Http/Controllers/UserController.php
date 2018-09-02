@@ -2,7 +2,7 @@
 
 /*
  * Opulence
- * 
+ *
  * @link      https://www.opulencephp.com
  * @copyright Copyright (C) 2018 David Young
  * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
@@ -21,6 +21,11 @@ use Opulence\Net\Http\IHttpResponseMessage;
  */
 class UserController extends Controller
 {
+    public function createManyUsers(): array
+    {
+        return $this->readRequestBodyAsArrayOfType(User::class);
+    }
+
     public function createUser(User $user, bool $override = false): User
     {
         if (!$override && ($user->getId() !== 123 || $user->getEmail() !== 'foo@bar.com')) {

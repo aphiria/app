@@ -1,7 +1,7 @@
 <?php
 /*
  * Opulence
- * 
+ *
  * @link      https://www.opulencephp.com
  * @copyright Copyright (C) 2018 David Young
  * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
@@ -24,3 +24,5 @@ $routes->map('GET', 'users')
     ->toMethod(UserController::class, 'getAllUsers');
 $routes->map('POST', 'users')
     ->toMethod(UserController::class, 'createUser');
+$routes->map('POST', 'users/many')
+    ->toMethod(UserController::class, 'createManyUsers');
