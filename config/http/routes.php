@@ -18,8 +18,10 @@ use Opulence\Routing\Builders\RouteBuilderRegistry;
  *
  * @var RouteBuilderRegistry $routes
  */
-$routes->map('GET', 'users/:id')
+$routes->map('GET', 'users/:id(int)')
     ->toMethod(UserController::class, 'getUserById');
+$routes->map('GET', 'users/random')
+    ->toMethod(UserController::class, 'getRandomUser');
 $routes->map('GET', 'users')
     ->toMethod(UserController::class, 'getAllUsers');
 $routes->map('POST', 'users')

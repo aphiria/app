@@ -12,9 +12,10 @@ namespace App\Application\Http\Controllers;
 
 use App\Domain\Users\User;
 use Opulence\Api\Controller;
-use Opulence\Net\Http\HttpException;
-use Opulence\Net\Http\HttpStatusCodes;
+use Opulence\Net\Http\HttpHeaders;
 use Opulence\Net\Http\IHttpResponseMessage;
+use Opulence\Net\Http\Response;
+use Opulence\Net\Http\StringBody;
 
 /**
  * Defines the user controller
@@ -26,13 +27,19 @@ class UserController extends Controller
         return $this->readRequestBodyAs(User::class . '[]');
     }
 
-    public function createUser(User $user, bool $override = false): User
+    public function createUser(User $user): User
     {
-        if (!$override && ($user->getId() !== 123 || $user->getEmail() !== 'foo@bar.com')) {
-            throw new HttpException(HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR, 'Uh oh');
-        }
-
         return $user;
+    }
+
+    public function getRandomUser(): IHttpResponseMessage
+    {
+        $headers = new HttpHeaders();
+        $headers->add('Content-Type', 'application/json');
+        $id = \random_int(1, 999);
+        $body = new StringBody('{"id":' . $id . ',"email":"foo@bar.com"}');
+
+        return new Response(200, $headers, $body);
     }
 
     public function getAllUsers(): IHttpResponseMessage
@@ -42,10 +49,6 @@ class UserController extends Controller
 
     public function getUserById(int $id): User
     {
-        if ($id === 404) {
-            throw new HttpException(HttpStatusCodes::HTTP_NOT_FOUND);
-        }
-
         return new User($id, 'foo@bar.com');
     }
 }
