@@ -1,16 +1,17 @@
 <?php
+
 /*
  * Opulence
  *
  * @link      https://www.opulencephp.com
- * @copyright Copyright (C) 2018 David Young
+ * @copyright Copyright (C) 2019 David Young
  * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
  */
+
 use Opulence\Routing\Builders\RouteBuilderRegistry;
-use Opulence\Routing\Caching\FileRouteCache;
-use Opulence\Routing\Matchers\RouteMatcher;
-use Opulence\Routing\Regexes\Caching\FileGroupRegexCache;
-use Opulence\Routing\Regexes\GroupRegexFactory;
+use Opulence\Routing\Matchers\Trees\Caching\FileTrieCache;
+use Opulence\Routing\Matchers\Trees\TrieFactory;
+use Opulence\Routing\Matchers\Trees\TrieRouteMatcher;
 use Opulence\Routing\RouteFactory;
 
 /**
@@ -23,12 +24,9 @@ use Opulence\Routing\RouteFactory;
 $routeFactory = new RouteFactory(
     function (RouteBuilderRegistry $routes) {
         require_once __DIR__ . '/routes.php';
-    },
-    new FileRouteCache(__DIR__ . '/../../tmp/framework/http/routing/routes.cache.txt')
+    }
 );
-$regexFactory = new GroupRegexFactory(
-    $routeFactory->createRoutes(),
-    new FileGroupRegexCache(__DIR__ . '/../../tmp/framework/http/routing/regexes.cache.txt')
-);
+$trieCache = new FileTrieCache(__DIR__ . '/../../tmp/framework/http/routing/trie.cache.txt');
+$trieFactory = new TrieFactory($routeFactory, $trieCache);
 
-return new RouteMatcher($regexFactory->createRegexes());
+return new TrieRouteMatcher($trieFactory->createTrie());

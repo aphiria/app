@@ -1,11 +1,13 @@
 <?php
+
 /*
  * Opulence
  *
  * @link      https://www.opulencephp.com
- * @copyright Copyright (C) 2018 David Young
+ * @copyright Copyright (C) 2019 David Young
  * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
  */
+
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Logger;
 use Opulence\Api\Exceptions\ExceptionHandler;
