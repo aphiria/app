@@ -11,7 +11,7 @@
 namespace App\Application\Http\Controllers;
 
 use App\Domain\Users\User;
-use Opulence\Api\Controller;
+use Opulence\Api\Controllers\Controller;
 use Opulence\Net\Http\HttpHeaders;
 use Opulence\Net\Http\IHttpResponseMessage;
 use Opulence\Net\Http\Response;
@@ -32,6 +32,11 @@ class UserController extends Controller
         return $user;
     }
 
+    public function getAllUsers(): IHttpResponseMessage
+    {
+        return $this->ok([new User(123, 'foo@bar.com'), new User(456, 'bar@baz.com')]);
+    }
+
     public function getRandomUser(): IHttpResponseMessage
     {
         $headers = new HttpHeaders();
@@ -40,11 +45,6 @@ class UserController extends Controller
         $body = new StringBody('{"id":' . $id . ',"email":"foo@bar.com"}');
 
         return new Response(200, $headers, $body);
-    }
-
-    public function getAllUsers(): IHttpResponseMessage
-    {
-        return $this->ok([new User(123, 'foo@bar.com'), new User(456, 'bar@baz.com')]);
     }
 
     public function getUserById(int $id): User
