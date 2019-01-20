@@ -9,6 +9,7 @@
  */
 
 use App\Application\Http\Controllers\UserController;
+use App\Application\Http\Middleware\Authorization;
 use Opulence\Routing\Builders\RouteBuilderRegistry;
 
 /**
@@ -25,7 +26,8 @@ $routes->map('GET', 'users/:id(int)')
 $routes->map('GET', 'users/random')
     ->toMethod(UserController::class, 'getRandomUser');
 $routes->map('GET', 'users')
-    ->toMethod(UserController::class, 'getAllUsers');
+    ->toMethod(UserController::class, 'getAllUsers')
+    ->withMiddleware(Authorization::class);
 $routes->map('POST', 'users')
     ->toMethod(UserController::class, 'createUser');
 $routes->map('POST', 'users/many')
