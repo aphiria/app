@@ -8,12 +8,10 @@
  * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
  */
 
-use Opulence\Api\ApiKernel;
-use Opulence\Api\ContainerDependencyResolver;
+use Opulence\Api\{ApiKernel, ContainerDependencyResolver};
 use Opulence\Ioc\Container;
 use Opulence\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
-use Opulence\Net\Http\RequestFactory;
-use Opulence\Net\Http\ResponseWriter;
+use Opulence\Net\Http\{RequestFactory, ResponseWriter};
 
 require_once __DIR__ . '/../../vendor/autoload.php';
 

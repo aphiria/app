@@ -10,7 +10,7 @@
 
 namespace App\Application\Http\Middleware;
 
-use Opulence\Api\Middleware\IMiddleware;
+use Opulence\Middleware\IMiddleware;
 use Opulence\Net\Formatting\UriParser;
 use Opulence\Net\Http\Handlers\IRequestHandler;
 use Opulence\Net\Http\HttpStatusCodes;
