@@ -23,10 +23,10 @@ use Opulence\Routing\RouteFactory;
  */
 $routeFactory = new RouteFactory(
     function (RouteBuilderRegistry $routes) {
-        require_once __DIR__ . '/routes.php';
+        require_once "${$paths['config.http']}/routes.php";
     }
 );
-$trieCache = new FileTrieCache(__DIR__ . '/../../tmp/framework/http/routing/trie.cache.txt');
+$trieCache = new FileTrieCache("{$paths['routes.cache']}/trie.cache.txt");
 $trieFactory = new TrieFactory($routeFactory, $trieCache);
 
 return new TrieRouteMatcher($trieFactory->createTrie());

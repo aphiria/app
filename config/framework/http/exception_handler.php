@@ -8,8 +8,6 @@
  * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
  */
 
-use Monolog\Handler\ErrorLogHandler;
-use Monolog\Logger;
 use Opulence\Api\Exceptions\ExceptionHandler;
 use Opulence\Api\Exceptions\ExceptionResponseFactory;
 use Opulence\Api\Exceptions\ExceptionResponseFactoryRegistry;
@@ -17,17 +15,6 @@ use Opulence\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
 use Opulence\Net\Http\HttpException;
 use Opulence\Net\Http\IHttpRequestMessage;
 use Opulence\Net\Http\ResponseWriter;
-
-/**
- * ----------------------------------------------------------
- * Create a PSR-3 logger
- * ----------------------------------------------------------
- *
- * Note: You may use any PSR-3 logger you'd like
- * For convenience, the Monolog library is included here
- */
-$logger = new Logger('app');
-$logger->pushHandler(new ErrorLogHandler());
 
 /**
  * ----------------------------------------------------------
@@ -85,7 +72,7 @@ $exceptionsNotLogged = [
  */
 $exceptionHandler = new ExceptionHandler(
     $exceptionResponseFactory,
-    $logger,
+    require "{$paths['config.framework']}/logger.php",
     $loggedLevels,
     $thrownLevels,
     $exceptionsNotLogged,
