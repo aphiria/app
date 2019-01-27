@@ -1,7 +1,7 @@
 # Opulence Skeleton Application
-[![Build Status](https://travis-ci.org/opulencephp/App.svg?branch=master)](https://travis-ci.org/opulencephp/App)
+[![Build Status](https://travis-ci.org/opulencephp/app.svg?branch=master)](https://travis-ci.org/opulencephp/app)
 [![Latest Stable Version](https://poser.pugx.org/opulence/app/v/stable.svg)](https://packagist.org/packages/opulence/app)
-[![Latest Unstable Version](https://poser.pugx.org/opulence/app/v/unstable.svg)](https://packagist.org/packages/opulence/project)
+[![Latest Unstable Version](https://poser.pugx.org/opulence/app/v/unstable.svg)](https://packagist.org/packages/opulence/app)
 [![License](https://poser.pugx.org/opulence/app/license.svg)](https://packagist.org/packages/opulence/app)
 
 This application is a useful starting point for projects that use the **Opulence 2.0** framework.  Check out this repository, and get started building your own website.
