@@ -1,9 +1,10 @@
 .idea
 .php_cs.cache
+.phpunit.result.cache
 composer.lock
 composer.phar
 nbproject/
 phpunit.phar
 vendor/
 .env.*.php
-!config/environment/.env.example.php
+!config/.env.example.php
