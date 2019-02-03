@@ -1,20 +1,20 @@
 <?php
 
 /*
- * Opulence
+ * Aphiria
  *
- * @link      https://www.opulencephp.com
+ * @link      https://www.aphiria.com
  * @copyright Copyright (C) 2019 David Young
- * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
+ * @license   https://github.com/aphiria/app/blob/master/LICENSE.md
  */
 
-use Opulence\Api\Exceptions\ExceptionHandler;
-use Opulence\Api\Exceptions\ExceptionResponseFactory;
-use Opulence\Api\Exceptions\ExceptionResponseFactoryRegistry;
-use Opulence\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
-use Opulence\Net\Http\HttpException;
-use Opulence\Net\Http\IHttpRequestMessage;
-use Opulence\Net\Http\ResponseWriter;
+use Aphiria\Api\Exceptions\ExceptionHandler;
+use Aphiria\Api\Exceptions\ExceptionResponseFactory;
+use Aphiria\Api\Exceptions\ExceptionResponseFactoryRegistry;
+use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
+use Aphiria\Net\Http\HttpException;
+use Aphiria\Net\Http\IHttpRequestMessage;
+use Aphiria\Net\Http\ResponseWriter;
 
 /**
  * ----------------------------------------------------------

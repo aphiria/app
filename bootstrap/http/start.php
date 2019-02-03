@@ -1,16 +1,16 @@
 <?php
 
 /*
- * Opulence
+ * Aphiria
  *
- * @link      https://www.opulencephp.com
+ * @link      https://www.aphiria.com
  * @copyright Copyright (C) 2019 David Young
- * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
+ * @license   https://github.com/aphiria/app/blob/master/LICENSE.md
  */
 
-use Opulence\Api\ApiKernel;
-use Opulence\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
-use Opulence\Net\Http\{RequestFactory, ResponseWriter};
+use Aphiria\Api\ApiKernel;
+use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
+use Aphiria\Net\Http\{RequestFactory, ResponseWriter};
 
 $paths = require __DIR__ . '/../../config/paths.php';
 require_once "{$paths['vendor']}/autoload.php";

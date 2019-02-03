@@ -1,22 +1,22 @@
 <?php
 
 /*
- * Opulence
+ * Aphiria
  *
- * @link      https://www.opulencephp.com
+ * @link      https://www.aphiria.com
  * @copyright Copyright (C) 2019 David Young
- * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
+ * @license   https://github.com/aphiria/app/blob/master/LICENSE.md
  */
 
 namespace App\Application\Http\Middleware;
 
-use Opulence\Middleware\IMiddleware;
-use Opulence\Net\Formatting\UriParser;
-use Opulence\Net\Http\Handlers\IRequestHandler;
-use Opulence\Net\Http\HttpStatusCodes;
-use Opulence\Net\Http\IHttpRequestMessage;
-use Opulence\Net\Http\IHttpResponseMessage;
-use Opulence\Net\Http\Response;
+use Aphiria\Middleware\IMiddleware;
+use Aphiria\Net\Formatting\UriParser;
+use Aphiria\Net\Http\Handlers\IRequestHandler;
+use Aphiria\Net\Http\HttpStatusCodes;
+use Aphiria\Net\Http\IHttpRequestMessage;
+use Aphiria\Net\Http\IHttpResponseMessage;
+use Aphiria\Net\Http\Response;
 
 /**
  * Defines a dummy authorization middleware for use in tests

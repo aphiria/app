@@ -1,19 +1,19 @@
 <?php
 
 /*
- * Opulence
+ * Aphiria
  *
- * @link      https://www.opulencephp.com
+ * @link      https://www.aphiria.com
  * @copyright Copyright (C) 2019 David Young
- * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
+ * @license   https://github.com/aphiria/app/blob/master/LICENSE.md
  */
 
+use Aphiria\Routing\Builders\RouteBuilderRegistry;
+use Aphiria\Routing\Matchers\Trees\Caching\FileTrieCache;
+use Aphiria\Routing\Matchers\Trees\TrieFactory;
+use Aphiria\Routing\Matchers\Trees\TrieRouteMatcher;
+use Aphiria\Routing\RouteFactory;
 use Opulence\Environments\Environment;
-use Opulence\Routing\Builders\RouteBuilderRegistry;
-use Opulence\Routing\Matchers\Trees\Caching\FileTrieCache;
-use Opulence\Routing\Matchers\Trees\TrieFactory;
-use Opulence\Routing\Matchers\Trees\TrieRouteMatcher;
-use Opulence\Routing\RouteFactory;
 
 /**
  * ----------------------------------------------------------

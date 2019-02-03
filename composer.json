@@ -1,6 +1,6 @@
 {
-  "name": "opulence/app",
-  "description": "The Opulence skeleton application",
+  "name": "aphiria/app",
+  "description": "The Aphiria skeleton application",
   "keywords": [
     "PHP",
     "skeleton",
@@ -9,7 +9,7 @@
   "authors": [
     {
       "name": "David Young",
-      "email": "dave@opulencephp.com",
+      "email": "dave@aphiria.com",
       "role": "Architect"
     }
   ],
@@ -23,8 +23,8 @@
     ]
   },
   "require": {
+    "aphiria/api": "1.0.*@dev",
     "ext-mbstring": "*",
-    "opulence/api": "1.0.*@dev",
     "opulence/environments": "1.1.*@dev",
     "php": "^7.3"
   },

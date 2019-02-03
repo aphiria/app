@@ -1,16 +1,16 @@
 <?php
 
 /*
- * Opulence
+ * Aphiria
  *
- * @link      https://www.opulencephp.com
+ * @link      https://www.aphiria.com
  * @copyright Copyright (C) 2019 David Young
- * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
+ * @license   https://github.com/aphiria/app/blob/master/LICENSE.md
  */
 
+use Aphiria\Routing\Builders\RouteBuilderRegistry;
 use App\Application\Http\Controllers\UserController;
 use App\Application\Http\Middleware\Authorization;
-use Opulence\Routing\Builders\RouteBuilderRegistry;
 
 /**
  * ----------------------------------------------------------

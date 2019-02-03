@@ -1,14 +1,14 @@
 <?php
 
 /*
- * Opulence
+ * Aphiria
  *
- * @link      https://www.opulencephp.com
+ * @link      https://www.aphiria.com
  * @copyright Copyright (C) 2019 David Young
- * @license   https://github.com/opulencephp/Opulence/blob/master/LICENSE.md
+ * @license   https://github.com/aphiria/app/blob/master/LICENSE.md
  */
 
-use Opulence\Api\ContainerDependencyResolver;
+use Aphiria\Api\ContainerDependencyResolver;
 
 /**
  * ----------------------------------------------------------
