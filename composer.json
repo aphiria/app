@@ -17,10 +17,12 @@
   "autoload": {
     "psr-4": {
       "App\\": "src"
-    },
-    "exclude-from-classmap": [
-      "**/Tests/"
-    ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "App\\Tests\\": "tests"
+    }
   },
   "require": {
     "aphiria/api": "1.0.*@dev",
