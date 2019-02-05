@@ -10,7 +10,7 @@
 
 use Aphiria\Api\ApiKernel;
 use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
-use Aphiria\Net\Http\{RequestFactory, ResponseWriter};
+use Aphiria\Net\Http\{RequestFactory, StreamResponseWriter};
 
 $paths = require __DIR__ . '/../../config/paths.php';
 require_once "{$paths['vendor']}/autoload.php";
@@ -37,4 +37,4 @@ $apiKernel = new ApiKernel(
     $contentNegotiator
 );
 $response = $apiKernel->handle($request);
-(new ResponseWriter)->writeResponse($response);
+(new StreamResponseWriter)->writeResponse($response);

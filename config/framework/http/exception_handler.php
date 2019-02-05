@@ -14,7 +14,7 @@ use Aphiria\Api\Exceptions\ExceptionResponseFactoryRegistry;
 use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IHttpRequestMessage;
-use Aphiria\Net\Http\ResponseWriter;
+use Aphiria\Net\Http\StreamResponseWriter;
 
 /**
  * ----------------------------------------------------------
@@ -76,7 +76,7 @@ $exceptionHandler = new ExceptionHandler(
     $loggedLevels,
     $thrownLevels,
     $exceptionsNotLogged,
-    new ResponseWriter()
+    new StreamResponseWriter()
 );
 $exceptionHandler->registerWithPhp();
 
