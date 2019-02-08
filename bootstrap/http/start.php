@@ -10,7 +10,8 @@
 
 use Aphiria\Api\ApiKernel;
 use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
-use Aphiria\Net\Http\{RequestFactory, StreamResponseWriter};
+use Aphiria\Net\Http\RequestFactory;
+use Aphiria\Net\Http\StreamResponseWriter;
 
 $paths = require __DIR__ . '/../../config/paths.php';
 require_once "{$paths['vendor']}/autoload.php";

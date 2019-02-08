@@ -1,5 +1,5 @@
 # Aphiria Skeleton Application
-[![Build Status](https://travis-ci.com/aphiria/app.svg)](https://travis-ci.com/aphiria/app.svg)
+[![Build Status](https://travis-ci.com/aphiria/app.svg)](https://travis-ci.com/aphiria/app)
 [![Latest Stable Version](https://poser.pugx.org/aphiria/app/v/stable.svg)](https://packagist.org/packages/aphiria/app)
 [![Latest Unstable Version](https://poser.pugx.org/aphiria/app/v/unstable.svg)](https://packagist.org/packages/aphiria/app)
 [![License](https://poser.pugx.org/aphiria/app/license.svg)](https://packagist.org/packages/aphiria/app)

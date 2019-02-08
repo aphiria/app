@@ -10,12 +10,12 @@
 
 namespace App\Application\Http\Controllers;
 
-use App\Domain\Users\User;
 use Aphiria\Api\Controllers\Controller;
 use Aphiria\Net\Http\HttpHeaders;
 use Aphiria\Net\Http\IHttpResponseMessage;
 use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StringBody;
+use App\Domain\Users\User;
 
 /**
  * Defines the user controller

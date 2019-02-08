@@ -62,7 +62,7 @@ $thrownLevels = (E_ALL & ~(E_DEPRECATED | E_USER_DEPRECATED));
  * These exceptions will not be logged
  */
 $exceptionsNotLogged = [
-    //
+
 ];
 
 /**
