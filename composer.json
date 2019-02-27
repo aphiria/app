@@ -26,6 +26,7 @@
   },
   "require": {
     "aphiria/api": "1.0.*@dev",
+    "aphiria/console": "1.0.*@dev",
     "ext-mbstring": "*",
     "opulence/environments": "1.1.*@dev",
     "php": "^7.3"
@@ -33,6 +34,10 @@
   "require-dev": {
     "friendsofphp/php-cs-fixer": "~2.14",
     "phpunit/phpunit": "~8.0"
+  },
+  "scripts": {
+    "lint-check": "php-cs-fixer fix --config=.php_cs -v --diff --dry-run",
+    "lint-fix": "php-cs-fixer fix --config=.php_cs -v --diff"
   },
   "extra": {
     "branch-alias": {
