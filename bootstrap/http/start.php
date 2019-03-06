@@ -9,7 +9,7 @@
  */
 
 use Aphiria\Api\ApiKernel;
-use Aphiria\Configuration\Http\HttpApplicationBuilder;
+use Aphiria\Configuration\ApplicationBuilder;
 use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
@@ -27,8 +27,9 @@ $routeBuilders = require "{$paths['config.framework.http']}/route_builders.php";
 $dependencyResolver = require "{$paths['config.framework.http']}/dependency_resolver.php";
 
 // Use app builders to finish building our app
-$appBuilder = new HttpApplicationBuilder($routeBuilders, $bootstrappers);
-(require "{$paths['config']}/http.php")($appBuilder);
+// Todo: Is it really necessary that I pass in a command registry here when this is an HTTP app?
+$appBuilder = new ApplicationBuilder($bootstrappers, $routeBuilders, new \Aphiria\Console\Commands\CommandRegistry());
+(require "{$paths['config']}/modules.php")($appBuilder);
 $appBuilder->build();
 
 // Explicitly set up our route matcher after all app builders have added our routes
