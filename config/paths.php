@@ -22,12 +22,10 @@ return [
      * "config" => The config directory
      * "config.framework" => The config directory for framework files
      * "config.framework.http" => The HTTP config directory for framework files
-     * "config.http" => The Http config directory
      */
     'config' => realpath(__DIR__),
     'config.framework' => realpath(__DIR__ . '/framework'),
     'config.framework.http' => realpath(__DIR__ . '/framework/http'),
-    'config.http' => realpath(__DIR__ . '/http'),
 
     /**
      * ----------------------------------------------------------

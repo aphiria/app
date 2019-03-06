@@ -9,6 +9,7 @@
  */
 
 use Aphiria\Api\ApiKernel;
+use Aphiria\Configuration\Http\HttpApplicationBuilder;
 use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
@@ -17,13 +18,21 @@ $paths = require __DIR__ . '/../../config/paths.php';
 require_once "{$paths['vendor']}/autoload.php";
 require "{$paths['config.framework']}/environment.php";
 require "{$paths['config.framework']}/ioc.php";
+require "{$paths['config.framework.http']}/bootstrappers.php";
 
 $contentNegotiator = require "{$paths['config.framework.http']}/content_negotiator.php";
 $negotiatedResponseFactory = new NegotiatedResponseFactory($contentNegotiator);
 $exceptionHandler = require "{$paths['config.framework.http']}/exception_handler.php";
-$routeMatcher = require "{$paths['config.framework.http']}/route_matcher.php";
+$routeBuilders = require "{$paths['config.framework.http']}/route_builders.php";
 $dependencyResolver = require "{$paths['config.framework.http']}/dependency_resolver.php";
-require "{$paths['config.framework.http']}/bootstrappers.php";
+
+// Use app builders to finish building our app
+$appBuilder = new HttpApplicationBuilder($routeBuilders, $bootstrappers);
+(require "{$paths['config']}/http.php")($appBuilder);
+$appBuilder->build();
+
+// Explicitly set up our route matcher after all app builders have added our routes
+$routeMatcher = require "{$paths['config.framework.http']}/route_matcher.php";
 
 /**
  * ----------------------------------------------------------

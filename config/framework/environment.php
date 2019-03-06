@@ -17,7 +17,7 @@
  * you set environment variables on the server itself
  */
 $environmentConfigFiles = [
-    "{$paths['config']}/.env.app.php"
+    "{$paths['root']}/.env.app.php"
 ];
 
 foreach ($environmentConfigFiles as $environmentConfigFile) {

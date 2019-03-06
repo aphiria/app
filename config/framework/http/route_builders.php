@@ -10,9 +10,10 @@
 
 /**
  * ----------------------------------------------------------
- * Define the bootstrapper classes for an HTTP application
+ * Define what we will register our routes to
  * ----------------------------------------------------------
  */
-return [
 
-];
+use Aphiria\Routing\Builders\RouteBuilderRegistry;
+
+return new RouteBuilderRegistry();

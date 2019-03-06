@@ -21,8 +21,6 @@ use Opulence\Ioc\IContainer;
  */
 $container = new Container();
 $bootstrapperResolver = new BootstrapperResolver();
-$globalBootstrapperPath = "{$paths['config']}/bootstrappers.php";
-$globalBootstrappers = require $globalBootstrapperPath;
 
 /**
  * ----------------------------------------------------------
