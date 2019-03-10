@@ -7,4 +7,4 @@ nbproject/
 phpunit.phar
 vendor/
 .env.*.php
-!config/.env.example.php
+!.env.local.php

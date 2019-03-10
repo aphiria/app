@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Aphiria
  *
  * @link      https://www.aphiria.com
@@ -8,14 +8,11 @@
  * @license   https://github.com/aphiria/app/blob/master/LICENSE.md
  */
 
-declare(strict_types=1);
+use Opulence\Environments\Environment;
 
 /**
  * ----------------------------------------------------------
- * Define what we will register our routes to
+ * Set environment metadata
  * ----------------------------------------------------------
  */
-
-use Aphiria\Routing\Builders\RouteBuilderRegistry;
-
-return new RouteBuilderRegistry();
+Environment::setVar('ENV_NAME', Environment::DEVELOPMENT);
