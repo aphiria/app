@@ -25,12 +25,12 @@ require "{$paths['config.framework.http']}/bootstrappers.php";
 $contentNegotiator = require "{$paths['config.framework.http']}/content_negotiator.php";
 $negotiatedResponseFactory = new NegotiatedResponseFactory($contentNegotiator);
 $exceptionHandler = require "{$paths['config.framework.http']}/exception_handler.php";
-$routeBuilders = require "{$paths['config.framework.http']}/route_builders.php";
 $dependencyResolver = require "{$paths['config.framework.http']}/dependency_resolver.php";
+$routeFactory = require "{$paths['config.framework.http']}/route_factory.php";
 
 // Use app builders to finish building our app
 // Todo: Is it really necessary that I pass in a command registry here when this is an HTTP app?
-$appBuilder = new ApplicationBuilder($bootstrappers, $routeBuilders, new \Aphiria\Console\Commands\CommandRegistry());
+$appBuilder = new ApplicationBuilder($bootstrappers, $routeFactory, new \Aphiria\Console\Commands\CommandRegistry());
 (require "{$paths['config']}/modules.php")($appBuilder);
 $appBuilder->build();
 

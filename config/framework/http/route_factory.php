@@ -10,12 +10,11 @@
 
 declare(strict_types=1);
 
+use Aphiria\Routing\LazyRouteFactory;
+
 /**
  * ----------------------------------------------------------
- * Define what we will register our routes to
+ * Define the route factory
  * ----------------------------------------------------------
  */
-
-use Aphiria\Routing\Builders\RouteBuilderRegistry;
-
-return new RouteBuilderRegistry();
+return new LazyRouteFactory();

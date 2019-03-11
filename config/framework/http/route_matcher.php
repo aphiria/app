@@ -28,6 +28,6 @@ if (Environment::getVar('ENV_NAME') === Environment::PRODUCTION) {
     $trieCache = null;
 }
 
-$trieFactory = new TrieFactory($routeBuilders, $trieCache);
+$trieFactory = new TrieFactory($routeFactory, $trieCache);
 
 return new TrieRouteMatcher($trieFactory->createTrie());
