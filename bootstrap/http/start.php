@@ -12,25 +12,42 @@ declare(strict_types=1);
 
 use Aphiria\Api\ApiKernel;
 use Aphiria\Api\ContainerDependencyResolver;
+use Aphiria\Api\Exceptions\IExceptionHandler;
 use Aphiria\Configuration\ApplicationBuilder;
-use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
+use Aphiria\Net\Http\ContentNegotiation\IContentNegotiator;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
 use Aphiria\Routing\Matchers\IRouteMatcher;
+use Opulence\Ioc\Container;
+use Opulence\Ioc\IContainer;
 
-$paths = require __DIR__ . '/../../config/paths.php';
-require_once "{$paths['vendor']}/autoload.php";
-require "{$paths['config.framework']}/environment.php";
-require "{$paths['config.framework']}/ioc.php";
+require_once  __DIR__ . '/../../vendor/autoload.php';
 
-$contentNegotiator = require "{$paths['config.framework.http']}/content_negotiator.php";
-$negotiatedResponseFactory = new NegotiatedResponseFactory($contentNegotiator);
-$exceptionHandler = require "{$paths['config.framework.http']}/exception_handler.php";
-$dependencyResolver = require "{$paths['config.framework.http']}/dependency_resolver.php";
+/**
+ * ----------------------------------------------------------
+ * Set up the DI container
+ * ----------------------------------------------------------
+ */
+$container = new Container();
+$container->bindInstance(IContainer::class, $container);
 
-// Use app builders to finish building our app
+/**
+ * ----------------------------------------------------------
+ * Load environment config files
+ * ----------------------------------------------------------
+ *
+ * Note:  For performance in production, it's highly suggested
+ * you set environment variables on the server itself
+ */
+require __DIR__ . '/../../.env.app.php';
+
+/**
+ * ----------------------------------------------------------
+ * Build our application
+ * ----------------------------------------------------------
+ */
 $appBuilder = new ApplicationBuilder($container);
-(require "{$paths['config']}/modules.php")($appBuilder);
+(require __DIR__ . '/../../config/http/app.php')($appBuilder);
 $appBuilder->build();
 
 /**
@@ -39,11 +56,11 @@ $appBuilder->build();
  * ----------------------------------------------------------
  */
 $request = (new RequestFactory)->createRequestFromSuperglobals($_SERVER);
-$exceptionHandler->setRequest($request);
+$container->resolve(IExceptionHandler::class)->setRequest($request);
 $apiKernel = new ApiKernel(
     $container->resolve(IRouteMatcher::class),
     new ContainerDependencyResolver($container),
-    $contentNegotiator
+    $container->resolve(IContentNegotiator::class)
 );
 $response = $apiKernel->handle($request);
 (new StreamResponseWriter)->writeResponse($response);
