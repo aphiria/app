@@ -10,7 +10,6 @@
 
 declare(strict_types=1);
 
-use Opulence\Ioc\Bootstrappers\BootstrapperResolver;
 use Opulence\Ioc\Container;
 use Opulence\Ioc\IContainer;
 
@@ -22,7 +21,6 @@ use Opulence\Ioc\IContainer;
  * The following starts settings up the bootstrappers
  */
 $container = new Container();
-$bootstrapperResolver = new BootstrapperResolver();
 
 /**
  * ----------------------------------------------------------

@@ -11,8 +11,15 @@
 declare(strict_types=1);
 
 use Aphiria\Configuration\IApplicationBuilder;
+use App\Application\Bootstrappers\Http\RoutingBootstrapper;
 use App\Application\ModuleBuilders\ExampleModuleBuilder;
+use Opulence\Ioc\Bootstrappers\IBootstrapperRegistry;
 
 return function (IApplicationBuilder $appBuilder): void {
+    $appBuilder->withBootstrappers(function (IBootstrapperRegistry $bootstrappers) {
+        // Todo: Will need to be updated to use latest IoC library changes once they're published
+        $bootstrappers->registerEagerBootstrapper([RoutingBootstrapper::class]);
+    });
+
     $appBuilder->withModule(new ExampleModuleBuilder);
 };
