@@ -39,7 +39,7 @@ final class RoutingBootstrapper extends Bootstrapper
             [IRouteMatcher::class, TrieRouteMatcher::class],
             function () use ($routeFactory) {
                 if (\getenv('ENV_NAME') === Environment::PRODUCTION) {
-                    $trieCache = new FileTrieCache(\getenv('TMP_DIR_') . '/framework/http/triecache.txt');
+                    $trieCache = new FileTrieCache(__DIR__ . '/../../../../tmp/framework/http/triecache.txt');
                 } else {
                     $trieCache = null;
                 }

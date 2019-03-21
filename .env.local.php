@@ -16,4 +16,3 @@ use Opulence\Environments\Environment;
  * ----------------------------------------------------------
  */
 Environment::setVar('ENV_NAME', Environment::DEVELOPMENT);
-Environment::setVar('TMP_DIR', __DIR__ . '/tmp');
