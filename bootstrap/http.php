@@ -21,7 +21,7 @@ use Aphiria\Routing\Matchers\IRouteMatcher;
 use Opulence\Ioc\Container;
 use Opulence\Ioc\IContainer;
 
-require_once  __DIR__ . '/../../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 /**
  * ----------------------------------------------------------
@@ -39,7 +39,7 @@ $container->bindInstance(IContainer::class, $container);
  * Note:  For performance in production, it's highly suggested
  * you set environment variables on the server itself
  */
-require __DIR__ . '/../../.env.app.php';
+require __DIR__ . '/../.env.app.php';
 
 /**
  * ----------------------------------------------------------
@@ -47,7 +47,7 @@ require __DIR__ . '/../../.env.app.php';
  * ----------------------------------------------------------
  */
 $appBuilder = new ApplicationBuilder($container);
-(require __DIR__ . '/../../config/http/app.php')($appBuilder);
+(require __DIR__ . '/../config/http.php')($appBuilder);
 $appBuilder->build();
 
 /**
