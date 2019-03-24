@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace App\Application\Bootstrappers;
 
-use Monolog\Handler\ErrorLogHandler;
+use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
@@ -37,7 +37,7 @@ final class LoggerBootstrapper extends Bootstrapper
          * For convenience, the Monolog library is included here
          */
         $logger = new Logger('app');
-        $logger->pushHandler(new ErrorLogHandler());
+        $logger->pushHandler(new StreamHandler(__DIR__ . '/../../../tmp/logs/errors.txt'));
         $container->bindInstance(LoggerInterface::class, $logger);
     }
 }

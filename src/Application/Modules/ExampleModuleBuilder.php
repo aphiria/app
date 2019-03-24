@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\ModuleBuilders;
+namespace App\Application\Modules;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
