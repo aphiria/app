@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * Aphiria
  *
  * @link      https://www.aphiria.com
@@ -16,3 +16,4 @@ use Opulence\Environments\Environment;
  * ----------------------------------------------------------
  */
 Environment::setVar('ENV_NAME', Environment::DEVELOPMENT);
+Environment::setVar('APP_URL', 'http://localhost');

@@ -31,10 +31,9 @@ final class ApplicationConfiguration
     public static function configure(IApplicationBuilder $appBuilder): void
     {
         $appBuilder->withBootstrappers(function (IBootstrapperRegistry $bootstrappers) {
-            // Todo: Will need to be updated to use latest IoC library changes once they're published
-            $bootstrappers->registerEagerBootstrapper([
-                ExceptionHandlerBootstrapper::class,
-                RoutingBootstrapper::class
+            $bootstrappers->registerManyBootstrappers([
+                new ExceptionHandlerBootstrapper(),
+                new RoutingBootstrapper()
             ]);
         });
 
