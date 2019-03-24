@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace App\Application\Bootstrappers\Http;
 
+use Aphiria\Routing\Caching\FileRouteCache;
 use Aphiria\Routing\IRouteFactory;
 use Aphiria\Routing\LazyRouteFactory;
 use Aphiria\Routing\Matchers\IRouteMatcher;
@@ -32,18 +33,19 @@ final class RoutingBootstrapper extends Bootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        $routeFactory = new LazyRouteFactory();
+        if (\getenv('ENV_NAME') === Environment::PRODUCTION) {
+            $routeCache = new FileRouteCache(__DIR__ . '/../../../../tmp/framework/http/routecache.txt');
+            $trieCache = new FileTrieCache(__DIR__ . '/../../../../tmp/framework/http/triecache.txt');
+        } else {
+            $routeCache = $trieCache = null;
+        }
+
+        $routeFactory = new LazyRouteFactory(null, $routeCache);
         $container->bindInstance([IRouteFactory::class, LazyRouteFactory::class], $routeFactory);
         // Bind as a factory so that our app builders can register all routes prior to the routes being built
         $container->bindFactory(
             [IRouteMatcher::class, TrieRouteMatcher::class],
-            function () use ($routeFactory) {
-                if (\getenv('ENV_NAME') === Environment::PRODUCTION) {
-                    $trieCache = new FileTrieCache(__DIR__ . '/../../../../tmp/framework/http/triecache.txt');
-                } else {
-                    $trieCache = null;
-                }
-
+            function () use ($routeFactory, $trieCache) {
                 $trieFactory = new TrieFactory($routeFactory, $trieCache);
 
                 return new TrieRouteMatcher($trieFactory->createTrie());
