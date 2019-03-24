@@ -12,9 +12,13 @@ declare(strict_types=1);
 
 use Aphiria\Api\ApiKernel;
 use Aphiria\Api\ContainerDependencyResolver;
+use Aphiria\Api\Controllers\IRouteActionInvoker;
 use Aphiria\Api\Exceptions\IExceptionHandler;
+use Aphiria\Api\IDependencyResolver;
 use Aphiria\Configuration\ApplicationBuilder;
+use Aphiria\Middleware\MiddlewarePipelineFactory;
 use Aphiria\Net\Http\ContentNegotiation\IContentNegotiator;
+use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
 use Aphiria\Routing\Matchers\IRouteMatcher;
@@ -26,14 +30,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 /**
  * ----------------------------------------------------------
- * Set up the DI container
- * ----------------------------------------------------------
- */
-$container = new Container();
-$container->bindInstance(IContainer::class, $container);
-
-/**
- * ----------------------------------------------------------
  * Load environment config files
  * ----------------------------------------------------------
  *
@@ -41,6 +37,14 @@ $container->bindInstance(IContainer::class, $container);
  * you set environment variables on the server itself
  */
 require __DIR__ . '/../.env.app.php';
+
+/**
+ * ----------------------------------------------------------
+ * Set up the DI container
+ * ----------------------------------------------------------
+ */
+$container = new Container();
+$container->bindInstance([IContainer::class, Container::class], $container);
 
 /**
  * ----------------------------------------------------------
@@ -57,11 +61,20 @@ $appBuilder->build();
  * ----------------------------------------------------------
  */
 $request = (new RequestFactory)->createRequestFromSuperglobals($_SERVER);
+$container->bindInstance(IHttpRequestMessage::class, $request);
 $container->resolve(IExceptionHandler::class)->setRequest($request);
 $apiKernel = new ApiKernel(
     $container->resolve(IRouteMatcher::class),
-    new ContainerDependencyResolver($container),
-    $container->resolve(IContentNegotiator::class)
+    $container->hasBinding(IDependencyResolver::class)
+        ? $container->resolve(IDependencyResolver::class)
+        : new ContainerDependencyResolver($container),
+    $container->resolve(IContentNegotiator::class),
+    $container->hasBinding(MiddlewarePipelineFactory::class)
+        ? $container->resolve(MiddlewarePipelineFactory::class)
+        : null,
+    $container->hasBinding(IRouteActionInvoker::class)
+        ? $container->resolve(IRouteActionInvoker::class)
+        : null
 );
 $response = $apiKernel->handle($request);
 (new StreamResponseWriter)->writeResponse($response);
