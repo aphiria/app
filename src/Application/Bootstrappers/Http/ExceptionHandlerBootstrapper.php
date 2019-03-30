@@ -24,6 +24,7 @@ use App\Application\Bootstrappers\LoggerBootstrapper;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * Defines the bootstrapper that registers the exception handler
@@ -60,12 +61,38 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
 
         /**
          * ----------------------------------------------------------
+         * Custom log levels
+         * ----------------------------------------------------------
+         *
+         * Specify the exception types to log levels
+         */
+        $customExceptionLogLevels = [
+            HttpException::class => function (HttpException $ex) {
+                if ($ex->getResponse()->getStatusCode() >= 500) {
+                    return LogLevel::CRITICAL;
+                }
+
+                return LogLevel::ERROR;
+            }
+        ];
+
+        /**
+         * ----------------------------------------------------------
+         * Logged exception levels
+         * ----------------------------------------------------------
+         *
+         * Specify the PSR-3 exception levels to log
+         */
+        $exceptionLogLevels = [LogLevel::ERROR, LogLevel::CRITICAL, LogLevel::ALERT, LogLevel::EMERGENCY];
+
+        /**
+         * ----------------------------------------------------------
          * Logged error levels
          * ----------------------------------------------------------
          *
          * Specify the bitwise value of error levels to log
          */
-        $loggedLevels = 0;
+        $errorLogLevels = 0;
 
         /**
          * ----------------------------------------------------------
@@ -74,18 +101,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
          *
          * Specify the error levels to rethrow as exceptions
          */
-        $thrownLevels = (E_ALL & ~(E_DEPRECATED | E_USER_DEPRECATED));
-
-        /**
-         * ----------------------------------------------------------
-         * Exceptions to not log
-         * ----------------------------------------------------------
-         *
-         * These exceptions will not be logged
-         */
-        $exceptionsNotLogged = [
-
-        ];
+        $errorThrownLevels = (E_ALL & ~(E_DEPRECATED | E_USER_DEPRECATED));
 
         if (!$container->hasBinding(LoggerInterface::class)) {
             (new LoggerBootstrapper)->registerBindings($container);
@@ -99,9 +115,10 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
         $exceptionHandler = new ExceptionHandler(
             $exceptionResponseFactory,
             $container->resolve(LoggerInterface::class),
-            $loggedLevels,
-            $thrownLevels,
-            $exceptionsNotLogged,
+            $customExceptionLogLevels,
+            $exceptionLogLevels,
+            $errorLogLevels,
+            $errorThrownLevels,
             new StreamResponseWriter()
         );
         $exceptionHandler->registerWithPhp();
