@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App\Application\Bootstrappers\Http;
 
 use Aphiria\Api\Exceptions\ExceptionHandler;
+use Aphiria\Api\Exceptions\ExceptionLogLevelFactoryRegistry;
 use Aphiria\Api\Exceptions\ExceptionResponseFactory;
 use Aphiria\Api\Exceptions\ExceptionResponseFactoryRegistry;
 use Aphiria\Api\Exceptions\IExceptionHandler;
@@ -44,7 +45,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
          * Register any custom exception response factories, keyed by exception type
          */
         $exceptionResponseFactoryRegistry = new ExceptionResponseFactoryRegistry();
-        $exceptionResponseFactoryRegistry->registerFactories([
+        $exceptionResponseFactoryRegistry->registerManyFactories([
             HttpException::class => function (HttpException $ex, IHttpRequestMessage $request) {
                 return $ex->getResponse();
             }
@@ -66,7 +67,8 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
          *
          * Specify the exception types to log levels
          */
-        $customExceptionLogLevels = [
+        $exceptionLogLevelFactories = new ExceptionLogLevelFactoryRegistry();
+        $exceptionLogLevelFactories->registerManyFactories([
             HttpException::class => function (HttpException $ex) {
                 if ($ex->getResponse()->getStatusCode() >= 500) {
                     return LogLevel::CRITICAL;
@@ -74,7 +76,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
 
                 return LogLevel::ERROR;
             }
-        ];
+        ]);
 
         /**
          * ----------------------------------------------------------
@@ -115,7 +117,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
         $exceptionHandler = new ExceptionHandler(
             $exceptionResponseFactory,
             $container->resolve(LoggerInterface::class),
-            $customExceptionLogLevels,
+            $exceptionLogLevelFactories,
             $exceptionLogLevels,
             $errorLogLevels,
             $errorThrownLevels,
