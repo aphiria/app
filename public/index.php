@@ -23,6 +23,10 @@ use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
 use Aphiria\Routing\Matchers\IRouteMatcher;
 use App\Application\ApplicationConfiguration;
+use Opulence\Environments\Environment;
+use Opulence\Ioc\Bootstrappers\EagerBootstrapperDispatcher;
+use Opulence\Ioc\Bootstrappers\Inspection\Caching\FileInspectionBindingCache;
+use Opulence\Ioc\Bootstrappers\Inspection\InspectionBindingBootstrapperDispatcher;
 use Opulence\Ioc\Container;
 use Opulence\Ioc\IContainer;
 
@@ -51,7 +55,16 @@ $container->bindInstance([IContainer::class, Container::class], $container);
  * Build our application
  * ----------------------------------------------------------
  */
-$appBuilder = new ApplicationBuilder($container);
+if (Environment::getVar('ENV_NAME') === Environment::PRODUCTION) {
+    $bootstrapperDispatcher = new InspectionBindingBootstrapperDispatcher(
+        $container,
+        new FileInspectionBindingCache(__DIR__ . '/../tmp/framework/http/bootstrapperInspections.txt')
+    );
+} else {
+    $bootstrapperDispatcher = new EagerBootstrapperDispatcher($container);
+}
+
+$appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
 ApplicationConfiguration::configure($appBuilder);
 $appBuilder->build();
 

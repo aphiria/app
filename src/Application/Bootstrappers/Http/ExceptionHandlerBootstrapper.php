@@ -50,11 +50,6 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
                 return $ex->getResponse();
             }
         ]);
-
-        if (!$container->hasBinding(INegotiatedResponseFactory::class)) {
-            (new ContentNegotiatorBootstrapper)->registerBindings($container);
-        }
-
         $exceptionResponseFactory = new ExceptionResponseFactory(
             $container->resolve(INegotiatedResponseFactory::class),
             $exceptionResponseFactoryRegistry

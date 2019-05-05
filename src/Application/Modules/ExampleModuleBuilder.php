@@ -19,7 +19,6 @@ use Aphiria\Routing\Builders\RouteBuilderRegistry;
 use Aphiria\Routing\Builders\RouteGroupOptions;
 use App\Application\Http\Controllers\UserController;
 use App\Application\Http\Middleware\Authorization;
-use Opulence\Ioc\Bootstrappers\IBootstrapperRegistry;
 
 /**
  * Defines the example module builder
@@ -31,7 +30,7 @@ final class ExampleModuleBuilder implements IModuleBuilder
      */
     public function build(IApplicationBuilder $appBuilder): void
     {
-        $appBuilder->withBootstrappers(function (IBootstrapperRegistry $bootstrappers) {
+        $appBuilder->withBootstrappers(function () {
             // Register bootstrappers here
         });
 
