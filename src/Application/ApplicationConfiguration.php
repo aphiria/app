@@ -16,6 +16,7 @@ use Aphiria\Configuration\IApplicationBuilder;
 use App\Application\Bootstrappers\Http\ContentNegotiatorBootstrapper;
 use App\Application\Bootstrappers\Http\ExceptionHandlerBootstrapper;
 use App\Application\Bootstrappers\Http\RoutingBootstrapper;
+use App\Application\Bootstrappers\LoggerBootstrapper;
 use App\Application\Modules\ExampleModuleBuilder;
 
 /**
@@ -33,6 +34,7 @@ final class ApplicationConfiguration
         $appBuilder->withBootstrappers(function () {
             return [
                 ExceptionHandlerBootstrapper::class,
+                LoggerBootstrapper::class,
                 ContentNegotiatorBootstrapper::class,
                 RoutingBootstrapper::class
             ];

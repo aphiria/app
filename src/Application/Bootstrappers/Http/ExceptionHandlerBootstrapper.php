@@ -21,7 +21,6 @@ use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\StreamResponseWriter;
-use App\Application\Bootstrappers\LoggerBootstrapper;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
 use Psr\Log\LoggerInterface;
@@ -99,10 +98,6 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
          * Specify the error levels to rethrow as exceptions
          */
         $errorThrownLevels = (E_ALL & ~(E_DEPRECATED | E_USER_DEPRECATED));
-
-        if (!$container->hasBinding(LoggerInterface::class)) {
-            (new LoggerBootstrapper)->registerBindings($container);
-        }
 
         /**
          * ----------------------------------------------------------
