@@ -57,7 +57,7 @@ $container->bindInstance([IContainer::class, Container::class], $container);
 $bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
     $container,
     Environment::getVar('ENV_NAME') === Environment::PRODUCTION
-        ? new FileBootstrapperBindingCache(__DIR__ . '/../tmp/framework/http/bootstrapperInspections.txt')
+        ? new FileBootstrapperBindingCache(__DIR__ . '/../tmp/framework/bootstrapperInspections.txt')
         : null
 );
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);

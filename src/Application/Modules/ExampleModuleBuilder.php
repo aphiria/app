@@ -14,9 +14,13 @@ namespace App\Application\Modules;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
+use Aphiria\Console\Commands\CommandBinding;
 use Aphiria\Console\Commands\CommandRegistry;
+use Aphiria\Console\Input\Input;
+use Aphiria\Console\Output\IOutput;
 use Aphiria\Routing\Builders\RouteBuilderRegistry;
 use Aphiria\Routing\Builders\RouteGroupOptions;
+use App\Application\Console\Commands\GreetCommand;
 use App\Application\Http\Controllers\UserController;
 use App\Application\Http\Middleware\Authorization;
 
@@ -36,6 +40,16 @@ final class ExampleModuleBuilder implements IModuleBuilder
 
         $appBuilder->withCommands(function (CommandRegistry $commands) {
             // Register console commands here
+            $commands->registerManyCommands([
+                new CommandBinding(
+                    new GreetCommand(),
+                    function () {
+                        return function (Input $input, IOutput $output) {
+                            $output->writeln("Hello, {$input->arguments['name']}");
+                        };
+                    }
+                )
+            ]);
         });
 
         $appBuilder->withRoutes(function (RouteBuilderRegistry $routes) {

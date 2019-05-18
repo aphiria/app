@@ -34,8 +34,8 @@ final class RoutingBootstrapper extends Bootstrapper
     public function registerBindings(IContainer $container): void
     {
         if (\getenv('ENV_NAME') === Environment::PRODUCTION) {
-            $routeCache = new FileRouteCache(__DIR__ . '/../../../../tmp/framework/http/routecache.txt');
-            $trieCache = new FileTrieCache(__DIR__ . '/../../../../tmp/framework/http/triecache.txt');
+            $routeCache = new FileRouteCache(__DIR__ . '/../../../../tmp/framework/http/routeCache.txt');
+            $trieCache = new FileTrieCache(__DIR__ . '/../../../../tmp/framework/http/trieCache.txt');
         } else {
             $routeCache = $trieCache = null;
         }
