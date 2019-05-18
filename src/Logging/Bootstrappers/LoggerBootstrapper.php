@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Bootstrappers;
+namespace App\Logging\Bootstrappers;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;

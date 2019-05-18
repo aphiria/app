@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Users;
+namespace App\Users;
 
 /**
  * Defines the user model
@@ -34,5 +34,10 @@ class User
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }

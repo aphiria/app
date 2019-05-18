@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Bootstrappers\Http;
+namespace App\Http\Bootstrappers;
 
 use Aphiria\Api\Exceptions\ExceptionHandler;
 use Aphiria\Api\Exceptions\ExceptionLogLevelFactoryRegistry;
@@ -19,8 +19,11 @@ use Aphiria\Api\Exceptions\ExceptionResponseFactoryRegistry;
 use Aphiria\Api\Exceptions\IExceptionHandler;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpException;
+use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
+use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StreamResponseWriter;
+use App\Users\UserNotFoundException;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
 use Psr\Log\LoggerInterface;
@@ -47,6 +50,9 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
         $exceptionResponseFactoryRegistry->registerManyFactories([
             HttpException::class => function (HttpException $ex, IHttpRequestMessage $request) {
                 return $ex->getResponse();
+            },
+            UserNotFoundException::class => function (UserNotFoundException $ex, IHttpRequestMessage $request) {
+                return new Response(HttpStatusCodes::HTTP_NOT_FOUND);
             }
         ]);
         $exceptionResponseFactory = new ExceptionResponseFactory(

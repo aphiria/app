@@ -10,24 +10,22 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Console\Commands;
+namespace App\Users\Console\Commands;
 
 use Aphiria\Console\Commands\Command;
-use Aphiria\Console\Input\Argument;
-use Aphiria\Console\Input\ArgumentTypes;
 
 /**
- * Defines an example command
+ * Defines an example command for grabbing the number of users
  */
-final class GreetCommand extends Command
+final class UserCountCommand extends Command
 {
     public function __construct()
     {
         parent::__construct(
-            'example:greet',
-            [new Argument('name', ArgumentTypes::REQUIRED, 'The name to greet')],
+            'users:count',
             [],
-            'An example command that greets a person'
+            [],
+            'An example command that counts the number of users'
         );
     }
 }

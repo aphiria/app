@@ -10,25 +10,37 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Modules;
+namespace App\Users;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
 use Aphiria\Console\Commands\CommandBinding;
 use Aphiria\Console\Commands\CommandRegistry;
-use Aphiria\Console\Input\Input;
-use Aphiria\Console\Output\IOutput;
 use Aphiria\Routing\Builders\RouteBuilderRegistry;
 use Aphiria\Routing\Builders\RouteGroupOptions;
-use App\Application\Console\Commands\GreetCommand;
-use App\Application\Http\Controllers\UserController;
-use App\Application\Http\Middleware\Authorization;
+use App\Users\Bootstrappers\UserServiceBootstrapper;
+use App\Users\Console\Commands\UserCountCommand;
+use App\Users\Console\Commands\UserCountCommandHandler;
+use App\Users\Http\Controllers\UserController;
+use App\Users\Http\Middleware\Authorization;
+use Opulence\Ioc\IContainer;
 
 /**
- * Defines the example module builder
+ * Defines the example user module builder
  */
-final class ExampleModuleBuilder implements IModuleBuilder
+final class UserModuleBuilder implements IModuleBuilder
 {
+    /** @var IContainer The DI container that can resolve dependencies */
+    private $container;
+
+    /**
+     * @param IContainer $container The DI container that can resolve dependencies
+     */
+    public function __construct(IContainer $container)
+    {
+        $this->container = $container;
+    }
+
     /**
      * @inheritdoc
      */
@@ -36,17 +48,16 @@ final class ExampleModuleBuilder implements IModuleBuilder
     {
         $appBuilder->withBootstrappers(function () {
             // Register bootstrappers here
+            return [UserServiceBootstrapper::class];
         });
 
         $appBuilder->withCommands(function (CommandRegistry $commands) {
             // Register console commands here
             $commands->registerManyCommands([
                 new CommandBinding(
-                    new GreetCommand(),
+                    new UserCountCommand(),
                     function () {
-                        return function (Input $input, IOutput $output) {
-                            $output->writeln("Hello, {$input->arguments['name']}");
-                        };
+                        return $this->container->resolve(UserCountCommandHandler::class);
                     }
                 )
             ]);

@@ -10,14 +10,15 @@
 
 declare(strict_types=1);
 
-namespace App\Application;
+namespace App;
 
 use Aphiria\Configuration\IApplicationBuilder;
-use App\Application\Bootstrappers\Http\ContentNegotiatorBootstrapper;
-use App\Application\Bootstrappers\Http\ExceptionHandlerBootstrapper;
-use App\Application\Bootstrappers\Http\RoutingBootstrapper;
-use App\Application\Bootstrappers\LoggerBootstrapper;
-use App\Application\Modules\ExampleModuleBuilder;
+use App\Http\Bootstrappers\ContentNegotiatorBootstrapper;
+use App\Http\Bootstrappers\ExceptionHandlerBootstrapper;
+use App\Http\Bootstrappers\RoutingBootstrapper;
+use App\Logging\Bootstrappers\LoggerBootstrapper;
+use App\Users\UserModuleBuilder;
+use Opulence\Ioc\IContainer;
 
 /**
  * Defines the application configuration
@@ -28,8 +29,9 @@ final class ApplicationConfiguration
      * Configures the application's components
      *
      * @param IApplicationBuilder $appBuilder The app builder to use when configuring the application
+     * @param IContainer $container The DI container that can resolve dependencies
      */
-    public static function configure(IApplicationBuilder $appBuilder): void
+    public static function configure(IApplicationBuilder $appBuilder, IContainer $container): void
     {
         $appBuilder->withBootstrappers(function () {
             return [
@@ -40,6 +42,6 @@ final class ApplicationConfiguration
             ];
         });
 
-        $appBuilder->withModule(new ExampleModuleBuilder);
+        $appBuilder->withModule(new UserModuleBuilder($container));
     }
 }

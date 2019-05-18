@@ -10,47 +10,66 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Http\Controllers;
+namespace App\Users\Http\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
 use Aphiria\Net\Http\HttpHeaders;
 use Aphiria\Net\Http\IHttpResponseMessage;
 use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StringBody;
-use App\Domain\Users\User;
+use App\Users\IUserService;
+use App\Users\User;
 
 /**
  * Defines the user controller
  */
 class UserController extends Controller
 {
+    /** @var IUserService The user service */
+    private $userService;
+
+    /**
+     * @param IUserService $userService The user service
+     */
+    public function __construct(IUserService $userService)
+    {
+        $this->userService = $userService;
+    }
+
     public function createManyUsers(): array
     {
-        return $this->readRequestBodyAs(User::class . '[]');
+        $users = $this->readRequestBodyAs(User::class . '[]');
+
+        return $this->userService->createManyUsers($users);
     }
 
     public function createUser(User $user): User
     {
-        return $user;
+        return $this->userService->createUser($user);
     }
 
     public function getAllUsers(): IHttpResponseMessage
     {
-        return $this->ok([new User(123, 'foo@bar.com'), new User(456, 'bar@baz.com')]);
+        return $this->ok($this->userService->getAllUsers());
     }
 
     public function getRandomUser(): IHttpResponseMessage
     {
+        $user = $this->userService->getRandomUser();
+
+        if ($user === null) {
+            return $this->notFound();
+        }
+
         $headers = new HttpHeaders();
         $headers->add('Content-Type', 'application/json');
-        $id = \random_int(1, 999);
-        $body = new StringBody('{"id":' . $id . ',"email":"foo@bar.com"}');
+        $body = new StringBody('{"id":' . $user->getId() . ',"email":"' . $user->getEmail() . '"}');
 
         return new Response(200, $headers, $body);
     }
 
     public function getUserById(int $id): User
     {
-        return new User($id, 'foo@bar.com');
+        return $this->userService->getUserById($id);
     }
 }
