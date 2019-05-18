@@ -70,7 +70,7 @@ final class FileUserService implements IUserService
             return [];
         }
 
-        $encodedUsers = json_decode(\file_get_contents($this->filePath), true);
+        $encodedUsers = \json_decode(\file_get_contents($this->filePath), true);
         $decodedUsers = [];
 
         foreach ($encodedUsers as $encodedUser) {
