@@ -61,7 +61,7 @@ $bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
         : null
 );
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
-ApplicationConfiguration::configure($appBuilder, $container);
+(new ApplicationConfiguration($appBuilder, $container))->configure();
 $appBuilder->build();
 
 /**

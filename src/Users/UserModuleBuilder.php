@@ -14,7 +14,6 @@ namespace App\Users;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
-use Aphiria\Console\Commands\CommandBinding;
 use Aphiria\Console\Commands\CommandRegistry;
 use Aphiria\Routing\Builders\RouteBuilderRegistry;
 use Aphiria\Routing\Builders\RouteGroupOptions;
@@ -53,14 +52,12 @@ final class UserModuleBuilder implements IModuleBuilder
 
         $appBuilder->withCommands(function (CommandRegistry $commands) {
             // Register console commands here
-            $commands->registerManyCommands([
-                new CommandBinding(
-                    new UserCountCommand(),
-                    function () {
-                        return $this->container->resolve(UserCountCommandHandler::class);
-                    }
-                )
-            ]);
+            $commands->registerCommand(
+                new UserCountCommand(),
+                function () {
+                    return $this->container->resolve(UserCountCommandHandler::class);
+                }
+            );
         });
 
         $appBuilder->withRoutes(function (RouteBuilderRegistry $routes) {

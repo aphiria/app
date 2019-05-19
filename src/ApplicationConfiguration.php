@@ -25,15 +25,27 @@ use Opulence\Ioc\IContainer;
  */
 final class ApplicationConfiguration
 {
+    /** @var IApplicationBuilder The app builder to use when configuring the application */
+    private $appBuilder;
+    /** @var IContainer The DI container that can resolve dependencies */
+    private $container;
+
     /**
-     * Configures the application's components
-     *
      * @param IApplicationBuilder $appBuilder The app builder to use when configuring the application
      * @param IContainer $container The DI container that can resolve dependencies
      */
-    public static function configure(IApplicationBuilder $appBuilder, IContainer $container): void
+    public function __construct(IApplicationBuilder $appBuilder, IContainer $container)
     {
-        $appBuilder->withBootstrappers(function () {
+        $this->appBuilder = $appBuilder;
+        $this->container = $container;
+    }
+
+    /**
+     * Configures the application's components
+     */
+    public function configure(): void
+    {
+        $this->appBuilder->withBootstrappers(function () {
             return [
                 ExceptionHandlerBootstrapper::class,
                 LoggerBootstrapper::class,
@@ -42,6 +54,6 @@ final class ApplicationConfiguration
             ];
         });
 
-        $appBuilder->withModule(new UserModuleBuilder($container));
+        $this->appBuilder->withModule(new UserModuleBuilder($this->container));
     }
 }
