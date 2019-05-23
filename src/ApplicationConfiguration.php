@@ -47,10 +47,10 @@ final class ApplicationConfiguration
     {
         $this->appBuilder->withBootstrappers(function () {
             return [
-                ExceptionHandlerBootstrapper::class,
-                LoggerBootstrapper::class,
-                ContentNegotiatorBootstrapper::class,
-                RoutingBootstrapper::class
+                new ExceptionHandlerBootstrapper,
+                new LoggerBootstrapper,
+                new ContentNegotiatorBootstrapper,
+                new RoutingBootstrapper
             ];
         });
 

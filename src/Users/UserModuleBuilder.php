@@ -47,7 +47,7 @@ final class UserModuleBuilder implements IModuleBuilder
     {
         $appBuilder->withBootstrappers(function () {
             // Register bootstrappers here
-            return [UserServiceBootstrapper::class];
+            return [new UserServiceBootstrapper];
         });
 
         $appBuilder->withCommands(function (CommandRegistry $commands) {
