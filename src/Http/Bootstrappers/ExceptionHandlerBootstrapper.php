@@ -45,18 +45,28 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
          * ----------------------------------------------------------
          *
          * Register any custom exception response factories, keyed by exception type
+         *
+         * @var INegotiatedResponseFactory $negotiatedResponseFactory
          */
+        $negotiatedResponseFactory = $container->resolve(INegotiatedResponseFactory::class);
         $exceptionResponseFactoryRegistry = new ExceptionResponseFactoryRegistry();
         $exceptionResponseFactoryRegistry->registerManyFactories([
             HttpException::class => function (HttpException $ex, IHttpRequestMessage $request) {
                 return $ex->getResponse();
             },
-            UserNotFoundException::class => function (UserNotFoundException $ex, IHttpRequestMessage $request) {
-                return new Response(HttpStatusCodes::HTTP_NOT_FOUND);
+            UserNotFoundException::class => function (UserNotFoundException $ex, IHttpRequestMessage $request) use (
+                $negotiatedResponseFactory
+            ) {
+                return $negotiatedResponseFactory->createResponse(
+                    $request,
+                    HttpStatusCodes::HTTP_NOT_FOUND,
+                    null,
+                    null
+                );
             }
         ]);
         $exceptionResponseFactory = new ExceptionResponseFactory(
-            $container->resolve(INegotiatedResponseFactory::class),
+            $negotiatedResponseFactory,
             $exceptionResponseFactoryRegistry
         );
 
