@@ -21,7 +21,7 @@ use App\Users\Bootstrappers\UserServiceBootstrapper;
 use App\Users\Console\Commands\UserCountCommand;
 use App\Users\Console\Commands\UserCountCommandHandler;
 use App\Users\Http\Controllers\UserController;
-use App\Users\Http\Middleware\Authorization;
+use App\Users\Http\Middleware\DummyAuthorization;
 use Opulence\Ioc\IContainer;
 
 /**
@@ -69,7 +69,7 @@ final class UserModuleBuilder implements IModuleBuilder
                     ->toMethod(UserController::class, 'getRandomUser');
                 $routes->map('GET', '')
                     ->toMethod(UserController::class, 'getAllUsers')
-                    ->withMiddleware(Authorization::class);
+                    ->withMiddleware(DummyAuthorization::class);
                 $routes->map('POST', '')
                     ->toMethod(UserController::class, 'createUser');
                 $routes->map('POST', '/many')

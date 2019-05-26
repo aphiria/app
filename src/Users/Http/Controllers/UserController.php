@@ -23,7 +23,7 @@ use App\Users\User;
 /**
  * Defines the user controller
  */
-class UserController extends Controller
+final class UserController extends Controller
 {
     /** @var IUserService The user service */
     private $userService;

@@ -23,7 +23,7 @@ use Aphiria\Net\Http\Response;
 /**
  * Defines a dummy authorization middleware for use in tests
  */
-class Authorization implements IMiddleware
+final class DummyAuthorization implements IMiddleware
 {
     /**
      * @inheritdoc
