@@ -17,7 +17,7 @@ use App\Http\Bootstrappers\ContentNegotiatorBootstrapper;
 use App\Http\Bootstrappers\ExceptionHandlerBootstrapper;
 use App\Http\Bootstrappers\RoutingBootstrapper;
 use App\Logging\Bootstrappers\LoggerBootstrapper;
-use App\Users\UserModuleBuilder;
+use App\Users\Configuration\UserModuleBuilder;
 use Opulence\Ioc\IContainer;
 
 /**
@@ -41,7 +41,7 @@ final class ApplicationConfiguration
     }
 
     /**
-     * Configures the application's components
+     * Configures the application's modules
      */
     public function configure(): void
     {
