@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Http\Controllers;
+namespace App\Users\Api\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
 use Aphiria\Net\Http\HttpHeaders;

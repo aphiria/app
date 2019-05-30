@@ -17,11 +17,11 @@ use Aphiria\Configuration\IModuleBuilder;
 use Aphiria\Console\Commands\CommandRegistry;
 use Aphiria\Routing\Builders\RouteBuilderRegistry;
 use Aphiria\Routing\Builders\RouteGroupOptions;
+use App\Users\Api\Controllers\UserController;
+use App\Users\Api\Middleware\DummyAuthorization;
 use App\Users\Bootstrappers\UserServiceBootstrapper;
 use App\Users\Console\Commands\UserCountCommand;
 use App\Users\Console\Commands\UserCountCommandHandler;
-use App\Users\Http\Controllers\UserController;
-use App\Users\Http\Middleware\DummyAuthorization;
 use Opulence\Ioc\IContainer;
 
 /**
