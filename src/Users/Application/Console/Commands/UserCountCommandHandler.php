@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Console\Commands;
+namespace App\Users\Application\Console\Commands;
 
 use Aphiria\Console\Commands\ICommandHandler;
 use Aphiria\Console\Input\Input;

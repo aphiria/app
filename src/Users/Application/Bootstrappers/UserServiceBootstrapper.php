@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Bootstrappers;
+namespace App\Users\Application\Bootstrappers;
 
 use App\Users\FileUserService;
 use App\Users\IUserService;

@@ -13,17 +13,17 @@ declare(strict_types=1);
 namespace App;
 
 use Aphiria\Configuration\IApplicationBuilder;
-use App\Http\Bootstrappers\ContentNegotiatorBootstrapper;
-use App\Http\Bootstrappers\ExceptionHandlerBootstrapper;
-use App\Http\Bootstrappers\RoutingBootstrapper;
-use App\Logging\Bootstrappers\LoggerBootstrapper;
-use App\Users\Configuration\UserModuleBuilder;
+use App\Api\Application\Bootstrappers\ContentNegotiatorBootstrapper;
+use App\Api\Application\Bootstrappers\ExceptionHandlerBootstrapper;
+use App\Api\Application\Bootstrappers\RoutingBootstrapper;
+use App\Logging\Application\Bootstrappers\LoggerBootstrapper;
+use App\Users\Application\Config\UserModuleBuilder;
 use Opulence\Ioc\IContainer;
 
 /**
  * Defines the application configuration
  */
-final class ApplicationConfiguration
+final class Config
 {
     /** @var IApplicationBuilder The app builder to use when configuring the application */
     private $appBuilder;

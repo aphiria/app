@@ -22,7 +22,7 @@ use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
 use Aphiria\Routing\Matchers\IRouteMatcher;
-use App\ApplicationConfiguration;
+use App\Config;
 use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
 use Opulence\Ioc\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
@@ -61,7 +61,7 @@ $bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
         : null
 );
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
-(new ApplicationConfiguration($appBuilder, $container))->configure();
+(new Config($appBuilder, $container))->configure();
 $appBuilder->build();
 
 /**

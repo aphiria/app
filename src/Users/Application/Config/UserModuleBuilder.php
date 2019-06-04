@@ -10,18 +10,18 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Configuration;
+namespace App\Users\Application\Config;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
 use Aphiria\Console\Commands\CommandRegistry;
 use Aphiria\Routing\Builders\RouteBuilderRegistry;
 use Aphiria\Routing\Builders\RouteGroupOptions;
-use App\Users\Api\Controllers\UserController;
-use App\Users\Api\Middleware\DummyAuthorization;
-use App\Users\Bootstrappers\UserServiceBootstrapper;
-use App\Users\Console\Commands\UserCountCommand;
-use App\Users\Console\Commands\UserCountCommandHandler;
+use App\Users\Application\Api\Controllers\UserController;
+use App\Users\Application\Api\Middleware\DummyAuthorization;
+use App\Users\Application\Bootstrappers\UserServiceBootstrapper;
+use App\Users\Application\Console\Commands\UserCountCommand;
+use App\Users\Application\Console\Commands\UserCountCommandHandler;
 use Opulence\Ioc\IContainer;
 
 /**
