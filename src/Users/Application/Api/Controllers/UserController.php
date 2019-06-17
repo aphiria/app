@@ -26,7 +26,7 @@ use App\Users\User;
 final class UserController extends Controller
 {
     /** @var IUserService The user service */
-    private $userService;
+    private IUserService $userService;
 
     /**
      * @param IUserService $userService The user service

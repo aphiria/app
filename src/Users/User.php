@@ -18,9 +18,9 @@ namespace App\Users;
 class User
 {
     /** @var int The user ID */
-    private $id;
+    private int $id;
     /** @var string The user email */
-    private $email;
+    private string $email;
 
     /**
      * @param int $id The user ID

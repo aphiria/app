@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace App;
 
+use Aphiria\Configuration\AphiriaComponentBuilder;
 use Aphiria\Configuration\IApplicationBuilder;
 use App\Api\Application\Bootstrappers\ContentNegotiatorBootstrapper;
+use App\Api\Application\Bootstrappers\DependencyInjectionBootstrapper;
 use App\Api\Application\Bootstrappers\ExceptionHandlerBootstrapper;
 use App\Api\Application\Bootstrappers\RoutingBootstrapper;
 use App\Logging\Application\Bootstrappers\LoggerBootstrapper;
@@ -26,9 +28,9 @@ use Opulence\Ioc\IContainer;
 final class Config
 {
     /** @var IApplicationBuilder The app builder to use when configuring the application */
-    private $appBuilder;
+    private IApplicationBuilder $appBuilder;
     /** @var IContainer The DI container that can resolve dependencies */
-    private $container;
+    private IContainer $container;
 
     /**
      * @param IApplicationBuilder $appBuilder The app builder to use when configuring the application
@@ -45,15 +47,21 @@ final class Config
      */
     public function configure(): void
     {
-        $this->appBuilder->withBootstrappers(function () {
-            return [
-                new ExceptionHandlerBootstrapper,
-                new LoggerBootstrapper,
-                new ContentNegotiatorBootstrapper,
-                new RoutingBootstrapper
-            ];
-        });
+        // Configure this app to use Aphiria components
+        (new AphiriaComponentBuilder($this->container))
+            ->withCommandComponent($this->appBuilder)
+            ->withRoutingComponent($this->appBuilder);
 
+        // Register some global bootstrappers
+        $this->appBuilder->withBootstrappers(fn () => [
+            new DependencyInjectionBootstrapper,
+            new ExceptionHandlerBootstrapper,
+            new LoggerBootstrapper,
+            new ContentNegotiatorBootstrapper,
+            new RoutingBootstrapper
+        ]);
+
+        // Register any modules
         $this->appBuilder->withModule(new UserModuleBuilder($this->container));
     }
 }

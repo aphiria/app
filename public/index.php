@@ -10,20 +10,14 @@
 
 declare(strict_types=1);
 
-use Aphiria\Api\ApiKernel;
-use Aphiria\Api\ContainerDependencyResolver;
-use Aphiria\Api\Controllers\IRouteActionInvoker;
 use Aphiria\Api\Exceptions\IExceptionHandler;
-use Aphiria\Api\IDependencyResolver;
 use Aphiria\Configuration\ApplicationBuilder;
-use Aphiria\Middleware\MiddlewarePipelineFactory;
-use Aphiria\Net\Http\ContentNegotiation\IContentNegotiator;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
-use Aphiria\Routing\Matchers\IRouteMatcher;
 use App\Config;
 use Opulence\Environments\Environment;
+use Opulence\Ioc\Bootstrappers\IBootstrapperDispatcher;
 use Opulence\Ioc\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
 use Opulence\Ioc\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
 use Opulence\Ioc\Container;
@@ -48,42 +42,24 @@ require __DIR__ . '/../.env.app.php';
  */
 $container = new Container();
 $container->bindInstance([IContainer::class, Container::class], $container);
-
-/**
- * ----------------------------------------------------------
- * Build our application
- * ----------------------------------------------------------
- */
 $bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
     $container,
     Environment::getVar('ENV_NAME') === Environment::PRODUCTION
         ? new FileBootstrapperBindingCache(__DIR__ . '/../tmp/framework/bootstrapperInspections.txt')
         : null
 );
-$appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
-(new Config($appBuilder, $container))->configure();
-$appBuilder->build();
+$container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher);
 
 /**
  * ----------------------------------------------------------
- * Handle the request
+ * Build and run our application
  * ----------------------------------------------------------
  */
+$appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
+(new Config($appBuilder, $container))->configure();
+$app = $appBuilder->build();
 $request = (new RequestFactory)->createRequestFromSuperglobals($_SERVER);
 $container->bindInstance(IHttpRequestMessage::class, $request);
 $container->resolve(IExceptionHandler::class)->setRequest($request);
-$apiKernel = new ApiKernel(
-    $container->resolve(IRouteMatcher::class),
-    $container->hasBinding(IDependencyResolver::class)
-        ? $container->resolve(IDependencyResolver::class)
-        : new ContainerDependencyResolver($container),
-    $container->resolve(IContentNegotiator::class),
-    $container->hasBinding(MiddlewarePipelineFactory::class)
-        ? $container->resolve(MiddlewarePipelineFactory::class)
-        : null,
-    $container->hasBinding(IRouteActionInvoker::class)
-        ? $container->resolve(IRouteActionInvoker::class)
-        : null
-);
-$response = $apiKernel->handle($request);
+$response = $app->handle($request);
 (new StreamResponseWriter)->writeResponse($response);

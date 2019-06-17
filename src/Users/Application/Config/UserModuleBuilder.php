@@ -30,7 +30,7 @@ use Opulence\Ioc\IContainer;
 final class UserModuleBuilder implements IModuleBuilder
 {
     /** @var IContainer The DI container that can resolve dependencies */
-    private $container;
+    private IContainer $container;
 
     /**
      * @param IContainer $container The DI container that can resolve dependencies
@@ -45,12 +45,11 @@ final class UserModuleBuilder implements IModuleBuilder
      */
     public function build(IApplicationBuilder $appBuilder): void
     {
-        $appBuilder->withBootstrappers(function () {
-            // Register bootstrappers here
-            return [new UserServiceBootstrapper];
-        });
+        $appBuilder->withBootstrappers(fn () => [
+            new UserServiceBootstrapper
+        ]);
 
-        $appBuilder->withCommands(function (CommandRegistry $commands) {
+        $appBuilder->withComponent('commands', function (CommandRegistry $commands) {
             // Register console commands here
             $commands->registerCommand(
                 new UserCountCommand(),
@@ -60,7 +59,7 @@ final class UserModuleBuilder implements IModuleBuilder
             );
         });
 
-        $appBuilder->withRoutes(function (RouteBuilderRegistry $routes) {
+        $appBuilder->withComponent('routes', function (RouteBuilderRegistry $routes) {
             // Register routes here
             $routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
                 $routes->map('GET', '/:id(int)')

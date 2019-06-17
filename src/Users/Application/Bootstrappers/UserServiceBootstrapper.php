@@ -27,7 +27,7 @@ final class UserServiceBootstrapper extends Bootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        $userService = new FileUserService(__DIR__ . '/../../../tmp/users/users.json');
+        $userService = new FileUserService(__DIR__ . '/../../../../tmp/users/users.json');
         $container->bindInstance(IUserService::class, $userService);
     }
 }

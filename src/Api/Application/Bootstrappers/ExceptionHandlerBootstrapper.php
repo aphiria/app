@@ -51,19 +51,14 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
         $negotiatedResponseFactory = $container->resolve(INegotiatedResponseFactory::class);
         $exceptionResponseFactoryRegistry = new ExceptionResponseFactoryRegistry();
         $exceptionResponseFactoryRegistry->registerManyFactories([
-            HttpException::class => function (HttpException $ex, IHttpRequestMessage $request) {
-                return $ex->getResponse();
-            },
-            UserNotFoundException::class => function (UserNotFoundException $ex, IHttpRequestMessage $request) use (
-                $negotiatedResponseFactory
-            ) {
-                return $negotiatedResponseFactory->createResponse(
+            HttpException::class => fn (HttpException $ex, IHttpRequestMessage $request) => $ex->getResponse(),
+            UserNotFoundException::class => fn (UserNotFoundException $ex, IHttpRequestMessage $request) =>
+                $negotiatedResponseFactory->createResponse(
                     $request,
                     HttpStatusCodes::HTTP_NOT_FOUND,
                     null,
                     null
-                );
-            }
+                )
         ]);
         $exceptionResponseFactory = new ExceptionResponseFactory(
             $negotiatedResponseFactory,
@@ -129,7 +124,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
             $errorThrownLevels,
             new StreamResponseWriter()
         );
-        $exceptionHandler->registerWithPhp();
+        //$exceptionHandler->registerWithPhp();
         $container->bindInstance(IExceptionHandler::class, $exceptionHandler);
     }
 }

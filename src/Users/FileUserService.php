@@ -18,7 +18,7 @@ namespace App\Users;
 final class FileUserService implements IUserService
 {
     /** @var string The path to the file that contains the users */
-    private $filePath;
+    private string $filePath;
 
     /**
      * @param string $filePath The path to the file that contains the users

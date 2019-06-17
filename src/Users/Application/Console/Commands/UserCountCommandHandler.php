@@ -23,7 +23,7 @@ use App\Users\IUserService;
 final class UserCountCommandHandler implements ICommandHandler
 {
     /** @var IUserService The user service */
-    private $userService;
+    private IUserService $userService;
 
     /**
      * @param IUserService $userService The user service

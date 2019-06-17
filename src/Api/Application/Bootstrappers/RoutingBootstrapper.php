@@ -34,8 +34,8 @@ final class RoutingBootstrapper extends Bootstrapper
     public function registerBindings(IContainer $container): void
     {
         if (\getenv('ENV_NAME') === Environment::PRODUCTION) {
-            $routeCache = new FileRouteCache(__DIR__ . '/../../../tmp/framework/http/routeCache.txt');
-            $trieCache = new FileTrieCache(__DIR__ . '/../../../tmp/framework/http/trieCache.txt');
+            $routeCache = new FileRouteCache(__DIR__ . '/../../../../tmp/framework/http/routeCache.txt');
+            $trieCache = new FileTrieCache(__DIR__ . '/../../../../tmp/framework/http/trieCache.txt');
         } else {
             $routeCache = $trieCache = null;
         }
@@ -45,11 +45,7 @@ final class RoutingBootstrapper extends Bootstrapper
         // Bind as a factory so that our app builders can register all routes prior to the routes being built
         $container->bindFactory(
             [IRouteMatcher::class, TrieRouteMatcher::class],
-            function () use ($routeFactory, $trieCache) {
-                $trieFactory = new TrieFactory($routeFactory, $trieCache);
-
-                return new TrieRouteMatcher($trieFactory->createTrie());
-            },
+            fn () => new TrieRouteMatcher((new TrieFactory($routeFactory, $trieCache))->createTrie()),
             true
         );
     }

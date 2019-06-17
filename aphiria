@@ -16,6 +16,7 @@ use Aphiria\Console\Commands\CommandRegistry;
 use Aphiria\Console\Kernel;
 use App\Config;
 use Opulence\Environments\Environment;
+use Opulence\Ioc\Bootstrappers\IBootstrapperDispatcher;
 use Opulence\Ioc\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
 use Opulence\Ioc\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
 use Opulence\Ioc\Container;
@@ -40,24 +41,24 @@ require __DIR__ . '/.env.app.php';
  */
 $container = new Container();
 $container->bindInstance([IContainer::class, Container::class], $container);
+$bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
+    $container,
+    Environment::getVar('ENV_NAME') === Environment::PRODUCTION
+        ? new FileBootstrapperBindingCache(__DIR__ . '/../tmp/framework/bootstrapperInspections.txt')
+        : null
+);
+$container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher);
 
 /**
  * ----------------------------------------------------------
- * Build our application
+ * Build and run our application
  * ----------------------------------------------------------
  *
  * @var CommandRegistry $commands
  */
-$bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
-    $container,
-    Environment::getVar('ENV_NAME') === Environment::PRODUCTION
-        ? new FileBootstrapperBindingCache(__DIR__ . '/tmp/framework/bootstrapperInspections.txt')
-        : null
-);
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
 (new Config($appBuilder, $container))->configure();
 $appBuilder->build();
-
 $commands = $container->resolve(CommandRegistry::class);
 global $argv;
 exit((new Kernel($commands))->handle($argv));

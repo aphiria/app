@@ -37,7 +37,7 @@ final class LoggerBootstrapper extends Bootstrapper
          * For convenience, the Monolog library is included here
          */
         $logger = new Logger('app');
-        $logger->pushHandler(new StreamHandler(__DIR__ . '/../../../tmp/logs/errors.txt'));
+        $logger->pushHandler(new StreamHandler(__DIR__ . '/../../../../tmp/logs/errors.txt'));
         $container->bindInstance(LoggerInterface::class, $logger);
     }
 }
