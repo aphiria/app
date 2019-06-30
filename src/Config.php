@@ -18,6 +18,7 @@ use App\Api\Application\Bootstrappers\ContentNegotiatorBootstrapper;
 use App\Api\Application\Bootstrappers\DependencyInjectionBootstrapper;
 use App\Api\Application\Bootstrappers\ExceptionHandlerBootstrapper;
 use App\Api\Application\Bootstrappers\RoutingBootstrapper;
+use App\Api\Application\Bootstrappers\SerializerBootstrapper;
 use App\Logging\Application\Bootstrappers\LoggerBootstrapper;
 use App\Users\Application\Config\UserModuleBuilder;
 use Opulence\Ioc\IContainer;
@@ -50,10 +51,12 @@ final class Config
         // Configure this app to use Aphiria components
         (new AphiriaComponentBuilder($this->container))
             ->withCommandComponent($this->appBuilder)
+            ->withEncoderComponent($this->appBuilder)
             ->withRoutingComponent($this->appBuilder);
 
         // Register some global bootstrappers
         $this->appBuilder->withBootstrappers(fn () => [
+            new SerializerBootstrapper,
             new DependencyInjectionBootstrapper,
             new ExceptionHandlerBootstrapper,
             new LoggerBootstrapper,

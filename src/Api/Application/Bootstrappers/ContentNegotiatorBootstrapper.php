@@ -20,6 +20,8 @@ use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\HtmlMediaTypeFormatt
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\JsonMediaTypeFormatter;
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\PlainTextMediaTypeFormatter;
 use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
+use Aphiria\Serialization\FormUrlEncodedSerializer;
+use Aphiria\Serialization\JsonSerializer;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
 
@@ -42,8 +44,8 @@ final class ContentNegotiatorBootstrapper extends Bootstrapper
          * Note: The first registered media type formatter will be considered the default one
          */
         $mediaTypeFormatters = [
-            new JsonMediaTypeFormatter(),
-            new FormUrlEncodedSerializerMediaTypeFormatter(),
+            new JsonMediaTypeFormatter($container->resolve(JsonSerializer::class)),
+            new FormUrlEncodedSerializerMediaTypeFormatter($container->resolve(FormUrlEncodedSerializer::class)),
             new HtmlMediaTypeFormatter(),
             new PlainTextMediaTypeFormatter()
         ];
