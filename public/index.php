@@ -57,7 +57,7 @@ $container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher
  */
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
 (new Config($appBuilder, $container))->configure();
-$app = $appBuilder->build();
+$app = $appBuilder->buildApiApplication();
 $request = (new RequestFactory)->createRequestFromSuperglobals($_SERVER);
 $container->bindInstance(IHttpRequestMessage::class, $request);
 $container->resolve(IExceptionHandler::class)->setRequest($request);

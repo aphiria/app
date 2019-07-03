@@ -12,8 +12,6 @@
 declare(strict_types=1);
 
 use Aphiria\Configuration\ApplicationBuilder;
-use Aphiria\Console\Commands\CommandRegistry;
-use Aphiria\Console\Kernel;
 use App\Config;
 use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\IBootstrapperDispatcher;
@@ -53,12 +51,9 @@ $container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher
  * ----------------------------------------------------------
  * Build and run our application
  * ----------------------------------------------------------
- *
- * @var CommandRegistry $commands
  */
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
 (new Config($appBuilder, $container))->configure();
-$appBuilder->build();
-$commands = $container->resolve(CommandRegistry::class);
+$app = $appBuilder->buildConsoleApplication();
 global $argv;
-exit((new Kernel($commands))->handle($argv));
+exit($app->handle($argv));

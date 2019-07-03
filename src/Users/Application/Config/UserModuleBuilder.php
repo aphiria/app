@@ -53,9 +53,7 @@ final class UserModuleBuilder implements IModuleBuilder
             // Register console commands here
             $commands->registerCommand(
                 new UserCountCommand(),
-                function () {
-                    return $this->container->resolve(UserCountCommandHandler::class);
-                }
+                fn () => $this->container->resolve(UserCountCommandHandler::class)
             );
         });
 
