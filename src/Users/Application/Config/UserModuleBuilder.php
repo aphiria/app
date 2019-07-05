@@ -49,7 +49,7 @@ final class UserModuleBuilder implements IModuleBuilder
             new UserServiceBootstrapper
         ]);
 
-        $appBuilder->withComponent('commands', function (CommandRegistry $commands) {
+        $appBuilder->withConsoleCommands(function (CommandRegistry $commands) {
             // Register console commands here
             $commands->registerCommand(
                 new UserCountCommand(),

@@ -50,7 +50,6 @@ final class Config
     {
         // Configure this app to use Aphiria components
         (new AphiriaComponentBuilder($this->container))
-            ->withCommandComponent($this->appBuilder)
             ->withEncoderComponent($this->appBuilder)
             ->withRoutingComponent($this->appBuilder);
 
