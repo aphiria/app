@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Application\Bootstrappers;
+namespace App\Api\Bootstrappers;
 
 use Aphiria\Routing\Caching\FileRouteCache;
 use Aphiria\Routing\IRouteFactory;
@@ -34,8 +34,8 @@ final class RoutingBootstrapper extends Bootstrapper
     public function registerBindings(IContainer $container): void
     {
         if (\getenv('ENV_NAME') === Environment::PRODUCTION) {
-            $routeCache = new FileRouteCache(__DIR__ . '/../../../../tmp/framework/http/routeCache.txt');
-            $trieCache = new FileTrieCache(__DIR__ . '/../../../../tmp/framework/http/trieCache.txt');
+            $routeCache = new FileRouteCache(__DIR__ . '/../../../tmp/framework/http/routeCache.txt');
+            $trieCache = new FileTrieCache(__DIR__ . '/../../../tmp/framework/http/trieCache.txt');
         } else {
             $routeCache = $trieCache = null;
         }

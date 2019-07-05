@@ -10,24 +10,23 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Application\Bootstrappers;
+namespace App\Api\Bootstrappers;
 
-use App\Users\FileUserService;
-use App\Users\IUserService;
+use Aphiria\Api\ContainerDependencyResolver;
+use Aphiria\Api\IDependencyResolver;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
 
 /**
- * Defines the user service bootstrapper
+ * Defines the dependency injection bootstrapper
  */
-final class UserServiceBootstrapper extends Bootstrapper
+final class DependencyInjectionBootstrapper extends Bootstrapper
 {
     /**
      * @inheritdoc
      */
     public function registerBindings(IContainer $container): void
     {
-        $userService = new FileUserService(__DIR__ . '/../../../../tmp/users/users.json');
-        $container->bindInstance(IUserService::class, $userService);
+        $container->bindInstance(IDependencyResolver::class, new ContainerDependencyResolver($container));
     }
 }

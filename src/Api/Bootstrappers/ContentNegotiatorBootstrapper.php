@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Application\Bootstrappers;
+namespace App\Api\Bootstrappers;
 
 use Aphiria\Net\Http\ContentNegotiation\ContentNegotiator;
 use Aphiria\Net\Http\ContentNegotiation\IContentNegotiator;

@@ -14,13 +14,13 @@ namespace App;
 
 use Aphiria\Configuration\AphiriaComponentBuilder;
 use Aphiria\Configuration\IApplicationBuilder;
-use App\Api\Application\Bootstrappers\ContentNegotiatorBootstrapper;
-use App\Api\Application\Bootstrappers\DependencyInjectionBootstrapper;
-use App\Api\Application\Bootstrappers\ExceptionHandlerBootstrapper;
-use App\Api\Application\Bootstrappers\RoutingBootstrapper;
-use App\Api\Application\Bootstrappers\SerializerBootstrapper;
-use App\Logging\Application\Bootstrappers\LoggerBootstrapper;
-use App\Users\Application\Config\UserModuleBuilder;
+use App\Api\Bootstrappers\ContentNegotiatorBootstrapper;
+use App\Api\Bootstrappers\DependencyInjectionBootstrapper;
+use App\Api\Bootstrappers\ExceptionHandlerBootstrapper;
+use App\Api\Bootstrappers\RoutingBootstrapper;
+use App\Api\Bootstrappers\SerializerBootstrapper;
+use App\Logging\Bootstrappers\LoggerBootstrapper;
+use App\Users\Application\UserModuleBuilder;
 use Opulence\Ioc\IContainer;
 
 /**

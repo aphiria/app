@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Api\Application\Bootstrappers;
+namespace App\Api\Bootstrappers;
 
 use Aphiria\Api\Exceptions\ExceptionHandler;
 use Aphiria\Api\Exceptions\ExceptionLogLevelFactoryRegistry;
