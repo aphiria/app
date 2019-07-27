@@ -17,6 +17,8 @@ use Aphiria\Net\Http\HttpHeaders;
 use Aphiria\Net\Http\IHttpResponseMessage;
 use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StringBody;
+use Aphiria\RouteAnnotations\Annotations\Get;
+use Aphiria\RouteAnnotations\Annotations\Middleware;
 use App\Users\IUserService;
 use App\Users\User;
 
@@ -48,6 +50,10 @@ final class UserController extends Controller
         return $this->userService->createUser($user);
     }
 
+    /**
+     * @Get("users")
+     * @Middleware("App\Users\Application\Api\Middleware\DummyAuthorization")
+     */
     public function getAllUsers(): IHttpResponseMessage
     {
         return $this->ok($this->userService->getAllUsers());

@@ -64,9 +64,9 @@ final class UserModuleBuilder implements IModuleBuilder
                     ->toMethod(UserController::class, 'getUserById');
                 $routes->map('GET', '/random')
                     ->toMethod(UserController::class, 'getRandomUser');
-                $routes->map('GET', '')
+                /*$routes->map('GET', '')
                     ->toMethod(UserController::class, 'getAllUsers')
-                    ->withMiddleware(DummyAuthorization::class);
+                    ->withMiddleware(DummyAuthorization::class);*/
                 $routes->map('POST', '')
                     ->toMethod(UserController::class, 'createUser');
                 $routes->map('POST', '/many')
