@@ -59,19 +59,19 @@ final class UserModuleBuilder implements IModuleBuilder
 
         $appBuilder->withComponent('routes', function (RouteBuilderRegistry $routes) {
             // Register routes here
-            $routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
+            /*$routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
                 $routes->map('GET', '/:id(int)')
                     ->toMethod(UserController::class, 'getUserById');
                 $routes->map('GET', '/random')
                     ->toMethod(UserController::class, 'getRandomUser');
-                /*$routes->map('GET', '')
+                $routes->map('GET', '')
                     ->toMethod(UserController::class, 'getAllUsers')
-                    ->withMiddleware(DummyAuthorization::class);*/
+                    ->withMiddleware(DummyAuthorization::class);
                 $routes->map('POST', '')
                     ->toMethod(UserController::class, 'createUser');
                 $routes->map('POST', '/many')
                     ->toMethod(UserController::class, 'createManyUsers');
-            });
+            });*/
         });
     }
 }
