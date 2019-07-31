@@ -51,7 +51,8 @@ final class Config
         // Configure this app to use Aphiria components
         (new AphiriaComponentBuilder($this->container))
             ->withEncoderComponent($this->appBuilder)
-            ->withRoutingComponent($this->appBuilder);
+            ->withRoutingComponent($this->appBuilder)
+            ->withRouteAnnotations($this->appBuilder);
 
         // Register some global bootstrappers
         $this->appBuilder->withBootstrappers(fn () => [

@@ -59,7 +59,7 @@ final class UserModuleBuilder implements IModuleBuilder
 
         $appBuilder->withComponent('routes', function (RouteBuilderRegistry $routes) {
             // Register routes here
-            $routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
+            /*$routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
                 $routes->map('GET', '/:id(int)')
                     ->toMethod(UserController::class, 'getUserById');
                 $routes->map('GET', '/random')
@@ -71,7 +71,7 @@ final class UserModuleBuilder implements IModuleBuilder
                     ->toMethod(UserController::class, 'createUser');
                 $routes->map('POST', '/many')
                     ->toMethod(UserController::class, 'createManyUsers');
-            });
+            });*/
         });
     }
 }

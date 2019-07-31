@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace App\Api\Bootstrappers;
 
+use Aphiria\RouteAnnotations\IRouteAnnotationRegistrant;
+use Aphiria\RouteAnnotations\ReflectionRouteAnnotationRegistrant;
 use Aphiria\Routing\Caching\FileRouteCache;
 use Aphiria\Routing\IRouteFactory;
 use Aphiria\Routing\LazyRouteFactory;
@@ -48,5 +50,9 @@ final class RoutingBootstrapper extends Bootstrapper
             fn () => new TrieRouteMatcher((new TrieFactory($routeFactory, $trieCache))->createTrie()),
             true
         );
+
+        // Register some route annotation dependencies
+        $routeAnnotationRegistrant = new ReflectionRouteAnnotationRegistrant(__DIR__ . '/../..');
+        $container->bindInstance(IRouteAnnotationRegistrant::class, $routeAnnotationRegistrant);
     }
 }
