@@ -88,7 +88,7 @@ final class UserController extends Controller
     }
 
     /**
-     * @Get("id:(int)")
+     * @Get(":id(int)")
      */
     public function getUserById(int $id): User
     {

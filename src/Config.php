@@ -12,11 +12,8 @@ declare(strict_types=1);
 
 namespace App;
 
-use Aphiria\RouteAnnotations\Application\AphiriaComponentBuilder;
+use Aphiria\Configuration\AphiriaComponentBuilder;
 use Aphiria\Configuration\IApplicationBuilder;
-use Aphiria\RouteAnnotations\Bootstrappers\RouteAnnotationBootstrapper;
-use Aphiria\RouteAnnotations\IRouteAnnotationRegistrant;
-use Aphiria\RouteAnnotations\ReflectionRouteAnnotationRegistrant;
 use App\Api\Bootstrappers\ContentNegotiatorBootstrapper;
 use App\Api\Bootstrappers\DependencyInjectionBootstrapper;
 use App\Api\Bootstrappers\ExceptionHandlerBootstrapper;
@@ -24,10 +21,7 @@ use App\Api\Bootstrappers\RoutingBootstrapper;
 use App\Api\Bootstrappers\SerializerBootstrapper;
 use App\Logging\Bootstrappers\LoggerBootstrapper;
 use App\Users\Application\UserModuleBuilder;
-use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
-use Opulence\Ioc\ResolutionException;
-use RuntimeException;
 
 /**
  * Defines the application configuration
@@ -67,14 +61,7 @@ final class Config
             new ExceptionHandlerBootstrapper,
             new LoggerBootstrapper,
             new ContentNegotiatorBootstrapper,
-            new RoutingBootstrapper,
-            new class() extends Bootstrapper {
-                public function registerBindings(IContainer $container): void
-                {
-                    $routeAnnotationRegistrant = new ReflectionRouteAnnotationRegistrant(__DIR__);
-                    $container->bindInstance(IRouteAnnotationRegistrant::class, $routeAnnotationRegistrant);
-                }
-            }
+            new RoutingBootstrapper
         ]);
 
         // Register any modules

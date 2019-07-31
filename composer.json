@@ -28,7 +28,6 @@
     "aphiria/api": "1.0.*@dev",
     "aphiria/configuration": "1.0.*@dev",
     "aphiria/console": "1.0.*@dev",
-    "aphiria/route-annotations": "1.0.*@dev",
     "ext-mbstring": "*",
     "opulence/environments": "1.1.*@dev",
     "php": "^7.4"
