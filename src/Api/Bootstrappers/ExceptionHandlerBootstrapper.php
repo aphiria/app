@@ -12,16 +12,17 @@ declare(strict_types=1);
 
 namespace App\Api\Bootstrappers;
 
-use Aphiria\Api\Exceptions\ExceptionHandler;
-use Aphiria\Api\Exceptions\ExceptionLogLevelFactoryRegistry;
-use Aphiria\Api\Exceptions\ExceptionResponseFactory;
-use Aphiria\Api\Exceptions\ExceptionResponseFactoryRegistry;
-use Aphiria\Api\Exceptions\IExceptionHandler;
+use Aphiria\Exceptions\ExceptionLogger;
+use Aphiria\Exceptions\ExceptionLogLevelFactoryRegistry;
+use Aphiria\Exceptions\ExceptionResponseFactory;
+use Aphiria\Exceptions\ExceptionResponseFactoryRegistry;
+use Aphiria\Exceptions\GlobalExceptionHandler;
+use Aphiria\Exceptions\IExceptionLogger;
+use Aphiria\Exceptions\IExceptionResponseFactory;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
-use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StreamResponseWriter;
 use App\Users\UserNotFoundException;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
@@ -50,6 +51,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
          */
         $negotiatedResponseFactory = $container->resolve(INegotiatedResponseFactory::class);
         $exceptionResponseFactoryRegistry = new ExceptionResponseFactoryRegistry();
+        $container->bindInstance(ExceptionResponseFactoryRegistry::class, $exceptionResponseFactoryRegistry);
         $exceptionResponseFactoryRegistry->registerManyFactories([
             HttpException::class => fn (HttpException $ex, IHttpRequestMessage $request) => $ex->getResponse(),
             UserNotFoundException::class => fn (
@@ -66,6 +68,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
             $negotiatedResponseFactory,
             $exceptionResponseFactoryRegistry
         );
+        $container->bindInstance(IExceptionResponseFactory::class, $exceptionResponseFactory);
 
         /**
          * ----------------------------------------------------------
@@ -114,19 +117,29 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
 
         /**
          * ----------------------------------------------------------
-         * Create the application exception handler
+         * Create the exception logger
          * ----------------------------------------------------------
          */
-        $exceptionHandler = new ExceptionHandler(
-            $exceptionResponseFactory,
+        $exceptionLogger = new ExceptionLogger(
             $container->resolve(LoggerInterface::class),
             $exceptionLogLevelFactories,
             $exceptionLogLevels,
-            $errorLogLevels,
+            $errorLogLevels
+        );
+        $container->bindInstance(IExceptionLogger::class, $exceptionLogger);
+
+        /**
+         * ----------------------------------------------------------
+         * Create the global exception handler
+         * ----------------------------------------------------------
+         */
+        $globalExceptionHandler = new GlobalExceptionHandler(
+            $exceptionResponseFactory,
+            $exceptionLogger,
             $errorThrownLevels,
             new StreamResponseWriter()
         );
-        $exceptionHandler->registerWithPhp();
-        $container->bindInstance(IExceptionHandler::class, $exceptionHandler);
+        $globalExceptionHandler->registerWithPhp();
+        $container->bindInstance(GlobalExceptionHandler::class, $globalExceptionHandler);
     }
 }

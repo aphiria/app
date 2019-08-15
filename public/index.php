@@ -10,7 +10,6 @@
 
 declare(strict_types=1);
 
-use Aphiria\Api\Exceptions\IExceptionHandler;
 use Aphiria\Configuration\ApplicationBuilder;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
@@ -60,6 +59,5 @@ $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
 $app = $appBuilder->buildApiApplication();
 $request = (new RequestFactory)->createRequestFromSuperglobals($_SERVER);
 $container->bindInstance(IHttpRequestMessage::class, $request);
-$container->resolve(IExceptionHandler::class)->setRequest($request);
 $response = $app->handle($request);
 (new StreamResponseWriter)->writeResponse($response);
