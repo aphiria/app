@@ -15,7 +15,7 @@ namespace App\Api\Bootstrappers;
 use Aphiria\Net\Http\ContentNegotiation\ContentNegotiator;
 use Aphiria\Net\Http\ContentNegotiation\IContentNegotiator;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
-use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\FormUrlEncodedSerializerMediaTypeFormatter;
+use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\FormUrlEncodedMediaTypeFormatter;
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\HtmlMediaTypeFormatter;
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\JsonMediaTypeFormatter;
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\PlainTextMediaTypeFormatter;
@@ -45,7 +45,7 @@ final class ContentNegotiatorBootstrapper extends Bootstrapper
          */
         $mediaTypeFormatters = [
             new JsonMediaTypeFormatter($container->resolve(JsonSerializer::class)),
-            new FormUrlEncodedSerializerMediaTypeFormatter($container->resolve(FormUrlEncodedSerializer::class)),
+            new FormUrlEncodedMediaTypeFormatter($container->resolve(FormUrlEncodedSerializer::class)),
             new HtmlMediaTypeFormatter(),
             new PlainTextMediaTypeFormatter()
         ];

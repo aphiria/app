@@ -139,7 +139,6 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
             $errorThrownLevels,
             new StreamResponseWriter()
         );
-        $globalExceptionHandler->registerWithPhp();
         $container->bindInstance(GlobalExceptionHandler::class, $globalExceptionHandler);
     }
 }
