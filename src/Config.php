@@ -20,7 +20,7 @@ use App\Api\Bootstrappers\ExceptionHandlerBootstrapper;
 use App\Api\Bootstrappers\RoutingBootstrapper;
 use App\Api\Bootstrappers\SerializerBootstrapper;
 use App\Logging\Bootstrappers\LoggerBootstrapper;
-use App\Users\Application\UserModuleBuilder;
+use App\Users\UserModuleBuilder;
 use Opulence\Ioc\IContainer;
 
 /**

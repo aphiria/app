@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Application\Console\Commands;
+namespace App\Users\Console\Commands;
 
 use Aphiria\Console\Commands\Command;
 

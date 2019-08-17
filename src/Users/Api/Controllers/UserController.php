@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Application\Api\Controllers;
+namespace App\Users\Api\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
 use Aphiria\Net\Http\HttpHeaders;
@@ -21,7 +21,7 @@ use Aphiria\RouteAnnotations\Annotations\Get;
 use Aphiria\RouteAnnotations\Annotations\Middleware;
 use Aphiria\RouteAnnotations\Annotations\Post;
 use Aphiria\RouteAnnotations\Annotations\RouteGroup;
-use App\Users\Application\Api\Middleware\DummyAuthorization;
+use App\Users\Api\Middleware\DummyAuthorization;
 use App\Users\IUserService;
 use App\Users\User;
 

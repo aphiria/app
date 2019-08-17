@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Application\Api\Middleware;
+namespace App\Users\Api\Middleware;
 
 use Aphiria\Middleware\IMiddleware;
 use Aphiria\Net\Formatting\UriParser;

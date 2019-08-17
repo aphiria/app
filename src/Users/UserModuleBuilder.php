@@ -10,17 +10,13 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Application;
+namespace App\Users;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
 use Aphiria\Console\Commands\CommandRegistry;
-use Aphiria\Routing\Builders\RouteBuilderRegistry;
-use Aphiria\Routing\Builders\RouteGroupOptions;
-use App\Users\Application\Api\Controllers\UserController;
-use App\Users\Application\Api\Middleware\DummyAuthorization;
-use App\Users\Application\Console\Commands\UserCountCommand;
-use App\Users\Application\Console\Commands\UserCountCommandHandler;
+use App\Users\Console\Commands\UserCountCommand;
+use App\Users\Console\Commands\UserCountCommandHandler;
 use App\Users\Bootstrappers\UserServiceBootstrapper;
 use Opulence\Ioc\IContainer;
 
@@ -57,9 +53,10 @@ final class UserModuleBuilder implements IModuleBuilder
             );
         });
 
+        /*
         $appBuilder->withComponent('routes', function (RouteBuilderRegistry $routes) {
             // Register routes here
-            /*$routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
+            $routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
                 $routes->map('GET', '/:id(int)')
                     ->toMethod(UserController::class, 'getUserById');
                 $routes->map('GET', '/random')
@@ -71,7 +68,8 @@ final class UserModuleBuilder implements IModuleBuilder
                     ->toMethod(UserController::class, 'createUser');
                 $routes->map('POST', '/many')
                     ->toMethod(UserController::class, 'createManyUsers');
-            });*/
+            });
         });
+        */
     }
 }
