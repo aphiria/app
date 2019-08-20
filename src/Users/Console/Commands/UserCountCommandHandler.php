@@ -38,6 +38,6 @@ final class UserCountCommandHandler implements ICommandHandler
      */
     public function handle(Input $input, IOutput $output)
     {
-        $output->writeln('Number of users: ' . $this->userService->getNumUsers());
+        $output->writeln("Number of users: <info>{$this->userService->getNumUsers()}</info>");
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App\Users\Api\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
+use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\HttpHeaders;
 use Aphiria\Net\Http\IHttpResponseMessage;
 use Aphiria\Net\Http\Response;
@@ -24,6 +25,7 @@ use Aphiria\RouteAnnotations\Annotations\RouteGroup;
 use App\Users\Api\Middleware\DummyAuthorization;
 use App\Users\IUserService;
 use App\Users\User;
+use App\Users\UserNotFoundException;
 
 /**
  * Defines the user controller
@@ -43,6 +45,10 @@ final class UserController extends Controller
     }
 
     /**
+     * Creates many users
+     *
+     * @return User[] The list of created users
+     * @throws HttpException Thrown if the request body could not be read
      * @Post("many")
      */
     public function createManyUsers(): array
@@ -53,6 +59,10 @@ final class UserController extends Controller
     }
 
     /**
+     * Creates a single user
+     *
+     * @param User $user The user to create
+     * @return User The created user
      * @Post("")
      */
     public function createUser(User $user): User
@@ -61,6 +71,10 @@ final class UserController extends Controller
     }
 
     /**
+     * Gets all users
+     *
+     * @return IHttpResponseMessage The response containing all users
+     * @throws HttpException Thrown if there was an error creating the response
      * @Get("")
      * @Middleware(DummyAuthorization::class)
      */
@@ -70,6 +84,10 @@ final class UserController extends Controller
     }
 
     /**
+     * Gets a random user
+     *
+     * @return IHttpResponseMessage The response containing the user
+     * @throws HttpException Thrown if there was an error creating the response
      * @Get("random")
      */
     public function getRandomUser(): IHttpResponseMessage
@@ -88,6 +106,11 @@ final class UserController extends Controller
     }
 
     /**
+     * Gets a user with the input ID
+     *
+     * @param int $id The ID of the user to get
+     * @return User The user with the input ID
+     * @throws UserNotFoundException Thrown if there was no user with the input ID
      * @Get(":id(int)")
      */
     public function getUserById(int $id): User

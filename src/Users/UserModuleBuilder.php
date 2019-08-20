@@ -50,7 +50,6 @@ final class UserModuleBuilder implements IModuleBuilder
         ]);
 
         $appBuilder->withConsoleCommands(function (CommandRegistry $commands) {
-            // Register console commands here
             $commands->registerCommand(
                 new UserCountCommand(),
                 fn () => $this->container->resolve(UserCountCommandHandler::class)
@@ -68,7 +67,6 @@ final class UserModuleBuilder implements IModuleBuilder
 
         /*
         $appBuilder->withComponent('routes', function (RouteBuilderRegistry $routes) {
-            // Register routes here
             $routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
                 $routes->map('GET', '/:id(int)')
                     ->toMethod(UserController::class, 'getUserById');
