@@ -21,10 +21,8 @@ use Aphiria\Exceptions\IExceptionLogger;
 use Aphiria\Exceptions\IExceptionResponseFactory;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpException;
-use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\StreamResponseWriter;
-use App\Users\UserNotFoundException;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
 use Psr\Log\LoggerInterface;
@@ -45,27 +43,15 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
          * Create the exception response factory
          * ----------------------------------------------------------
          *
-         * Register any custom exception response factories, keyed by exception type
-         *
-         * @var INegotiatedResponseFactory $negotiatedResponseFactory
+         * Register exception response factories for common exceptions
          */
-        $negotiatedResponseFactory = $container->resolve(INegotiatedResponseFactory::class);
         $exceptionResponseFactoryRegistry = new ExceptionResponseFactoryRegistry();
         $container->bindInstance(ExceptionResponseFactoryRegistry::class, $exceptionResponseFactoryRegistry);
         $exceptionResponseFactoryRegistry->registerManyFactories([
-            HttpException::class => fn (HttpException $ex, IHttpRequestMessage $request) => $ex->getResponse(),
-            UserNotFoundException::class => fn (
-                UserNotFoundException $ex,
-                IHttpRequestMessage $request
-            ) => $negotiatedResponseFactory->createResponse(
-                $request,
-                HttpStatusCodes::HTTP_NOT_FOUND,
-                null,
-                null
-            )
+            HttpException::class => fn (HttpException $ex, IHttpRequestMessage $request) => $ex->getResponse()
         ]);
         $exceptionResponseFactory = new ExceptionResponseFactory(
-            $negotiatedResponseFactory,
+            $container->resolve(INegotiatedResponseFactory::class),
             $exceptionResponseFactoryRegistry
         );
         $container->bindInstance(IExceptionResponseFactory::class, $exceptionResponseFactory);
@@ -75,7 +61,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
          * Custom log levels
          * ----------------------------------------------------------
          *
-         * Specify the exception types to log levels
+         * Specify the exception types to log levels for any common exceptions
          */
         $exceptionLogLevelFactories = new ExceptionLogLevelFactoryRegistry();
         $exceptionLogLevelFactories->registerManyFactories([

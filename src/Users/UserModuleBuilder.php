@@ -15,6 +15,10 @@ namespace App\Users;
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
 use Aphiria\Console\Commands\CommandRegistry;
+use Aphiria\Exceptions\ExceptionResponseFactoryRegistry;
+use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
+use Aphiria\Net\Http\HttpStatusCodes;
+use Aphiria\Net\Http\IHttpRequestMessage;
 use App\Users\Console\Commands\UserCountCommand;
 use App\Users\Console\Commands\UserCountCommandHandler;
 use App\Users\Bootstrappers\UserServiceBootstrapper;
@@ -52,6 +56,15 @@ final class UserModuleBuilder implements IModuleBuilder
                 fn () => $this->container->resolve(UserCountCommandHandler::class)
             );
         });
+
+        $appBuilder->withComponent(
+            'exceptionResponseFactories',
+            fn (ExceptionResponseFactoryRegistry $factories) => $factories->registerFactory(
+                UserNotFoundException::class,
+                fn (UserNotFoundException $ex, ?IHttpRequestMessage $request, INegotiatedResponseFactory $responseFactory)
+                    => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_NOT_FOUND)
+            )
+        );
 
         /*
         $appBuilder->withComponent('routes', function (RouteBuilderRegistry $routes) {
