@@ -1,4 +1,6 @@
-.idea
+.env
+!.env.dist
+.idea/
 .php_cs.cache
 .phpunit.result.cache
 composer.lock
@@ -6,5 +8,3 @@ composer.phar
 nbproject/
 phpunit.phar
 vendor/
-.env.*.php
-!.env.local.php

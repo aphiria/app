@@ -21,7 +21,6 @@ use Aphiria\Routing\Matchers\IRouteMatcher;
 use Aphiria\Routing\Matchers\Trees\Caching\FileTrieCache;
 use Aphiria\Routing\Matchers\Trees\TrieFactory;
 use Aphiria\Routing\Matchers\Trees\TrieRouteMatcher;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\Bootstrapper;
 use Opulence\Ioc\IContainer;
 
@@ -35,7 +34,7 @@ final class RoutingBootstrapper extends Bootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        if (\getenv('ENV_NAME') === Environment::PRODUCTION) {
+        if ($_ENV['APP_ENV'] === 'production') {
             $routeCache = new FileRouteCache(__DIR__ . '/../../../tmp/framework/http/routeCache.txt');
             $trieCache = new FileTrieCache(__DIR__ . '/../../../tmp/framework/http/trieCache.txt');
         } else {

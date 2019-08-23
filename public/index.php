@@ -15,12 +15,12 @@ use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
 use App\Config;
-use Opulence\Environments\Environment;
 use Opulence\Ioc\Bootstrappers\IBootstrapperDispatcher;
 use Opulence\Ioc\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
 use Opulence\Ioc\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
 use Opulence\Ioc\Container;
 use Opulence\Ioc\IContainer;
+use Symfony\Component\Dotenv\Dotenv;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
@@ -28,11 +28,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * ----------------------------------------------------------
  * Load environment config files
  * ----------------------------------------------------------
- *
- * Note:  For performance in production, it's highly suggested
- * you set environment variables on the server itself
  */
-require __DIR__ . '/../.env.app.php';
+(new Dotenv)->loadEnv(__DIR__ . '/../.env');
 
 /**
  * ----------------------------------------------------------
@@ -43,7 +40,7 @@ $container = new Container();
 $container->bindInstance([IContainer::class, Container::class], $container);
 $bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
     $container,
-    Environment::getVar('ENV_NAME') === Environment::PRODUCTION
+    $_ENV['APP_ENV'] === 'production'
         ? new FileBootstrapperBindingCache(__DIR__ . '/../tmp/framework/bootstrapperInspections.txt')
         : null
 );
