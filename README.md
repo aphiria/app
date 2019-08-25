@@ -1,9 +1,11 @@
-<h1>Aphiria Skeleton Application</h1>
+<p align="center"><a href="https://www.aphiria.com" target="_blank" title="Aphiria"><img src="https://www.aphiria.com/images/aphiria-logo.png"></a></p>
 
-[![Build Status](https://travis-ci.com/aphiria/app.svg)](https://travis-ci.com/aphiria/app)
-[![Latest Stable Version](https://poser.pugx.org/aphiria/app/v/stable.svg)](https://packagist.org/packages/aphiria/app)
-[![Latest Unstable Version](https://poser.pugx.org/aphiria/app/v/unstable.svg)](https://packagist.org/packages/aphiria/app)
-[![License](https://poser.pugx.org/aphiria/app/license.svg)](https://packagist.org/packages/aphiria/app)
+<p align="center">
+<a href="https://travis-ci.com/aphiria/app"><img src="https://travis-ci.com/aphiria/app.svg"></a>
+<a href="https://packagist.org/packages/aphiria/app"><img src="https://poser.pugx.org/aphiria/app/v/stable.svg"></a>
+<a href="https://packagist.org/packages/aphiria/app"><img src="https://poser.pugx.org/aphiria/app/v/unstable.svg"></a>
+<a href="https://packagist.org/packages/aphiria/app"><img src="https://poser.pugx.org/aphiria/app/license.svg"></a>
+</p>
 
 > **Note:** This library is not stable yet.
 
