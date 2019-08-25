@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace App\Api\Bootstrappers;
 
+use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
+use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Net\Http\ContentNegotiation\ContentNegotiator;
 use Aphiria\Net\Http\ContentNegotiation\IContentNegotiator;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
@@ -22,8 +24,6 @@ use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\PlainTextMediaTypeFo
 use Aphiria\Net\Http\ContentNegotiation\NegotiatedResponseFactory;
 use Aphiria\Serialization\FormUrlEncodedSerializer;
 use Aphiria\Serialization\JsonSerializer;
-use Opulence\Ioc\Bootstrappers\Bootstrapper;
-use Opulence\Ioc\IContainer;
 
 /**
  * Defines the bootstrapper that registers the content negotiator

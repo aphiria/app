@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace App\Api\Bootstrappers;
 
+use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
+use Aphiria\DependencyInjection\IContainer;
 use Aphiria\RouteAnnotations\IRouteAnnotationRegistrant;
 use Aphiria\RouteAnnotations\ReflectionRouteAnnotationRegistrant;
 use Aphiria\Routing\Caching\FileRouteCache;
@@ -21,8 +23,6 @@ use Aphiria\Routing\Matchers\IRouteMatcher;
 use Aphiria\Routing\Matchers\Trees\Caching\FileTrieCache;
 use Aphiria\Routing\Matchers\Trees\TrieFactory;
 use Aphiria\Routing\Matchers\Trees\TrieRouteMatcher;
-use Opulence\Ioc\Bootstrappers\Bootstrapper;
-use Opulence\Ioc\IContainer;
 
 /**
  * Defines a the bootstrapper that binds routing components

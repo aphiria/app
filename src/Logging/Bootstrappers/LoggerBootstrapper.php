@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace App\Logging\Bootstrappers;
 
+use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
+use Aphiria\DependencyInjection\IContainer;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Opulence\Ioc\Bootstrappers\Bootstrapper;
-use Opulence\Ioc\IContainer;
 use Psr\Log\LoggerInterface;
 
 /**

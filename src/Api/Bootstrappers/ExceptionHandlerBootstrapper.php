@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace App\Api\Bootstrappers;
 
+use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
+use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Exceptions\ExceptionLogger;
 use Aphiria\Exceptions\ExceptionLogLevelFactoryRegistry;
 use Aphiria\Exceptions\ExceptionResponseFactory;
@@ -23,8 +25,6 @@ use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\StreamResponseWriter;
-use Opulence\Ioc\Bootstrappers\Bootstrapper;
-use Opulence\Ioc\IContainer;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 

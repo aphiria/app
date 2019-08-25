@@ -14,6 +14,7 @@ namespace App;
 
 use Aphiria\Configuration\AphiriaComponentBuilder;
 use Aphiria\Configuration\IApplicationBuilder;
+use Aphiria\DependencyInjection\IContainer;
 use App\Api\Bootstrappers\ContentNegotiatorBootstrapper;
 use App\Api\Bootstrappers\DependencyInjectionBootstrapper;
 use App\Api\Bootstrappers\ExceptionHandlerBootstrapper;
@@ -21,7 +22,6 @@ use App\Api\Bootstrappers\RoutingBootstrapper;
 use App\Api\Bootstrappers\SerializerBootstrapper;
 use App\Logging\Bootstrappers\LoggerBootstrapper;
 use App\Users\UserModuleBuilder;
-use Opulence\Ioc\IContainer;
 
 /**
  * Defines the application configuration

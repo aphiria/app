@@ -14,8 +14,8 @@ namespace App\Api\Bootstrappers;
 
 use Aphiria\Api\ContainerDependencyResolver;
 use Aphiria\Api\IDependencyResolver;
-use Opulence\Ioc\Bootstrappers\Bootstrapper;
-use Opulence\Ioc\IContainer;
+use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
+use Aphiria\DependencyInjection\IContainer;
 
 /**
  * Defines the dependency injection bootstrapper

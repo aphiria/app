@@ -12,14 +12,14 @@ declare(strict_types=1);
 
 namespace App\Api\Bootstrappers;
 
+use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
+use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Serialization\Encoding\CamelCasePropertyNameFormatter;
 use Aphiria\Serialization\Encoding\DefaultEncoderRegistrant;
 use Aphiria\Serialization\Encoding\EncoderRegistry;
 use Aphiria\Serialization\FormUrlEncodedSerializer;
 use Aphiria\Serialization\JsonSerializer;
 use DateTime;
-use Opulence\Ioc\Bootstrappers\Bootstrapper;
-use Opulence\Ioc\IContainer;
 
 /**
  * Defines the bootstrapper for serializers

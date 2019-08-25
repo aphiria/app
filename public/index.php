@@ -11,15 +11,15 @@
 declare(strict_types=1);
 
 use Aphiria\Configuration\ApplicationBuilder;
+use Aphiria\DependencyInjection\Bootstrappers\IBootstrapperDispatcher;
+use Aphiria\DependencyInjection\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
+use Aphiria\DependencyInjection\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
+use Aphiria\DependencyInjection\Container;
+use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
 use App\Config;
-use Opulence\Ioc\Bootstrappers\IBootstrapperDispatcher;
-use Opulence\Ioc\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
-use Opulence\Ioc\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
-use Opulence\Ioc\Container;
-use Opulence\Ioc\IContainer;
 use Symfony\Component\Dotenv\Dotenv;
 
 require_once __DIR__ . '/../vendor/autoload.php';
