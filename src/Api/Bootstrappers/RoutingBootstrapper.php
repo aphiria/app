@@ -34,7 +34,7 @@ final class RoutingBootstrapper extends Bootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        if ($_ENV['APP_ENV'] === 'production') {
+        if (getenv('APP_ENV') === 'production') {
             $routeCache = new FileRouteCache(__DIR__ . '/../../../tmp/framework/http/routeCache.txt');
             $trieCache = new FileTrieCache(__DIR__ . '/../../../tmp/framework/http/trieCache.txt');
         } else {

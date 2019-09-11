@@ -40,7 +40,7 @@ $container = new Container();
 $container->bindInstance([IContainer::class, Container::class], $container);
 $bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
     $container,
-    $_ENV['APP_ENV'] === 'production'
+    getenv('APP_ENV') === 'production'
         ? new FileBootstrapperBindingCache(__DIR__ . '/../tmp/framework/bootstrapperInspections.txt')
         : null
 );
