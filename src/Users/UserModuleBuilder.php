@@ -14,6 +14,7 @@ namespace App\Users;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
+use Aphiria\Console\Commands\Command;
 use Aphiria\Console\Commands\CommandRegistry;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Exceptions\ExceptionResponseFactoryRegistry;
@@ -49,13 +50,6 @@ final class UserModuleBuilder implements IModuleBuilder
             new UserServiceBootstrapper
         ]);
 
-        $appBuilder->withConsoleCommands(function (CommandRegistry $commands) {
-            $commands->registerCommand(
-                new UserCountCommand(),
-                fn () => $this->container->resolve(UserCountCommandHandler::class)
-            );
-        });
-
         $appBuilder->withComponent(
             'exceptionResponseFactories',
             fn (ExceptionResponseFactoryRegistry $factories) => $factories->registerFactory(
@@ -64,6 +58,15 @@ final class UserModuleBuilder implements IModuleBuilder
                     => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_NOT_FOUND)
             )
         );
+
+        /*
+        $appBuilder->withConsoleCommands(function (CommandRegistry $commands) {
+            $commands->registerCommand(
+                new Command('users:count', [], [], 'An example command that counts the number of users'),
+                fn () => $this->container->resolve(UserCountCommandHandler::class)
+            );
+        });
+        */
 
         /*
         $appBuilder->withComponent('routes', function (RouteBuilderRegistry $routes) {
