@@ -20,6 +20,7 @@ use App\Users\IUserService;
 
 /**
  * Defines the user count command handler
+ *
  * @Command("users:count", description="An example command that counts the number of users")
  */
 final class UserCountCommandHandler implements ICommandHandler
