@@ -20,9 +20,9 @@ use Aphiria\Routing\Caching\FileRouteCache;
 use Aphiria\Routing\IRouteFactory;
 use Aphiria\Routing\LazyRouteFactory;
 use Aphiria\Routing\Matchers\IRouteMatcher;
-use Aphiria\Routing\Matchers\Trees\Caching\FileTrieCache;
-use Aphiria\Routing\Matchers\Trees\TrieFactory;
-use Aphiria\Routing\Matchers\Trees\TrieRouteMatcher;
+use Aphiria\Routing\Matchers\TrieRouteMatcher;
+use Aphiria\Routing\UriTemplates\Compilers\Tries\Caching\FileTrieCache;
+use Aphiria\Routing\UriTemplates\Compilers\Tries\TrieFactory;
 
 /**
  * Defines a the bootstrapper that binds routing components
