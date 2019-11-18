@@ -12,12 +12,12 @@ declare(strict_types=1);
 
 namespace App\Console\Bootstrappers;
 
+use Aphiria\Console\Commands\AggregateCommandRegistrant;
+use Aphiria\Console\Commands\Caching\CachedCommandRegistrant;
 use Aphiria\Console\Commands\Caching\FileCommandRegistryCache;
-use Aphiria\Console\Commands\ICommandRegistryFactory;
-use Aphiria\Console\Commands\LazyCommandRegistryFactory;
+use Aphiria\Console\Commands\CommandRegistry;
+use Aphiria\ConsoleCommandAnnotations\AnnotationCommandRegistrant;
 use Aphiria\ConsoleCommandAnnotations\ContainerCommandHandlerResolver;
-use Aphiria\ConsoleCommandAnnotations\ICommandAnnotationRegistrant;
-use Aphiria\ConsoleCommandAnnotations\ReflectionCommandAnnotationRegistrant;
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
 
@@ -31,19 +31,23 @@ final class CommandBootstrapper extends Bootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
+        $commands = new CommandRegistry();
+        $container->bindInstance(CommandRegistry::class, $commands);
+
         if (getenv('APP_ENV') === 'production') {
             $commandCache = new FileCommandRegistryCache(__DIR__ . '/../../../tmp/framework/console/commandCache.txt');
+            $commandRegistrant = new CachedCommandRegistrant($commandCache);
+            $container->bindInstance([AggregateCommandRegistrant::class, CachedCommandRegistrant::class], $commandRegistrant);
         } else {
-            $commandCache = null;
+            $commandRegistrant = new AggregateCommandRegistrant();
+            $container->bindInstance(AggregateCommandRegistrant::class, $commandRegistrant);
         }
 
-        $commandFactory = new LazyCommandRegistryFactory(null, $commandCache);
-        $container->bindInstance([ICommandRegistryFactory::class, LazyCommandRegistryFactory::class], $commandFactory);
         // Register some command annotation dependencies
-        $commandAnnotationRegistrant = new ReflectionCommandAnnotationRegistrant(
+        $commandAnnotationRegistrant = new AnnotationCommandRegistrant(
             __DIR__ . '/../..',
             new ContainerCommandHandlerResolver($container)
         );
-        $container->bindInstance(ICommandAnnotationRegistrant::class, $commandAnnotationRegistrant);
+        $container->bindInstance(AnnotationCommandRegistrant::class, $commandAnnotationRegistrant);
     }
 }
