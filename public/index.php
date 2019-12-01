@@ -38,6 +38,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
  */
 $container = new Container();
 $container->bindInstance([IContainer::class, Container::class], $container);
+Container::$globalInstance = $container;
 $bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
     $container,
     getenv('APP_ENV') === 'production'
