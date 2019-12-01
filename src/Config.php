@@ -57,7 +57,7 @@ final class Config
             ->withEncoderComponent($this->appBuilder)
             ->withRoutingComponent($this->appBuilder)
             ->withRouteAnnotations($this->appBuilder)
-            ->withConsoleCommandAnnotations($this->appBuilder);
+            ->withConsoleAnnotations($this->appBuilder);
 
         // Register some global bootstrappers
         $this->appBuilder->withBootstrappers(fn () => [

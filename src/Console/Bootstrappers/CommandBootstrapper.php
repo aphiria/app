@@ -16,8 +16,8 @@ use Aphiria\Console\Commands\AggregateCommandRegistrant;
 use Aphiria\Console\Commands\Caching\CachedCommandRegistrant;
 use Aphiria\Console\Commands\Caching\FileCommandRegistryCache;
 use Aphiria\Console\Commands\CommandRegistry;
-use Aphiria\ConsoleCommandAnnotations\AnnotationCommandRegistrant;
-use Aphiria\ConsoleCommandAnnotations\ContainerCommandHandlerResolver;
+use Aphiria\ConsoleAnnotations\AnnotationCommandRegistrant;
+use Aphiria\ConsoleAnnotations\ContainerCommandHandlerResolver;
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
 
