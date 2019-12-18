@@ -30,6 +30,8 @@
         "aphiria/console": "1.0.*@dev",
         "aphiria/console-annotations": "1.0.*@dev",
         "aphiria/exceptions": "1.0.*@dev",
+        "aphiria/validation": "1.0.*@dev",
+        "aphiria/validation-annotations": "1.0.*@dev",
         "ext-mbstring": "*",
         "php": "^7.4",
         "symfony/dotenv": "~4.3"

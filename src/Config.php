@@ -20,6 +20,7 @@ use App\Api\Bootstrappers\DependencyInjectionBootstrapper;
 use App\Api\Bootstrappers\ExceptionHandlerBootstrapper;
 use App\Api\Bootstrappers\RoutingBootstrapper;
 use App\Api\Bootstrappers\SerializerBootstrapper;
+use App\Api\Bootstrappers\ValidationBootstrapper;
 use App\Console\Bootstrappers\CommandBootstrapper;
 use App\Logging\Bootstrappers\LoggerBootstrapper;
 use App\Users\UserModuleBuilder;
@@ -57,11 +58,14 @@ final class Config
             ->withEncoderComponent($this->appBuilder)
             ->withRoutingComponent($this->appBuilder)
             ->withRouteAnnotations($this->appBuilder)
+            ->withValidationComponent($this->appBuilder)
+            ->withValidationAnnotations($this->appBuilder)
             ->withConsoleAnnotations($this->appBuilder);
 
         // Register some global bootstrappers
         $this->appBuilder->withBootstrappers(fn () => [
             new SerializerBootstrapper,
+            new ValidationBootstrapper,
             new DependencyInjectionBootstrapper,
             new ExceptionHandlerBootstrapper,
             new LoggerBootstrapper,
