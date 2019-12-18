@@ -23,8 +23,10 @@ use Aphiria\Exceptions\IExceptionLogger;
 use Aphiria\Exceptions\IExceptionResponseFactory;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpException;
+use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\StreamResponseWriter;
+use Aphiria\Validation\ValidationException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -48,7 +50,9 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
         $exceptionResponseFactoryRegistry = new ExceptionResponseFactoryRegistry();
         $container->bindInstance(ExceptionResponseFactoryRegistry::class, $exceptionResponseFactoryRegistry);
         $exceptionResponseFactoryRegistry->registerManyFactories([
-            HttpException::class => fn (HttpException $ex, IHttpRequestMessage $request) => $ex->getResponse()
+            HttpException::class => fn (HttpException $ex, IHttpRequestMessage $request) => $ex->getResponse(),
+            ValidationException::class => fn (ValidationException $ex, IHttpRequestMessage $request, INegotiatedResponseFactory $responseFactory)
+                => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_BAD_REQUEST)
         ]);
         $exceptionResponseFactory = new ExceptionResponseFactory(
             $container->resolve(INegotiatedResponseFactory::class),
