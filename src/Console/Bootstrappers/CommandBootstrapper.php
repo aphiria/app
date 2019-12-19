@@ -13,11 +13,11 @@ declare(strict_types=1);
 namespace App\Console\Bootstrappers;
 
 use Aphiria\Console\Commands\AggregateCommandRegistrant;
+use Aphiria\Console\Commands\Annotations\AnnotationCommandRegistrant;
 use Aphiria\Console\Commands\Caching\CachedCommandRegistrant;
 use Aphiria\Console\Commands\Caching\FileCommandRegistryCache;
 use Aphiria\Console\Commands\CommandRegistry;
-use Aphiria\ConsoleAnnotations\AnnotationCommandRegistrant;
-use Aphiria\ConsoleAnnotations\ContainerCommandHandlerResolver;
+use Aphiria\Console\Commands\ContainerCommandHandlerResolver;
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
 

@@ -14,8 +14,8 @@ namespace App\Api\Bootstrappers;
 
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
-use Aphiria\RouteAnnotations\AnnotationRouteRegistrant;
 use Aphiria\Routing\AggregateRouteRegistrant;
+use Aphiria\Routing\Annotations\AnnotationRouteRegistrant;
 use Aphiria\Routing\Caching\CachedRouteRegistrant;
 use Aphiria\Routing\Caching\FileRouteCache;
 use Aphiria\Routing\IRouteRegistrant;
