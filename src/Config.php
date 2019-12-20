@@ -57,7 +57,7 @@ final class Config
             ->withExceptionResponseFactories($this->appBuilder)
             ->withEncoderComponent($this->appBuilder)
             ->withRoutingComponent($this->appBuilder)
-            ->withRouteAnnotations($this->appBuilder)
+            ->withRoutingAnnotations($this->appBuilder)
             ->withValidationComponent($this->appBuilder)
             ->withValidationAnnotations($this->appBuilder)
             ->withConsoleAnnotations($this->appBuilder);
