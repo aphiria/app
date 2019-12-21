@@ -21,6 +21,8 @@ use Aphiria\Validation\Constraints\Caching\FileObjectConstraintRegistryCache;
 use Aphiria\Validation\Constraints\ObjectConstraintRegistry;
 use Aphiria\Validation\ErrorMessages\IErrorMessageCompiler;
 use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageCompiler;
+use Aphiria\Validation\IValidator;
+use Aphiria\Validation\Validator;
 
 /**
  * Defines the bootstrapper for model validation
@@ -34,6 +36,8 @@ final class ValidationBootstrapper extends Bootstrapper
     {
         $objectConstraints = new ObjectConstraintRegistry();
         $container->bindInstance(ObjectConstraintRegistry::class, $objectConstraints);
+        $validator = new Validator($objectConstraints);
+        $container->bindInstance([IValidator::class, Validator::class], $validator);
 
         if (getenv('APP_ENV') === 'production') {
             $constraintCache = new FileObjectConstraintRegistryCache(__DIR__ . '/../../../tmp/framework/http/validationCache.txt');
