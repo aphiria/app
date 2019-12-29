@@ -12,10 +12,10 @@ declare(strict_types=1);
 
 namespace App\Console\Bootstrappers;
 
-use Aphiria\Console\Commands\AggregateCommandRegistrant;
 use Aphiria\Console\Commands\Annotations\AnnotationCommandRegistrant;
 use Aphiria\Console\Commands\Caching\CachedCommandRegistrant;
 use Aphiria\Console\Commands\Caching\FileCommandRegistryCache;
+use Aphiria\Console\Commands\CommandRegistrantCollection;
 use Aphiria\Console\Commands\CommandRegistry;
 use Aphiria\Console\Commands\ContainerCommandHandlerResolver;
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
@@ -33,14 +33,13 @@ final class CommandBootstrapper extends Bootstrapper
     {
         $commands = new CommandRegistry();
         $container->bindInstance(CommandRegistry::class, $commands);
+        $commandRegistrants = new CommandRegistrantCollection();
+        $container->bindInstance(CommandRegistrantCollection::class, $commandRegistrants);
 
         if (getenv('APP_ENV') === 'production') {
             $commandCache = new FileCommandRegistryCache(__DIR__ . '/../../../tmp/framework/console/commandCache.txt');
-            $commandRegistrant = new CachedCommandRegistrant($commandCache);
-            $container->bindInstance([AggregateCommandRegistrant::class, CachedCommandRegistrant::class], $commandRegistrant);
-        } else {
-            $commandRegistrant = new AggregateCommandRegistrant();
-            $container->bindInstance(AggregateCommandRegistrant::class, $commandRegistrant);
+            $commandRegistrant = new CachedCommandRegistrant($commandCache, $commandRegistrants);
+            $container->bindInstance(CachedCommandRegistrant::class, $commandRegistrant);
         }
 
         // Register some command annotation dependencies

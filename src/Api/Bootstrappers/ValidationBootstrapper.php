@@ -14,10 +14,10 @@ namespace App\Api\Bootstrappers;
 
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
-use Aphiria\Validation\Constraints\AggregateObjectConstraintsRegistrant;
 use Aphiria\Validation\Constraints\Annotations\AnnotationObjectConstraintsRegistrant;
 use Aphiria\Validation\Constraints\Caching\CachedObjectConstraintsRegistrant;
 use Aphiria\Validation\Constraints\Caching\FileObjectConstraintsRegistryCache;
+use Aphiria\Validation\Constraints\ObjectConstraintsRegistrantCollection;
 use Aphiria\Validation\Constraints\ObjectConstraintsRegistry;
 use Aphiria\Validation\ErrorMessages\IErrorMessageCompiler;
 use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageCompiler;
@@ -38,14 +38,13 @@ final class ValidationBootstrapper extends Bootstrapper
         $container->bindInstance(ObjectConstraintsRegistry::class, $objectConstraints);
         $validator = new Validator($objectConstraints);
         $container->bindInstance([IValidator::class, Validator::class], $validator);
+        $constraintsRegistrants = new ObjectConstraintsRegistrantCollection();
+        $container->bindInstance(ObjectConstraintsRegistrantCollection::class, $constraintsRegistrants);
 
         if (getenv('APP_ENV') === 'production') {
             $constraintCache = new FileObjectConstraintsRegistryCache(__DIR__ . '/../../../tmp/framework/http/validationCache.txt');
-            $constraintRegistrant = new CachedObjectConstraintsRegistrant($constraintCache);
-            $container->bindInstance([AggregateObjectConstraintsRegistrant::class, CachedObjectConstraintsRegistrant::class], $constraintRegistrant);
-        } else {
-            $constraintRegistrant = new AggregateObjectConstraintsRegistrant();
-            $container->bindInstance(AggregateObjectConstraintsRegistrant::class, $constraintRegistrant);
+            $constraintRegistrant = new CachedObjectConstraintsRegistrant($constraintCache, $constraintsRegistrants);
+            $container->bindInstance(CachedObjectConstraintsRegistrant::class, $constraintRegistrant);
         }
 
         $container->bindInstance(IErrorMessageCompiler::class, new StringReplaceErrorMessageCompiler());

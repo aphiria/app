@@ -14,14 +14,13 @@ namespace App\Api\Bootstrappers;
 
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
-use Aphiria\Routing\AggregateRouteRegistrant;
 use Aphiria\Routing\Annotations\AnnotationRouteRegistrant;
 use Aphiria\Routing\Caching\CachedRouteRegistrant;
 use Aphiria\Routing\Caching\FileRouteCache;
-use Aphiria\Routing\IRouteRegistrant;
 use Aphiria\Routing\Matchers\IRouteMatcher;
 use Aphiria\Routing\Matchers\TrieRouteMatcher;
 use Aphiria\Routing\RouteCollection;
+use Aphiria\Routing\RouteRegistrantCollection;
 use Aphiria\Routing\UriTemplates\AstRouteUriFactory;
 use Aphiria\Routing\UriTemplates\Compilers\Tries\Caching\FileTrieCache;
 use Aphiria\Routing\UriTemplates\Compilers\Tries\TrieFactory;
@@ -39,24 +38,29 @@ final class RoutingBootstrapper extends Bootstrapper
     {
         $routes = new RouteCollection();
         $container->bindInstance(RouteCollection::class, $routes);
+        $routeRegistrants = new RouteRegistrantCollection();
+        $container->bindInstance(RouteRegistrantCollection::class, $routeRegistrants);
 
         if (getenv('APP_ENV') === 'production') {
-            $routeCache = new FileRouteCache(__DIR__ . '/../../../tmp/framework/http/routeCache.txt');
             $trieCache = new FileTrieCache(__DIR__ . '/../../../tmp/framework/http/trieCache.txt');
-            $routeRegistrant = new CachedRouteRegistrant($routeCache);
-            $container->bindInstance([CachedRouteRegistrant::class, AggregateRouteRegistrant::class], $routeRegistrant);
+            $routeCache = new FileRouteCache(__DIR__ . '/../../../tmp/framework/http/routeCache.txt');
+            $cachedRouteRegistrant = new CachedRouteRegistrant($routeCache, $routeRegistrants);
+            $container->bindInstance(CachedRouteRegistrant::class, $cachedRouteRegistrant);
         } else {
-            $trieCache = null;
-            $routeRegistrant = new AggregateRouteRegistrant();
-            $container->bindInstance(AggregateRouteRegistrant::class, $routeRegistrant);
+            $trieCache = $cachedRouteRegistrant = null;
         }
 
         // Bind as a factory so that our app builders can register all routes prior to the routes being built
         $container->bindFactory(
             [IRouteMatcher::class, TrieRouteMatcher::class],
-            function () use ($routes, $routeRegistrant, $trieCache) {
-                /** @var IRouteRegistrant $routeRegistrant */
-                $routeRegistrant->registerRoutes($routes);
+            function () use ($routes, $cachedRouteRegistrant, $routeRegistrants, $trieCache) {
+                // Always defer to using cached routes if they exist
+                if ($cachedRouteRegistrant instanceof CachedRouteRegistrant) {
+                    $cachedRouteRegistrant->registerRoutes($routes);
+                } else {
+                    /** @var RouteRegistrantCollection $routeRegistrants */
+                    $routeRegistrants->registerRoutes($routes);
+                }
 
                 return new TrieRouteMatcher((new TrieFactory($routes, $trieCache))->createTrie());
             },
