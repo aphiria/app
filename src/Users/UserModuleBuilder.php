@@ -14,15 +14,10 @@ namespace App\Users;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
-use Aphiria\Console\Commands\Command;
-use Aphiria\Console\Commands\CommandRegistry;
-use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Exceptions\ExceptionResponseFactoryRegistry;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
-use App\Users\Console\Commands\UserCountCommand;
-use App\Users\Console\Commands\UserCountCommandHandler;
 use App\Users\Bootstrappers\UserServiceBootstrapper;
 
 /**
@@ -30,17 +25,6 @@ use App\Users\Bootstrappers\UserServiceBootstrapper;
  */
 final class UserModuleBuilder implements IModuleBuilder
 {
-    /** @var IContainer The DI container that can resolve dependencies */
-    private IContainer $container;
-
-    /**
-     * @param IContainer $container The DI container that can resolve dependencies
-     */
-    public function __construct(IContainer $container)
-    {
-        $this->container = $container;
-    }
-
     /**
      * @inheritdoc
      */
@@ -58,32 +42,5 @@ final class UserModuleBuilder implements IModuleBuilder
                     => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_NOT_FOUND)
             )
         );
-
-        /*
-        $appBuilder->withConsoleCommands(function (CommandRegistry $commands) {
-            $commands->registerCommand(
-                new Command('users:count', [], [], 'An example command that counts the number of users'),
-                fn () => $this->container->resolve(UserCountCommandHandler::class)
-            );
-        });
-        */
-
-        /*
-        $appBuilder->withComponent('routes', function (RouteBuilderRegistry $routes) {
-            $routes->group(new RouteGroupOptions('users'), function (RouteBuilderRegistry $routes) {
-                $routes->map('GET', '/:id(int)')
-                    ->toMethod(UserController::class, 'getUserById');
-                $routes->map('GET', '/random')
-                    ->toMethod(UserController::class, 'getRandomUser');
-                $routes->map('GET', '')
-                    ->toMethod(UserController::class, 'getAllUsers')
-                    ->withMiddleware(DummyAuthorization::class);
-                $routes->map('POST', '')
-                    ->toMethod(UserController::class, 'createUser');
-                $routes->map('POST', '/many')
-                    ->toMethod(UserController::class, 'createManyUsers');
-            });
-        });
-        */
     }
 }

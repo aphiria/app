@@ -14,11 +14,11 @@ namespace App\Api\Bootstrappers;
 
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
-use Aphiria\Validation\Constraints\AggregateObjectConstraintRegistrant;
-use Aphiria\Validation\Constraints\Annotations\AnnotationObjectConstraintRegistrant;
-use Aphiria\Validation\Constraints\Caching\CachedObjectConstraintRegistrant;
-use Aphiria\Validation\Constraints\Caching\FileObjectConstraintRegistryCache;
-use Aphiria\Validation\Constraints\ObjectConstraintRegistry;
+use Aphiria\Validation\Constraints\AggregateObjectConstraintsRegistrant;
+use Aphiria\Validation\Constraints\Annotations\AnnotationObjectConstraintsRegistrant;
+use Aphiria\Validation\Constraints\Caching\CachedObjectConstraintsRegistrant;
+use Aphiria\Validation\Constraints\Caching\FileObjectConstraintsRegistryCache;
+use Aphiria\Validation\Constraints\ObjectConstraintsRegistry;
 use Aphiria\Validation\ErrorMessages\IErrorMessageCompiler;
 use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageCompiler;
 use Aphiria\Validation\IValidator;
@@ -34,24 +34,24 @@ final class ValidationBootstrapper extends Bootstrapper
      */
     public function registerBindings(IContainer $container): void
     {
-        $objectConstraints = new ObjectConstraintRegistry();
-        $container->bindInstance(ObjectConstraintRegistry::class, $objectConstraints);
+        $objectConstraints = new ObjectConstraintsRegistry();
+        $container->bindInstance(ObjectConstraintsRegistry::class, $objectConstraints);
         $validator = new Validator($objectConstraints);
         $container->bindInstance([IValidator::class, Validator::class], $validator);
 
         if (getenv('APP_ENV') === 'production') {
-            $constraintCache = new FileObjectConstraintRegistryCache(__DIR__ . '/../../../tmp/framework/http/validationCache.txt');
-            $constraintRegistrant = new CachedObjectConstraintRegistrant($constraintCache);
-            $container->bindInstance([AggregateObjectConstraintRegistrant::class, CachedObjectConstraintRegistrant::class], $constraintRegistrant);
+            $constraintCache = new FileObjectConstraintsRegistryCache(__DIR__ . '/../../../tmp/framework/http/validationCache.txt');
+            $constraintRegistrant = new CachedObjectConstraintsRegistrant($constraintCache);
+            $container->bindInstance([AggregateObjectConstraintsRegistrant::class, CachedObjectConstraintsRegistrant::class], $constraintRegistrant);
         } else {
-            $constraintRegistrant = new AggregateObjectConstraintRegistrant();
-            $container->bindInstance(AggregateObjectConstraintRegistrant::class, $constraintRegistrant);
+            $constraintRegistrant = new AggregateObjectConstraintsRegistrant();
+            $container->bindInstance(AggregateObjectConstraintsRegistrant::class, $constraintRegistrant);
         }
 
         $container->bindInstance(IErrorMessageCompiler::class, new StringReplaceErrorMessageCompiler());
 
         // Register some constraint annotation dependencies
-        $constraintAnnotationRegistrant = new AnnotationObjectConstraintRegistrant(__DIR__ . '/../..');
-        $container->bindInstance(AnnotationObjectConstraintRegistrant::class, $constraintAnnotationRegistrant);
+        $constraintAnnotationRegistrant = new AnnotationObjectConstraintsRegistrant(__DIR__ . '/../..');
+        $container->bindInstance(AnnotationObjectConstraintsRegistrant::class, $constraintAnnotationRegistrant);
     }
 }

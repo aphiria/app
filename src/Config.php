@@ -14,9 +14,7 @@ namespace App;
 
 use Aphiria\Configuration\AphiriaComponentBuilder;
 use Aphiria\Configuration\IApplicationBuilder;
-use Aphiria\Configuration\Middleware\MiddlewareBinding;
 use Aphiria\DependencyInjection\IContainer;
-use Aphiria\Exceptions\Middleware\ExceptionHandler;
 use App\Api\Bootstrappers\ContentNegotiatorBootstrapper;
 use App\Api\Bootstrappers\DependencyInjectionBootstrapper;
 use App\Api\Bootstrappers\ExceptionHandlerBootstrapper;
@@ -76,12 +74,7 @@ final class Config
             new CommandBootstrapper
         ]);
 
-        // Register some global middleware
-        $this->appBuilder->withGlobalMiddleware(fn () => [
-            new MiddlewareBinding(ExceptionHandler::class)
-        ]);
-
         // Register any modules
-        $this->appBuilder->withModule(new UserModuleBuilder($this->container));
+        $this->appBuilder->withModule(new UserModuleBuilder());
     }
 }
