@@ -51,6 +51,7 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
         $container->bindInstance(ExceptionResponseFactoryRegistry::class, $exceptionResponseFactoryRegistry);
         $exceptionResponseFactoryRegistry->registerManyFactories([
             HttpException::class => fn (HttpException $ex, IHttpRequestMessage $request) => $ex->getResponse(),
+            // TODO: Should I remove this exception for the one that's in the API library?
             ValidationException::class => fn (ValidationException $ex, IHttpRequestMessage $request, INegotiatedResponseFactory $responseFactory)
                 => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_BAD_REQUEST)
         ]);
