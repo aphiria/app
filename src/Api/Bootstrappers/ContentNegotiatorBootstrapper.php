@@ -48,8 +48,6 @@ final class ContentNegotiatorBootstrapper extends Bootstrapper
          *
          * Configure how you want media type formatters to be matched.
          * Note: The first registered media type formatter will be considered the default one
-         * Default: Use the encoding set in the Accept-Charset header
-         * @link https://tools.ietf.org/html/rfc5646
          */
         $mediaTypeFormatters = [
             new JsonMediaTypeFormatter($container->resolve(JsonSerializer::class)),
@@ -66,7 +64,7 @@ final class ContentNegotiatorBootstrapper extends Bootstrapper
          * ----------------------------------------------------------
          *
          * Configure how you want encodings to be matched.
-         * Default: Use the encoding set in the Accept-Charset header
+         * Default: Use the Accept-Charset header
          * @link https://tools.ietf.org/html/rfc5646
          */
         $encodingMatcher = new AcceptCharsetEncodingMatcher();
@@ -87,14 +85,22 @@ final class ContentNegotiatorBootstrapper extends Bootstrapper
         $languageMatcher = new AcceptLanguageMatcher($supportedLanguages);
         $container->bindInstance(ILanguageMatcher::class, $languageMatcher);
 
+        /**
+         * ----------------------------------------------------------
+         * Content negotiator
+         * ----------------------------------------------------------
+         *
+         * Configure how you want to negotiate request and response content
+         * @link https://tools.ietf.org/html/rfc5646
+         */
         $contentNegotiator = new ContentNegotiator(
             $mediaTypeFormatters,
             $mediaTypeFormatterMatcher,
             $encodingMatcher,
             $languageMatcher
         );
-        $negotiatedResponseFactory = new NegotiatedResponseFactory($contentNegotiator);
         $container->bindInstance(IContentNegotiator::class, $contentNegotiator);
+        $negotiatedResponseFactory = new NegotiatedResponseFactory($contentNegotiator);
         $container->bindInstance(INegotiatedResponseFactory::class, $negotiatedResponseFactory);
     }
 }

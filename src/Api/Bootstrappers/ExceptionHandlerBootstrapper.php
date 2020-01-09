@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace App\Api\Bootstrappers;
 
+use Aphiria\Api\Errors\ProblemDetailsResponseMutator;
+use Aphiria\Api\Validation\InvalidRequestBodyException;
+use Aphiria\Api\Validation\ValidationProblemDetails;
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Exceptions\ExceptionLogger;
@@ -26,7 +29,6 @@ use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\StreamResponseWriter;
-use Aphiria\Validation\ValidationException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 
@@ -51,9 +53,12 @@ final class ExceptionHandlerBootstrapper extends Bootstrapper
         $container->bindInstance(ExceptionResponseFactoryRegistry::class, $exceptionResponseFactoryRegistry);
         $exceptionResponseFactoryRegistry->registerManyFactories([
             HttpException::class => fn (HttpException $ex, IHttpRequestMessage $request) => $ex->getResponse(),
-            // TODO: Should I remove this exception for the one that's in the API library?
-            ValidationException::class => fn (ValidationException $ex, IHttpRequestMessage $request, INegotiatedResponseFactory $responseFactory)
-                => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_BAD_REQUEST)
+            InvalidRequestBodyException::class => function (InvalidRequestBodyException $ex, IHttpRequestMessage $request, INegotiatedResponseFactory $responseFactory) {
+                $body = new ValidationProblemDetails($ex->getErrors());
+                $response = $responseFactory->createResponse($request, HttpStatusCodes::HTTP_BAD_REQUEST, null, $body);
+
+                return (new ProblemDetailsResponseMutator)->mutateResponse($response);
+            }
         ]);
         $exceptionResponseFactory = new ExceptionResponseFactory(
             $container->resolve(INegotiatedResponseFactory::class),

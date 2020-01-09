@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace App\Users;
 
+use Aphiria\Validation\Constraints\Annotations\Email;
+
 /**
  * Defines the user model
  */
@@ -36,6 +38,7 @@ class User
      * Gets the user email
      *
      * @return string The email
+     * @Email
      */
     public function getEmail(): string
     {

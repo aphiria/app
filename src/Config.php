@@ -16,6 +16,7 @@ use Aphiria\Configuration\AphiriaComponentBuilder;
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\DependencyInjection\IContainer;
 use App\Api\Bootstrappers\ContentNegotiatorBootstrapper;
+use App\Api\Bootstrappers\ControllerBootstrapper;
 use App\Api\Bootstrappers\DependencyInjectionBootstrapper;
 use App\Api\Bootstrappers\ExceptionHandlerBootstrapper;
 use App\Api\Bootstrappers\RoutingBootstrapper;
@@ -70,6 +71,7 @@ final class Config
             new ExceptionHandlerBootstrapper,
             new LoggerBootstrapper,
             new ContentNegotiatorBootstrapper,
+            new ControllerBootstrapper,
             new RoutingBootstrapper,
             new CommandBootstrapper
         ]);

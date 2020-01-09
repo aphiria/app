@@ -58,7 +58,6 @@ final class RoutingBootstrapper extends Bootstrapper
                 if ($cachedRouteRegistrant instanceof CachedRouteRegistrant) {
                     $cachedRouteRegistrant->registerRoutes($routes);
                 } else {
-                    /** @var RouteRegistrantCollection $routeRegistrants */
                     $routeRegistrants->registerRoutes($routes);
                 }
 

@@ -19,8 +19,8 @@ use Aphiria\Validation\Constraints\Caching\CachedObjectConstraintsRegistrant;
 use Aphiria\Validation\Constraints\Caching\FileObjectConstraintsRegistryCache;
 use Aphiria\Validation\Constraints\ObjectConstraintsRegistrantCollection;
 use Aphiria\Validation\Constraints\ObjectConstraintsRegistry;
-use Aphiria\Validation\ErrorMessages\IErrorMessageCompiler;
-use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageCompiler;
+use Aphiria\Validation\ErrorMessages\IErrorMessageInterpolater;
+use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageInterpolater;
 use Aphiria\Validation\IValidator;
 use Aphiria\Validation\Validator;
 
@@ -47,7 +47,7 @@ final class ValidationBootstrapper extends Bootstrapper
             $container->bindInstance(CachedObjectConstraintsRegistrant::class, $constraintRegistrant);
         }
 
-        $container->bindInstance(IErrorMessageCompiler::class, new StringReplaceErrorMessageCompiler());
+        $container->bindInstance(IErrorMessageInterpolater::class, new StringReplaceErrorMessageInterpolater());
 
         // Register some constraint annotation dependencies
         $constraintAnnotationRegistrant = new AnnotationObjectConstraintsRegistrant(__DIR__ . '/../..');
