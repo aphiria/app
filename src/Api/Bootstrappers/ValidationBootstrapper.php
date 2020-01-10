@@ -15,7 +15,6 @@ namespace App\Api\Bootstrappers;
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Validation\Constraints\Annotations\AnnotationObjectConstraintsRegistrant;
-use Aphiria\Validation\Constraints\Caching\CachedObjectConstraintsRegistrant;
 use Aphiria\Validation\Constraints\Caching\FileObjectConstraintsRegistryCache;
 use Aphiria\Validation\Constraints\ObjectConstraintsRegistrantCollection;
 use Aphiria\Validation\Constraints\ObjectConstraintsRegistry;
@@ -38,15 +37,15 @@ final class ValidationBootstrapper extends Bootstrapper
         $container->bindInstance(ObjectConstraintsRegistry::class, $objectConstraints);
         $validator = new Validator($objectConstraints);
         $container->bindInstance([IValidator::class, Validator::class], $validator);
-        $constraintsRegistrants = new ObjectConstraintsRegistrantCollection();
-        $container->bindInstance(ObjectConstraintsRegistrantCollection::class, $constraintsRegistrants);
 
         if (getenv('APP_ENV') === 'production') {
             $constraintCache = new FileObjectConstraintsRegistryCache(__DIR__ . '/../../../tmp/framework/http/validationCache.txt');
-            $constraintRegistrant = new CachedObjectConstraintsRegistrant($constraintCache, $constraintsRegistrants);
-            $container->bindInstance(CachedObjectConstraintsRegistrant::class, $constraintRegistrant);
+        } else {
+            $constraintCache = null;
         }
 
+        $constraintsRegistrants = new ObjectConstraintsRegistrantCollection($constraintCache);
+        $container->bindInstance(ObjectConstraintsRegistrantCollection::class, $constraintsRegistrants);
         $container->bindInstance(IErrorMessageInterpolater::class, new StringReplaceErrorMessageInterpolater());
 
         // Register some constraint annotation dependencies

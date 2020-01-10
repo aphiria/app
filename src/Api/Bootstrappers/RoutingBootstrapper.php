@@ -15,7 +15,6 @@ namespace App\Api\Bootstrappers;
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Routing\Annotations\AnnotationRouteRegistrant;
-use Aphiria\Routing\Caching\CachedRouteRegistrant;
 use Aphiria\Routing\Caching\FileRouteCache;
 use Aphiria\Routing\Matchers\IRouteMatcher;
 use Aphiria\Routing\Matchers\TrieRouteMatcher;
@@ -38,28 +37,22 @@ final class RoutingBootstrapper extends Bootstrapper
     {
         $routes = new RouteCollection();
         $container->bindInstance(RouteCollection::class, $routes);
-        $routeRegistrants = new RouteRegistrantCollection();
-        $container->bindInstance(RouteRegistrantCollection::class, $routeRegistrants);
 
         if (getenv('APP_ENV') === 'production') {
             $trieCache = new FileTrieCache(__DIR__ . '/../../../tmp/framework/http/trieCache.txt');
             $routeCache = new FileRouteCache(__DIR__ . '/../../../tmp/framework/http/routeCache.txt');
-            $cachedRouteRegistrant = new CachedRouteRegistrant($routeCache, $routeRegistrants);
-            $container->bindInstance(CachedRouteRegistrant::class, $cachedRouteRegistrant);
         } else {
-            $trieCache = $cachedRouteRegistrant = null;
+            $trieCache = $routeCache = null;
         }
+
+        $routeRegistrants = new RouteRegistrantCollection($routeCache);
+        $container->bindInstance(RouteRegistrantCollection::class, $routeRegistrants);
 
         // Bind as a factory so that our app builders can register all routes prior to the routes being built
         $container->bindFactory(
             [IRouteMatcher::class, TrieRouteMatcher::class],
-            function () use ($routes, $cachedRouteRegistrant, $routeRegistrants, $trieCache) {
-                // Always defer to using cached routes if they exist
-                if ($cachedRouteRegistrant instanceof CachedRouteRegistrant) {
-                    $cachedRouteRegistrant->registerRoutes($routes);
-                } else {
-                    $routeRegistrants->registerRoutes($routes);
-                }
+            function () use ($routes, $routeRegistrants, $trieCache) {
+                $routeRegistrants->registerRoutes($routes);
 
                 return new TrieRouteMatcher((new TrieFactory($routes, $trieCache))->createTrie());
             },
