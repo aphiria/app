@@ -16,6 +16,7 @@ use Aphiria\DependencyInjection\Bootstrappers\Inspection\BindingInspectorBootstr
 use Aphiria\DependencyInjection\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
+use Aphiria\DependencyInjection\IDependencyResolver;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
@@ -37,7 +38,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * ----------------------------------------------------------
  */
 $container = new Container();
-$container->bindInstance([IContainer::class, Container::class], $container);
+$container->bindInstance([IDependencyResolver::class, IContainer::class, Container::class], $container);
 Container::$globalInstance = $container;
 $bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
     $container,

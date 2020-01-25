@@ -16,7 +16,6 @@ use Aphiria\Console\Commands\Annotations\AnnotationCommandRegistrant;
 use Aphiria\Console\Commands\Caching\FileCommandRegistryCache;
 use Aphiria\Console\Commands\CommandRegistrantCollection;
 use Aphiria\Console\Commands\CommandRegistry;
-use Aphiria\Console\Commands\ContainerCommandHandlerResolver;
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
 
@@ -45,7 +44,7 @@ final class CommandBootstrapper extends Bootstrapper
         // Register some command annotation dependencies
         $commandAnnotationRegistrant = new AnnotationCommandRegistrant(
             __DIR__ . '/../..',
-            new ContainerCommandHandlerResolver($container)
+            $container
         );
         $container->bindInstance(AnnotationCommandRegistrant::class, $commandAnnotationRegistrant);
     }
