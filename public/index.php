@@ -20,7 +20,7 @@ use Aphiria\DependencyInjection\IDependencyResolver;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
-use App\Config;
+use App\App;
 use Symfony\Component\Dotenv\Dotenv;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -54,7 +54,7 @@ $container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher
  * ----------------------------------------------------------
  */
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
-(new Config($appBuilder, $container))->configure();
+(new App($appBuilder, $container))->configure();
 $app = $appBuilder->buildApiApplication();
 $request = (new RequestFactory)->createRequestFromSuperglobals($_SERVER);
 $container->bindInstance(IHttpRequestMessage::class, $request);

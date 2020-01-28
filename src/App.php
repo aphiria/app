@@ -28,7 +28,7 @@ use App\Users\UserModuleBuilder;
 /**
  * Defines the application configuration
  */
-final class Config
+final class App
 {
     /** @var IApplicationBuilder The app builder to use when configuring the application */
     private IApplicationBuilder $appBuilder;

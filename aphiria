@@ -18,7 +18,7 @@ use Aphiria\DependencyInjection\Bootstrappers\Inspection\Caching\FileBootstrappe
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\DependencyInjection\IDependencyResolver;
-use App\Config;
+use App\App;
 use Symfony\Component\Dotenv\Dotenv;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -52,7 +52,7 @@ $container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher
  * ----------------------------------------------------------
  */
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
-(new Config($appBuilder, $container))->configure();
+(new App($appBuilder, $container))->configure();
 $app = $appBuilder->buildConsoleApplication();
 global $argv;
 exit($app->handle($argv));
