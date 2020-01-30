@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users;
+namespace App\Demo;
 
 use Aphiria\Configuration\IApplicationBuilder;
 use Aphiria\Configuration\IModuleBuilder;
@@ -18,7 +18,8 @@ use Aphiria\Exceptions\ExceptionResponseFactoryRegistry;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
-use App\Users\Bootstrappers\UserServiceBootstrapper;
+use Aphiria\Net\Http\IHttpResponseMessage;
+use App\Demo\Bootstrappers\UserServiceBootstrapper;
 
 /**
  * Defines the example user module builder
@@ -38,7 +39,7 @@ final class UserModuleBuilder implements IModuleBuilder
             'exceptionResponseFactories',
             fn (ExceptionResponseFactoryRegistry $factories) => $factories->registerFactory(
                 UserNotFoundException::class,
-                fn (UserNotFoundException $ex, ?IHttpRequestMessage $request, INegotiatedResponseFactory $responseFactory)
+                fn (UserNotFoundException $ex, ?IHttpRequestMessage $request, INegotiatedResponseFactory $responseFactory): IHttpResponseMessage
                     => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_NOT_FOUND)
             )
         );

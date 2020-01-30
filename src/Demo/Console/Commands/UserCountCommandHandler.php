@@ -10,13 +10,13 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Console\Commands;
+namespace App\Demo\Console\Commands;
 
 use Aphiria\Console\Commands\Annotations\Command;
 use Aphiria\Console\Commands\ICommandHandler;
 use Aphiria\Console\Input\Input;
 use Aphiria\Console\Output\IOutput;
-use App\Users\IUserService;
+use App\Demo\IUserService;
 
 /**
  * Defines the user count command handler

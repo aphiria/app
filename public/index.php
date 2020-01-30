@@ -11,6 +11,7 @@
 declare(strict_types=1);
 
 use Aphiria\Configuration\ApplicationBuilder;
+use Aphiria\Configuration\PhpFileConfigurationReader;
 use Aphiria\DependencyInjection\Bootstrappers\IBootstrapperDispatcher;
 use Aphiria\DependencyInjection\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
 use Aphiria\DependencyInjection\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
@@ -53,6 +54,7 @@ $container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher
  * Build and run our application
  * ----------------------------------------------------------
  */
+(new PhpFileConfigurationReader(__DIR__ . '/../config.php'))->readConfiguration();
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
 (new App($appBuilder, $container))->configure();
 $app = $appBuilder->buildApiApplication();

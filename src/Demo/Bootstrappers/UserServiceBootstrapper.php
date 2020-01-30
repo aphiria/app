@@ -10,12 +10,12 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Bootstrappers;
+namespace App\Demo\Bootstrappers;
 
 use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
 use Aphiria\DependencyInjection\IContainer;
-use App\Users\FileUserService;
-use App\Users\IUserService;
+use App\Demo\FileUserService;
+use App\Demo\IUserService;
 
 /**
  * Defines the user service bootstrapper
