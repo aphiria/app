@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users\Api\Controllers;
+namespace App\Demo\Api\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
 use Aphiria\Net\Http\HttpException;
@@ -22,10 +22,10 @@ use Aphiria\Routing\Annotations\Get;
 use Aphiria\Routing\Annotations\Middleware;
 use Aphiria\Routing\Annotations\Post;
 use Aphiria\Routing\Annotations\RouteGroup;
-use App\Users\Api\Middleware\DummyAuthorization;
-use App\Users\IUserService;
-use App\Users\User;
-use App\Users\UserNotFoundException;
+use App\Demo\Api\Middleware\DummyAuthorization;
+use App\Demo\IUserService;
+use App\Demo\User;
+use App\Demo\UserNotFoundException;
 
 /**
  * Defines the user controller

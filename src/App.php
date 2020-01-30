@@ -13,22 +13,22 @@ declare(strict_types=1);
 namespace App;
 
 use Aphiria\Configuration\AphiriaComponentBuilder;
+use Aphiria\Configuration\Api\Bootstrappers\ControllerBootstrapper;
+use Aphiria\Configuration\Console\Bootstrappers\CommandBootstrapper;
+use Aphiria\Configuration\Exceptions\Bootstrappers\ExceptionHandlerBootstrapper;
 use Aphiria\Configuration\IApplicationBuilder;
+use Aphiria\Configuration\Logging\Bootstrappers\LoggerBootstrapper;
+use Aphiria\Configuration\Net\Bootstrappers\ContentNegotiatorBootstrapper;
+use Aphiria\Configuration\Routing\Bootstrappers\RoutingBootstrapper;
+use Aphiria\Configuration\Serialization\Bootstrappers\SerializerBootstrapper;
+use Aphiria\Configuration\Validation\Bootstrappers\ValidationBootstrapper;
 use Aphiria\DependencyInjection\IContainer;
-use App\Api\Bootstrappers\ContentNegotiatorBootstrapper;
-use App\Api\Bootstrappers\ControllerBootstrapper;
-use App\Api\Bootstrappers\ExceptionHandlerBootstrapper;
-use App\Api\Bootstrappers\RoutingBootstrapper;
-use App\Api\Bootstrappers\SerializerBootstrapper;
-use App\Api\Bootstrappers\ValidationBootstrapper;
-use App\Console\Bootstrappers\CommandBootstrapper;
-use App\Logging\Bootstrappers\LoggerBootstrapper;
-use App\Users\UserModuleBuilder;
+use App\Demo\UserModuleBuilder;
 
 /**
  * Defines the application configuration
  */
-final class Config
+final class App
 {
     /** @var IApplicationBuilder The app builder to use when configuring the application */
     private IApplicationBuilder $appBuilder;

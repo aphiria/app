@@ -10,7 +10,7 @@
 
 declare(strict_types=1);
 
-namespace App\Users;
+namespace App\Demo;
 
 use Aphiria\Validation\Constraints\Annotations\Email;
 
