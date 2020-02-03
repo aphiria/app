@@ -50,7 +50,7 @@ final class FileUserService implements IUserService
         $user->setId(\random_int(0, 1000000));
 
         if (\file_exists($this->filePath)) {
-            $encodedUsers = json_decode(\file_get_contents($this->filePath), true);
+            $encodedUsers = \json_decode(\file_get_contents($this->filePath), true);
         } else {
             $encodedUsers = [];
         }

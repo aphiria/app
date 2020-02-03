@@ -55,6 +55,7 @@ final class UserController extends Controller
      */
     public function createManyUsers(): array
     {
+        // Demonstrate how to read the body as an array of models
         $users = $this->readRequestBodyAs(User::class . '[]');
 
         return $this->userService->createManyUsers($users);
@@ -70,6 +71,7 @@ final class UserController extends Controller
      */
     public function createUser(User $user): User
     {
+        // Demonstrate how to use content negotiation on request and response bodies
         return $this->userService->createUser($user);
     }
 
@@ -84,6 +86,7 @@ final class UserController extends Controller
      */
     public function getAllUsers(): IHttpResponseMessage
     {
+        // Demonstrate how to use controller helper methods to create a response
         return $this->ok($this->userService->getAllUsers());
     }
 
@@ -103,6 +106,7 @@ final class UserController extends Controller
             return $this->notFound();
         }
 
+        // Demonstrate how to manually create a response
         $headers = new HttpHeaders();
         $headers->add('Content-Type', 'application/json');
         $body = new StringBody('{"id":' . $user->getId() . ',"email":"' . $user->getEmail() . '"}');
@@ -121,6 +125,7 @@ final class UserController extends Controller
      */
     public function getUserById(int $id): User
     {
+        // Demonstrate how to use route variables and response body negotiation
         return $this->userService->getUserById($id);
     }
 }
