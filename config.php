@@ -134,6 +134,7 @@ return [
      * annotationPaths => The paths to search for constraint annotations
      * constraintsCachePath => The path to the constraint cache
      * errorMessageInterpolator => The error message interpolator to use
+     * errorMessageTemplates => The error message template registry to use
      */
     'validation' => [
         'annotationPaths' => [__DIR__ . '/src'],
