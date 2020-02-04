@@ -17,6 +17,7 @@ use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\PlainTextMediaTypeFo
 use Aphiria\Serialization\Encoding\CamelCasePropertyNameFormatter;
 use Aphiria\Serialization\FormUrlEncodedSerializer;
 use Aphiria\Serialization\JsonSerializer;
+use Aphiria\Validation\ErrorMessages\DefaultErrorMessageTemplateRegistry;
 use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageInterpolator;
 use Monolog\Handler\StreamHandler;
 use Psr\Log\LogLevel;
@@ -139,6 +140,9 @@ return [
         'constraintsCachePath' => __DIR__ . '/tmp/framework/constraints.txt',
         'errorMessageInterpolator' => [
             'type' => StringReplaceErrorMessageInterpolator::class
+        ],
+        'errorMessageTemplates' => [
+            'type' => DefaultErrorMessageTemplateRegistry::class
         ]
     ]
 ];
