@@ -12,16 +12,16 @@ declare(strict_types=1);
 
 namespace App;
 
-use Aphiria\Configuration\AphiriaComponentBuilder;
-use Aphiria\Configuration\Api\Bootstrappers\ControllerBootstrapper;
-use Aphiria\Configuration\Console\Bootstrappers\CommandBootstrapper;
-use Aphiria\Configuration\Exceptions\Bootstrappers\ExceptionHandlerBootstrapper;
-use Aphiria\Configuration\IApplicationBuilder;
-use Aphiria\Configuration\Logging\Bootstrappers\LoggerBootstrapper;
-use Aphiria\Configuration\Net\Bootstrappers\ContentNegotiatorBootstrapper;
-use Aphiria\Configuration\Routing\Bootstrappers\RoutingBootstrapper;
-use Aphiria\Configuration\Serialization\Bootstrappers\SerializerBootstrapper;
-use Aphiria\Configuration\Validation\Bootstrappers\ValidationBootstrapper;
+use Aphiria\Configuration\Builders\AphiriaComponentBuilder;
+use Aphiria\Configuration\Builders\IApplicationBuilder;
+use Aphiria\Configuration\Framework\Api\Bootstrappers\ControllerBootstrapper;
+use Aphiria\Configuration\Framework\Console\Bootstrappers\CommandBootstrapper;
+use Aphiria\Configuration\Framework\Exceptions\Bootstrappers\ExceptionHandlerBootstrapper;
+use Aphiria\Configuration\Framework\Logging\Bootstrappers\LoggerBootstrapper;
+use Aphiria\Configuration\Framework\Net\Bootstrappers\ContentNegotiatorBootstrapper;
+use Aphiria\Configuration\Framework\Routing\Bootstrappers\RoutingBootstrapper;
+use Aphiria\Configuration\Framework\Serialization\Bootstrappers\SerializerBootstrapper;
+use Aphiria\Configuration\Framework\Validation\Bootstrappers\ValidationBootstrapper;
 use Aphiria\DependencyInjection\IContainer;
 use App\Demo\UserModuleBuilder;
 

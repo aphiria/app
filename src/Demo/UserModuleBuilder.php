@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace App\Demo;
 
-use Aphiria\Configuration\IApplicationBuilder;
-use Aphiria\Configuration\IModuleBuilder;
+use Aphiria\Configuration\Builders\IApplicationBuilder;
+use Aphiria\Configuration\Builders\IModuleBuilder;
 use Aphiria\Exceptions\ExceptionResponseFactoryRegistry;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpStatusCodes;

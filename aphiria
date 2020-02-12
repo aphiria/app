@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-use Aphiria\Configuration\ApplicationBuilder;
+use Aphiria\Configuration\Builders\ApplicationBuilder;
 use Aphiria\Configuration\PhpFileConfigurationReader;
 use Aphiria\DependencyInjection\Bootstrappers\IBootstrapperDispatcher;
 use Aphiria\DependencyInjection\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
