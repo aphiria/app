@@ -32,6 +32,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * ----------------------------------------------------------
  */
 (new Dotenv)->loadEnv(__DIR__ . '/../.env');
+(new PhpFileConfigurationReader(__DIR__ . '/../config.php'))->readConfiguration();
 
 /**
  * ----------------------------------------------------------
@@ -54,7 +55,6 @@ $container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher
  * Build and run our application
  * ----------------------------------------------------------
  */
-(new PhpFileConfigurationReader(__DIR__ . '/../config.php'))->readConfiguration();
 $appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
 (new App($appBuilder, $container))->configure();
 $app = $appBuilder->buildApiApplication();
