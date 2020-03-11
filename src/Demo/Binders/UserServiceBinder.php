@@ -10,22 +10,22 @@
 
 declare(strict_types=1);
 
-namespace App\Demo\Bootstrappers;
+namespace App\Demo\Binders;
 
-use Aphiria\DependencyInjection\Bootstrappers\Bootstrapper;
+use Aphiria\DependencyInjection\Binders\Binder;
 use Aphiria\DependencyInjection\IContainer;
 use App\Demo\FileUserService;
 use App\Demo\IUserService;
 
 /**
- * Defines the user service bootstrapper
+ * Defines the user service binder
  */
-final class UserServiceBootstrapper extends Bootstrapper
+final class UserServiceBinder extends Binder
 {
     /**
      * @inheritdoc
      */
-    public function registerBindings(IContainer $container): void
+    public function bind(IContainer $container): void
     {
         $userService = new FileUserService(__DIR__ . '/../../../tmp/users/users.json');
         $container->bindInstance(IUserService::class, $userService);

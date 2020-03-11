@@ -12,36 +12,33 @@ declare(strict_types=1);
 
 namespace App\Demo;
 
-use Aphiria\Configuration\Builders\IApplicationBuilder;
-use Aphiria\Configuration\Builders\IModuleBuilder;
-use Aphiria\Exceptions\ExceptionResponseFactoryRegistry;
+use Aphiria\Application\Builders\IApplicationBuilder;
+use Aphiria\Application\IModule;
+use Aphiria\Framework\Application\AphiriaComponents;
 use Aphiria\Net\Http\ContentNegotiation\INegotiatedResponseFactory;
 use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\IHttpResponseMessage;
-use App\Demo\Bootstrappers\UserServiceBootstrapper;
+use App\Demo\Binders\UserServiceBinder;
 
 /**
- * Defines the example user module builder
+ * Defines the example user module
  */
-final class UserModuleBuilder implements IModuleBuilder
+final class UserModule implements IModule
 {
+    use AphiriaComponents;
+
     /**
      * @inheritdoc
      */
     public function build(IApplicationBuilder $appBuilder): void
     {
-        $appBuilder->withBootstrappers(fn () => [
-            new UserServiceBootstrapper
-        ]);
-
-        $appBuilder->withComponent(
-            'exceptionResponseFactories',
-            fn (ExceptionResponseFactoryRegistry $factories) => $factories->registerFactory(
+        $this->withBinders($appBuilder, new UserServiceBinder())
+            ->withExceptionResponseFactory(
+                $appBuilder,
                 UserNotFoundException::class,
                 fn (UserNotFoundException $ex, ?IHttpRequestMessage $request, INegotiatedResponseFactory $responseFactory): IHttpResponseMessage
                     => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_NOT_FOUND)
-            )
-        );
+            );
     }
 }

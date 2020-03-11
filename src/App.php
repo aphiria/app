@@ -12,24 +12,24 @@ declare(strict_types=1);
 
 namespace App;
 
-use Aphiria\Configuration\Builders\AphiriaComponentBuilder;
-use Aphiria\Configuration\Builders\IApplicationBuilder;
-use Aphiria\Configuration\Framework\Api\Bootstrappers\ControllerBootstrapper;
-use Aphiria\Configuration\Framework\Console\Bootstrappers\CommandBootstrapper;
-use Aphiria\Configuration\Framework\Exceptions\Bootstrappers\ExceptionHandlerBootstrapper;
-use Aphiria\Configuration\Framework\Logging\Bootstrappers\LoggerBootstrapper;
-use Aphiria\Configuration\Framework\Net\Bootstrappers\ContentNegotiatorBootstrapper;
-use Aphiria\Configuration\Framework\Routing\Bootstrappers\RoutingBootstrapper;
-use Aphiria\Configuration\Framework\Serialization\Bootstrappers\SerializerBootstrapper;
-use Aphiria\Configuration\Framework\Validation\Bootstrappers\ValidationBootstrapper;
+use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\DependencyInjection\IContainer;
-use App\Demo\UserModuleBuilder;
+use Aphiria\Framework\Api\Binders\ControllerBinder;
+use Aphiria\Framework\Application\AphiriaComponents;
+use Aphiria\Framework\Console\Binders\CommandBinder;
+use Aphiria\Framework\Net\Binders\ContentNegotiatorBinder;
+use Aphiria\Framework\Routing\Binders\RoutingBinder;
+use Aphiria\Framework\Serialization\Binders\SerializerBinder;
+use Aphiria\Framework\Validation\Binders\ValidationBinder;
+use App\Demo\UserModule;
 
 /**
  * Defines the application configuration
  */
 final class App
 {
+    use AphiriaComponents;
+
     /** @var IApplicationBuilder The app builder to use when configuring the application */
     private IApplicationBuilder $appBuilder;
     /** @var IContainer The DI container that can resolve dependencies */
@@ -50,31 +50,20 @@ final class App
      */
     public function configure(): void
     {
-        // Configure this app to use Aphiria components
-        (new AphiriaComponentBuilder($this->container))
-            ->withExceptionHandlers($this->appBuilder)
-            ->withExceptionLogLevelFactories($this->appBuilder)
-            ->withExceptionResponseFactories($this->appBuilder)
-            ->withEncoderComponent($this->appBuilder)
-            ->withRoutingComponent($this->appBuilder)
-            ->withRoutingAnnotations($this->appBuilder)
-            ->withValidationComponent($this->appBuilder)
-            ->withValidationAnnotations($this->appBuilder)
-            ->withConsoleAnnotations($this->appBuilder);
-
-        // Register some global bootstrappers
-        $this->appBuilder->withBootstrappers(fn () => [
-            new SerializerBootstrapper,
-            new ValidationBootstrapper,
-            new ExceptionHandlerBootstrapper,
-            new LoggerBootstrapper,
-            new ContentNegotiatorBootstrapper,
-            new ControllerBootstrapper,
-            new RoutingBootstrapper,
-            new CommandBootstrapper
-        ]);
+        $this->withExceptionHandlerMiddleware($this->appBuilder)
+            ->withRouteAnnotations($this->appBuilder)
+            ->withValidatorAnnotations($this->appBuilder)
+            ->withCommandAnnotations($this->appBuilder)
+            ->withBinders($this->appBuilder, [
+                new SerializerBinder(),
+                new ValidationBinder(),
+                new ContentNegotiatorBinder(),
+                new ControllerBinder(),
+                new RoutingBinder(),
+                new CommandBinder()
+            ]);
 
         // Register any modules
-        $this->appBuilder->withModule(new UserModuleBuilder());
+        $this->appBuilder->withModule(new UserModule($this->container));
     }
 }

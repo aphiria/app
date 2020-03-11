@@ -10,29 +10,35 @@
 
 declare(strict_types=1);
 
-use Aphiria\Configuration\Builders\ApplicationBuilder;
-use Aphiria\Configuration\PhpFileConfigurationReader;
-use Aphiria\DependencyInjection\Bootstrappers\IBootstrapperDispatcher;
-use Aphiria\DependencyInjection\Bootstrappers\Inspection\BindingInspectorBootstrapperDispatcher;
-use Aphiria\DependencyInjection\Bootstrappers\Inspection\Caching\FileBootstrapperBindingCache;
+use Aphiria\Application\BootstrapperCollection;
+use Aphiria\Configuration\GlobalConfigurationBuilder;
+use Aphiria\DependencyInjection\Binders\IBinderDispatcher;
+use Aphiria\DependencyInjection\Binders\Inspection\BindingInspectorBinderDispatcher;
+use Aphiria\DependencyInjection\Binders\Inspection\Caching\FileBinderBindingCache;
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
-use Aphiria\DependencyInjection\IDependencyResolver;
+use Aphiria\DependencyInjection\IServiceResolver;
+use Aphiria\Framework\Api\Builders\ApiApplicationBuilder;
+use Aphiria\Framework\Configuration\Bootstrappers\ConfigurationBootstrapper;
+use Aphiria\Framework\Configuration\Bootstrappers\EnvironmentVariableBootstrapper;
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\RequestFactory;
 use Aphiria\Net\Http\StreamResponseWriter;
 use App\App;
-use Symfony\Component\Dotenv\Dotenv;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
 /**
  * ----------------------------------------------------------
- * Load environment config files
+ * Bootstrap the application
  * ----------------------------------------------------------
  */
-(new Dotenv)->loadEnv(__DIR__ . '/../.env');
-(new PhpFileConfigurationReader(__DIR__ . '/../config.php'))->readConfiguration();
+$globalConfigurationBuilder = (new GlobalConfigurationBuilder)->withEnvironmentVariables()
+    ->withPhpFileConfigurationSource(__DIR__ . '/../config.php');
+(new BootstrapperCollection)->addMany([
+    new EnvironmentVariableBootstrapper(__DIR__ . '/../.env'),
+    new ConfigurationBootstrapper($globalConfigurationBuilder)
+])->bootstrapAll();
 
 /**
  * ----------------------------------------------------------
@@ -40,24 +46,24 @@ require_once __DIR__ . '/../vendor/autoload.php';
  * ----------------------------------------------------------
  */
 $container = new Container();
-$container->bindInstance([IDependencyResolver::class, IContainer::class, Container::class], $container);
+$container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 Container::$globalInstance = $container;
-$bootstrapperDispatcher = new BindingInspectorBootstrapperDispatcher(
+$binderDispatcher = new BindingInspectorBinderDispatcher(
     $container,
     getenv('APP_ENV') === 'production'
-        ? new FileBootstrapperBindingCache(__DIR__ . '/../tmp/framework/bootstrapperInspections.txt')
+        ? new FileBinderBindingCache(__DIR__ . '/../tmp/framework/binderInspections.txt')
         : null
 );
-$container->bindInstance(IBootstrapperDispatcher::class, $bootstrapperDispatcher);
+$container->bindInstance(IBinderDispatcher::class, $binderDispatcher);
 
 /**
  * ----------------------------------------------------------
  * Build and run our application
  * ----------------------------------------------------------
  */
-$appBuilder = new ApplicationBuilder($container, $bootstrapperDispatcher);
+$appBuilder = new ApiApplicationBuilder($container);
 (new App($appBuilder, $container))->configure();
-$app = $appBuilder->buildApiApplication();
+$app = $appBuilder->build();
 $request = (new RequestFactory)->createRequestFromSuperglobals($_SERVER);
 $container->bindInstance(IHttpRequestMessage::class, $request);
 $response = $app->handle($request);
