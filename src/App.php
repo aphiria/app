@@ -13,11 +13,12 @@ declare(strict_types=1);
 namespace App;
 
 use Aphiria\Application\Builders\IApplicationBuilder;
-use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Binders\ControllerBinder;
 use Aphiria\Framework\Application\AphiriaComponents;
 use Aphiria\Framework\Console\Binders\CommandBinder;
-use Aphiria\Framework\Net\Binders\ContentNegotiatorBinder;
+use Aphiria\Framework\Exceptions\Binders\ExceptionHandlerBinder;
+use Aphiria\Framework\Net\Binders\ContentNegotiationBinder;
+use Aphiria\Framework\Net\Binders\RequestBinder;
 use Aphiria\Framework\Routing\Binders\RoutingBinder;
 use Aphiria\Framework\Serialization\Binders\SerializerBinder;
 use Aphiria\Framework\Validation\Binders\ValidationBinder;
@@ -32,17 +33,13 @@ final class App
 
     /** @var IApplicationBuilder The app builder to use when configuring the application */
     private IApplicationBuilder $appBuilder;
-    /** @var IContainer The DI container that can resolve dependencies */
-    private IContainer $container;
 
     /**
      * @param IApplicationBuilder $appBuilder The app builder to use when configuring the application
-     * @param IContainer $container The DI container that can resolve dependencies
      */
-    public function __construct(IApplicationBuilder $appBuilder, IContainer $container)
+    public function __construct(IApplicationBuilder $appBuilder)
     {
         $this->appBuilder = $appBuilder;
-        $this->container = $container;
     }
 
     /**
@@ -50,20 +47,21 @@ final class App
      */
     public function configure(): void
     {
-        $this->withExceptionHandlerMiddleware($this->appBuilder)
-            ->withRouteAnnotations($this->appBuilder)
+        $this->withRouteAnnotations($this->appBuilder)
             ->withValidatorAnnotations($this->appBuilder)
             ->withCommandAnnotations($this->appBuilder)
             ->withBinders($this->appBuilder, [
+                new ExceptionHandlerBinder(),
+                new RequestBinder(),
                 new SerializerBinder(),
                 new ValidationBinder(),
-                new ContentNegotiatorBinder(),
+                new ContentNegotiationBinder(),
                 new ControllerBinder(),
                 new RoutingBinder(),
                 new CommandBinder()
             ]);
 
         // Register any modules
-        $this->appBuilder->withModule(new UserModule($this->container));
+        $this->appBuilder->withModule(new UserModule());
     }
 }
