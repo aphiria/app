@@ -20,7 +20,6 @@ use Aphiria\Serialization\JsonSerializer;
 use Aphiria\Validation\ErrorMessages\DefaultErrorMessageTemplateRegistry;
 use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageInterpolator;
 use Monolog\Handler\StreamHandler;
-use Psr\Log\LogLevel;
 
 return [
     /**
@@ -71,15 +70,9 @@ return [
          * Configure exception handling
          * ----------------------------------------------------------
          *
-         * errorLogLevels => The level of PHP errors to log
-         * errorThrownLevels => The level of PHP errors to throw as exceptions
-         * exceptionLogLevels => The PSR-3 exception log levels to log
          * useProblemDetails => Whether or not to use problem detail responses
          */
         'exceptions' => [
-            'errorLogLevels' => 0,
-            'errorThrownLevels' => (E_ALL & ~(E_DEPRECATED | E_USER_DEPRECATED)),
-            'exceptionLogLevels' => [LogLevel::ERROR, LogLevel::CRITICAL, LogLevel::ALERT, LogLevel::EMERGENCY],
             'useProblemDetails' => true
         ],
 
@@ -95,7 +88,8 @@ return [
             'handlers' => [
                 [
                     'type' => StreamHandler::class,
-                    'path' => __DIR__ . '/tmp/logs/errors.txt'
+                    'path' => __DIR__ . '/tmp/logs/errors.txt',
+                    'level' => getenv('LOG_LEVEL')
                 ]
             ],
             'name' => 'app'
