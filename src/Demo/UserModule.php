@@ -34,7 +34,7 @@ final class UserModule implements IModule
     public function build(IApplicationBuilder $appBuilder): void
     {
         $this->withBinders($appBuilder, new UserServiceBinder())
-            ->withExceptionResponseFactory(
+            ->withHttpExceptionResponseFactory(
                 $appBuilder,
                 UserNotFoundException::class,
                 fn (UserNotFoundException $ex, IHttpRequestMessage $request, IResponseFactory $responseFactory): IHttpResponseMessage
