@@ -22,7 +22,9 @@ use Aphiria\Framework\Net\Binders\RequestBinder;
 use Aphiria\Framework\Routing\Binders\RoutingBinder;
 use Aphiria\Framework\Serialization\Binders\SerializerBinder;
 use Aphiria\Framework\Validation\Binders\ValidationBinder;
+use Aphiria\Net\Http\HttpException;
 use App\Demo\UserModule;
+use Psr\Log\LogLevel;
 
 /**
  * Defines the application configuration
@@ -60,6 +62,11 @@ final class App
                 new RoutingBinder(),
                 new CommandBinder()
             ]);
+
+        // Configure logging levels for exceptions
+        $this->withLogLevelFactory($this->appBuilder, HttpException::class, function (HttpException $ex) {
+            return $ex->getResponse()->getStatusCode() >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
+        });
 
         // Register any modules
         $this->appBuilder->withModule(new UserModule());
