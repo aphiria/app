@@ -106,8 +106,8 @@ return [
          */
         'routing' => [
             'annotationPaths' => [__DIR__ . '/src'],
-            'routeCachePath' => __DIR__ . '/tmp/framework/http/routeCache.txt',
-            'trieCachePath' => __DIR__ . '/tmp/framework/http/trieCache.txt'
+            'routeCachePath' => __DIR__ . '/tmp/framework/api/routeCache.txt',
+            'trieCachePath' => __DIR__ . '/tmp/framework/api/trieCache.txt'
         ],
 
         /**

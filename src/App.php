@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace App;
 
 use Aphiria\Application\Builders\IApplicationBuilder;
+use Aphiria\Application\IModule;
 use Aphiria\Framework\Api\Binders\ControllerBinder;
 use Aphiria\Framework\Application\AphiriaComponents;
 use Aphiria\Framework\Console\Binders\CommandBinder;
@@ -24,35 +25,28 @@ use Aphiria\Framework\Serialization\Binders\SerializerBinder;
 use Aphiria\Framework\Validation\Binders\ValidationBinder;
 use Aphiria\Net\Http\HttpException;
 use App\Demo\UserModule;
+use Exception;
 use Psr\Log\LogLevel;
 
 /**
- * Defines the application configuration
+ * Defines the application
  */
-final class App
+final class App implements IModule
 {
     use AphiriaComponents;
 
-    /** @var IApplicationBuilder The app builder to use when configuring the application */
-    private IApplicationBuilder $appBuilder;
-
     /**
-     * @param IApplicationBuilder $appBuilder The app builder to use when configuring the application
+     * Configures the application's modules and components
+     *
+     * @param IApplicationBuilder $appBuilder The builder that will build our app
+     * @throws Exception Thrown if there was an error building the app
      */
-    public function __construct(IApplicationBuilder $appBuilder)
+    public function build(IApplicationBuilder $appBuilder): void
     {
-        $this->appBuilder = $appBuilder;
-    }
-
-    /**
-     * Configures the application's modules
-     */
-    public function configure(): void
-    {
-        $this->withRouteAnnotations($this->appBuilder)
-            ->withValidatorAnnotations($this->appBuilder)
-            ->withCommandAnnotations($this->appBuilder)
-            ->withBinders($this->appBuilder, [
+        $this->withRouteAnnotations($appBuilder)
+            ->withValidatorAnnotations($appBuilder)
+            ->withCommandAnnotations($appBuilder)
+            ->withBinders($appBuilder, [
                 new ExceptionHandlerBinder(),
                 new RequestBinder(),
                 new SerializerBinder(),
@@ -64,11 +58,11 @@ final class App
             ]);
 
         // Configure logging levels for exceptions
-        $this->withLogLevelFactory($this->appBuilder, HttpException::class, function (HttpException $ex) {
+        $this->withLogLevelFactory($appBuilder, HttpException::class, function (HttpException $ex) {
             return $ex->getResponse()->getStatusCode() >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
         });
 
         // Register any modules
-        $this->appBuilder->withModule(new UserModule());
+        $appBuilder->withModule(new UserModule());
     }
 }

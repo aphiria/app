@@ -61,7 +61,7 @@ $container->bindInstance(IBinderDispatcher::class, $binderDispatcher);
  * ----------------------------------------------------------
  */
 $appBuilder = new ConsoleApplicationBuilder($container);
-(new App($appBuilder))->configure();
+(new App)->build($appBuilder);
 $app = $appBuilder->build();
 global $argv;
 exit($app->handle($argv));

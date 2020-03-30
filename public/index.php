@@ -62,7 +62,7 @@ $container->bindInstance(IBinderDispatcher::class, $binderDispatcher);
  * ----------------------------------------------------------
  */
 $appBuilder = new ApiApplicationBuilder($container);
-(new App($appBuilder))->configure();
+(new App)->build($appBuilder);
 $app = $appBuilder->build();
 $response = $app->handle($container->resolve(IHttpRequestMessage::class));
 (new StreamResponseWriter)->writeResponse($response);
