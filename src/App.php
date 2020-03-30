@@ -43,6 +43,7 @@ final class App implements IModule
      */
     public function build(IApplicationBuilder $appBuilder): void
     {
+        // Configure the app
         $this->withRouteAnnotations($appBuilder)
             ->withValidatorAnnotations($appBuilder)
             ->withCommandAnnotations($appBuilder)
@@ -55,14 +56,12 @@ final class App implements IModule
                 new ControllerBinder(),
                 new RoutingBinder(),
                 new CommandBinder()
+            ])
+            ->withLogLevelFactory($appBuilder, HttpException::class, static function (HttpException $ex) {
+                return $ex->getResponse()->getStatusCode() >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
+            })
+            ->withModules($appBuilder, [
+                new UserModule()
             ]);
-
-        // Configure logging levels for exceptions
-        $this->withLogLevelFactory($appBuilder, HttpException::class, function (HttpException $ex) {
-            return $ex->getResponse()->getStatusCode() >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
-        });
-
-        // Register any modules
-        $appBuilder->withModule(new UserModule());
     }
 }
