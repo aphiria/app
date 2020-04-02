@@ -8,6 +8,8 @@
  * @license   https://github.com/aphiria/app/blob/master/LICENSE.md
  */
 
+declare(strict_types=1);
+
 use Aphiria\Net\Http\ContentNegotiation\AcceptCharsetEncodingMatcher;
 use Aphiria\Net\Http\ContentNegotiation\AcceptLanguageMatcher;
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\FormUrlEncodedMediaTypeFormatter;
