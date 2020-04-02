@@ -25,8 +25,10 @@ use Aphiria\Framework\Exceptions\Bootstrappers\GlobalExceptionHandlerBootstrappe
 use Aphiria\Net\Http\IHttpRequestMessage;
 use Aphiria\Net\Http\StreamResponseWriter;
 use App\App;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+$autoloader = require_once __DIR__ . '/../vendor/autoload.php';
+AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
 
 /**
  * ----------------------------------------------------------
