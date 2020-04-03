@@ -12,9 +12,6 @@ declare(strict_types=1);
 
 use Aphiria\Application\BootstrapperCollection;
 use Aphiria\Configuration\GlobalConfigurationBuilder;
-use Aphiria\DependencyInjection\Binders\IBinderDispatcher;
-use Aphiria\DependencyInjection\Binders\LazyBinderDispatcher;
-use Aphiria\DependencyInjection\Binders\Metadata\Caching\FileBinderMetadataCollectionCache;
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\DependencyInjection\IServiceResolver;
@@ -45,18 +42,6 @@ $globalConfigurationBuilder = (new GlobalConfigurationBuilder)->withEnvironmentV
     new ConfigurationBootstrapper($globalConfigurationBuilder),
     new GlobalExceptionHandlerBootstrapper($container)
 ])->bootstrapAll();
-
-/**
- * ----------------------------------------------------------
- * Set up the binder dispatcher
- * ----------------------------------------------------------
- */
-$binderDispatcher = new LazyBinderDispatcher(
-    getenv('APP_ENV') === 'production'
-        ? new FileBinderMetadataCollectionCache(__DIR__ . '/../tmp/framework/binderMetadataCollectionCache.txt')
-        : null
-);
-$container->bindInstance(IBinderDispatcher::class, $binderDispatcher);
 
 /**
  * ----------------------------------------------------------

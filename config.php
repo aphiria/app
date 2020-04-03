@@ -34,6 +34,17 @@ return [
     'aphiria' => [
         /**
          * ----------------------------------------------------------
+         * Configure the binders
+         * ----------------------------------------------------------
+         *
+         * metadataCachePath => The path to the binder metadata cache
+         */
+        'binders' => [
+            'metadataCachePath' => __DIR__ . '/tmp/framework/binderMetadataCollectionCache.txt'
+        ],
+
+        /**
+         * ----------------------------------------------------------
          * Configure the console
          * ----------------------------------------------------------
          *
