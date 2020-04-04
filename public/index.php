@@ -24,7 +24,7 @@ use Aphiria\Net\Http\StreamResponseWriter;
 use App\App;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 
-$autoloader = require_once __DIR__ . '/../vendor/autoload.php';
+$autoloader = require __DIR__ . '/../vendor/autoload.php';
 AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
 
 /**
@@ -48,8 +48,7 @@ $globalConfigurationBuilder = (new GlobalConfigurationBuilder)->withEnvironmentV
  * Build and run our application
  * ----------------------------------------------------------
  */
-$appBuilder = new ApiApplicationBuilder($container);
-(new App)->build($appBuilder);
-$app = $appBuilder->build();
+$app = (new ApiApplicationBuilder($container))->withModule(new App())
+    ->build();
 $response = $app->handle($container->resolve(IHttpRequestMessage::class));
 (new StreamResponseWriter)->writeResponse($response);

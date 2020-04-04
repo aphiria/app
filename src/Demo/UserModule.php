@@ -37,8 +37,9 @@ final class UserModule implements IModule
             ->withHttpExceptionResponseFactory(
                 $appBuilder,
                 UserNotFoundException::class,
-                fn (UserNotFoundException $ex, IHttpRequestMessage $request, IResponseFactory $responseFactory): IHttpResponseMessage
-                    => $responseFactory->createResponse($request, HttpStatusCodes::HTTP_NOT_FOUND)
+                function (UserNotFoundException $ex, IHttpRequestMessage $request, IResponseFactory $responseFactory) {
+                    return $responseFactory->createResponse($request, HttpStatusCodes::HTTP_NOT_FOUND);
+                }
             );
     }
 }
