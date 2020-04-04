@@ -17,7 +17,6 @@ use Aphiria\Application\IModule;
 use Aphiria\Framework\Application\AphiriaComponents;
 use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IHttpRequestMessage;
-use Aphiria\Net\Http\IHttpResponseMessage;
 use Aphiria\Net\Http\IResponseFactory;
 use App\Demo\Binders\UserServiceBinder;
 
