@@ -35,9 +35,9 @@ AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
 $container = new Container();
 $container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 Container::$globalInstance = $container;
-$globalConfigurationBuilder = (new GlobalConfigurationBuilder)->withEnvironmentVariables()
+$globalConfigurationBuilder = (new GlobalConfigurationBuilder())->withEnvironmentVariables()
     ->withPhpFileConfigurationSource(__DIR__ . '/../config.php');
-(new BootstrapperCollection)->addMany([
+(new BootstrapperCollection())->addMany([
     new EnvironmentVariableBootstrapper(__DIR__ . '/../.env'),
     new ConfigurationBootstrapper($globalConfigurationBuilder),
     new GlobalExceptionHandlerBootstrapper($container)
@@ -51,4 +51,4 @@ $globalConfigurationBuilder = (new GlobalConfigurationBuilder)->withEnvironmentV
 $app = (new ApiApplicationBuilder($container))->withModule(new App())
     ->build();
 $response = $app->handle($container->resolve(IHttpRequestMessage::class));
-(new StreamResponseWriter)->writeResponse($response);
+(new StreamResponseWriter())->writeResponse($response);
