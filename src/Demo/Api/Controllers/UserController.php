@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace App\Demo\Api\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
+use Aphiria\Net\Http\Headers;
 use Aphiria\Net\Http\HttpException;
-use Aphiria\Net\Http\HttpHeaders;
-use Aphiria\Net\Http\IHttpResponseMessage;
+use Aphiria\Net\Http\IResponse;
 use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StringBody;
 use Aphiria\Routing\Annotations\Get;
@@ -78,13 +78,13 @@ final class UserController extends Controller
     /**
      * Gets all users
      *
-     * @return IHttpResponseMessage The response containing all users
+     * @return IResponse The response containing all users
      * @throws HttpException Thrown if there was an error creating the response
      *
      * @Get("")
      * @Middleware(DummyAuthorization::class)
      */
-    public function getAllUsers(): IHttpResponseMessage
+    public function getAllUsers(): IResponse
     {
         // Demonstrate how to use controller helper methods to create a response
         return $this->ok($this->userService->getAllUsers());
@@ -93,12 +93,12 @@ final class UserController extends Controller
     /**
      * Gets a random user
      *
-     * @return IHttpResponseMessage The response containing the user
+     * @return IResponse The response containing the user
      * @throws HttpException Thrown if there was an error creating the response
      *
      * @Get("random")
      */
-    public function getRandomUser(): IHttpResponseMessage
+    public function getRandomUser(): IResponse
     {
         $user = $this->userService->getRandomUser();
 
@@ -107,7 +107,7 @@ final class UserController extends Controller
         }
 
         // Demonstrate how to manually create a response
-        $headers = new HttpHeaders();
+        $headers = new Headers();
         $headers->add('Content-Type', 'application/json');
         $body = new StringBody('{"id":' . $user->getId() . ',"email":"' . $user->getEmail() . '"}');
 

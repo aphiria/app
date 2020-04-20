@@ -19,7 +19,7 @@ use Aphiria\Framework\Api\Builders\ApiApplicationBuilder;
 use Aphiria\Framework\Configuration\Bootstrappers\ConfigurationBootstrapper;
 use Aphiria\Framework\Configuration\Bootstrappers\EnvironmentVariableBootstrapper;
 use Aphiria\Framework\Exceptions\Bootstrappers\GlobalExceptionHandlerBootstrapper;
-use Aphiria\Net\Http\IHttpRequestMessage;
+use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\StreamResponseWriter;
 use App\App;
 use Doctrine\Common\Annotations\AnnotationRegistry;
@@ -50,5 +50,5 @@ $globalConfigurationBuilder = (new GlobalConfigurationBuilder())->withEnvironmen
  */
 $app = (new ApiApplicationBuilder($container))->withModule(new App())
     ->build();
-$response = $app->handle($container->resolve(IHttpRequestMessage::class));
+$response = $app->handle($container->resolve(IRequest::class));
 (new StreamResponseWriter())->writeResponse($response);

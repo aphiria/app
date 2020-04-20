@@ -16,8 +16,8 @@ use Aphiria\Middleware\IMiddleware;
 use Aphiria\Net\Formatting\UriParser;
 use Aphiria\Net\Http\Handlers\IRequestHandler;
 use Aphiria\Net\Http\HttpStatusCodes;
-use Aphiria\Net\Http\IHttpRequestMessage;
-use Aphiria\Net\Http\IHttpResponseMessage;
+use Aphiria\Net\Http\IRequest;
+use Aphiria\Net\Http\IResponse;
 use Aphiria\Net\Http\Response;
 
 /**
@@ -28,7 +28,7 @@ final class DummyAuthorization implements IMiddleware
     /**
      * @inheritdoc
      */
-    public function handle(IHttpRequestMessage $request, IRequestHandler $next): IHttpResponseMessage
+    public function handle(IRequest $request, IRequestHandler $next): IResponse
     {
         $uriParser = new UriParser();
 
