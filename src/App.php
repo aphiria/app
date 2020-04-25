@@ -52,9 +52,9 @@ final class App implements IModule
     {
         // Configure the app
         $this->withBinderDispatcher($appBuilder, $this->getBinderDispatcher())
+            ->withFrameworkCommands($appBuilder)
             ->withRouteAnnotations($appBuilder)
             ->withValidatorAnnotations($appBuilder)
-            ->withFrameworkCommands($appBuilder)
             ->withCommandAnnotations($appBuilder)
             ->withBinders($appBuilder, [
                 new ExceptionHandlerBinder(),

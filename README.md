@@ -11,7 +11,7 @@
 
 This application is a useful starting point for projects that use the Aphiria framework.  Check out this repository, and get started building your own REST API.
 
-<h1>Installation</h1>
+## Installation
 
 Aphiria can be installed using Composer:
 
@@ -19,6 +19,14 @@ Aphiria can be installed using Composer:
 composer create-project aphiria/app --prefer-dist
 ```
 
-<h1>Learn More</h1>
+## Running Locally
+
+You can run your app locally (defaults to http://localhost):
+
+```php
+php aphiria app:serve
+```
+
+## Learn More
 
 To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/master/introduction.html).

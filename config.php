@@ -34,6 +34,17 @@ return [
     'aphiria' => [
         /**
          * ----------------------------------------------------------
+         * Configure the API
+         * ----------------------------------------------------------
+         *
+         * localhostRouterPath => The path to the localhost router file
+         */
+        'api' => [
+            'localhostRouterPath' => __DIR__ . '/localhost_router.php'
+        ],
+
+        /**
+         * ----------------------------------------------------------
          * Configure the binders
          * ----------------------------------------------------------
          *

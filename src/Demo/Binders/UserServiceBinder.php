@@ -27,7 +27,7 @@ final class UserServiceBinder extends Binder
      */
     public function bind(IContainer $container): void
     {
-        $userService = new FileUserService(__DIR__ . '/../../../tmp/users/users.json');
+        $userService = new FileUserService(__DIR__ . '/../../../tmp/demo/users.json');
         $container->bindInstance(IUserService::class, $userService);
     }
 }
