@@ -19,6 +19,8 @@ use Aphiria\Configuration\MissingConfigurationValueException;
 use Aphiria\DependencyInjection\Binders\IBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\LazyBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\Metadata\Caching\FileBinderMetadataCollectionCache;
+use Aphiria\DependencyInjection\Binders\Metadata\Caching\IBinderMetadataCollectionCache;
+use Aphiria\DependencyInjection\Container;
 use Aphiria\Framework\Api\Binders\ControllerBinder;
 use Aphiria\Framework\Application\AphiriaComponents;
 use Aphiria\Framework\Console\Binders\CommandBinder;
@@ -79,13 +81,15 @@ final class App implements IModule
      */
     private function getBinderDispatcher(): IBinderDispatcher
     {
+        // Always bind the cache so that we have the option to clear it in any environment
+        $cachePath = GlobalConfiguration::getString('aphiria.binders.metadataCachePath');
+        $cache = new FileBinderMetadataCollectionCache($cachePath);
+        Container::$globalInstance->bindInstance(IBinderMetadataCollectionCache::class, $cache);
+
         if (\getenv('APP_ENV') === 'production') {
-            $cachePath = GlobalConfiguration::getString('aphiria.binders.metadataCachePath');
-            $cache = new FileBinderMetadataCollectionCache($cachePath);
-        } else {
-            $cache = null;
+            return new LazyBinderDispatcher($cache);
         }
 
-        return new LazyBinderDispatcher($cache);
+        return new LazyBinderDispatcher();
     }
 }
