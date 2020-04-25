@@ -45,11 +45,13 @@
         ],
         "post-install-cmd": [
             "php -r \"shell_exec((file_exists(getcwd() . '/composer.phar') ? PHP_BINARY . ' composer.phar' : 'composer') . ' dump-autoload -o');\"",
-            "php -r \"file_exists('.env') || copy('.env.dist', '.env');\""
+            "php -r \"file_exists('.env') || copy('.env.dist', '.env');\"",
+            "php aphiria framework:flushcaches"
         ],
         "post-update-cmd": [
             "php -r \"shell_exec((file_exists(getcwd() . '/composer.phar') ? PHP_BINARY . ' composer.phar' : 'composer') . ' dump-autoload -o');\"",
-            "php -r \"file_exists('.env') || copy('.env.dist', '.env');\""
+            "php -r \"file_exists('.env') || copy('.env.dist', '.env');\"",
+            "php aphiria framework:flushcaches"
         ]
     },
     "extra": {
