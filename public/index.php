@@ -10,15 +10,10 @@
 
 declare(strict_types=1);
 
-use Aphiria\Application\BootstrapperCollection;
-use Aphiria\Configuration\GlobalConfigurationBuilder;
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\DependencyInjection\IServiceResolver;
 use Aphiria\Framework\Api\Builders\ApiApplicationBuilder;
-use Aphiria\Framework\Configuration\Bootstrappers\ConfigurationBootstrapper;
-use Aphiria\Framework\Configuration\Bootstrappers\EnvironmentVariableBootstrapper;
-use Aphiria\Framework\Exceptions\Bootstrappers\GlobalExceptionHandlerBootstrapper;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\StreamResponseWriter;
 use App\App;
@@ -27,28 +22,13 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 $autoloader = require __DIR__ . '/../vendor/autoload.php';
 AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
 
-/**
- * ----------------------------------------------------------
- * Bootstrap the application
- * ----------------------------------------------------------
- */
+// Create our DI container
 $container = new Container();
-$container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 Container::$globalInstance = $container;
-$globalConfigurationBuilder = (new GlobalConfigurationBuilder())->withEnvironmentVariables()
-    ->withPhpFileConfigurationSource(__DIR__ . '/../config.php');
-(new BootstrapperCollection())->addMany([
-    new EnvironmentVariableBootstrapper(__DIR__ . '/../.env'),
-    new ConfigurationBootstrapper($globalConfigurationBuilder),
-    new GlobalExceptionHandlerBootstrapper($container)
-])->bootstrapAll();
+$container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 
-/**
- * ----------------------------------------------------------
- * Build and run our application
- * ----------------------------------------------------------
- */
-$app = (new ApiApplicationBuilder($container))->withModule(new App())
+// Build and run our application
+$app = (new ApiApplicationBuilder($container))->withModule(new App($container))
     ->build();
 $response = $app->handle($container->resolve(IRequest::class));
 (new StreamResponseWriter())->writeResponse($response);
