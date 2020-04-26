@@ -36,7 +36,7 @@ $container->bindInstance([IServiceResolver::class, IContainer::class, Container:
 Container::$globalInstance = $container;
 $globalConfigurationBuilder = (new GlobalConfigurationBuilder)->withEnvironmentVariables()
     ->withPhpFileConfigurationSource(__DIR__ . '/config.php');
-(new BootstrapperCollection)->addMany([
+(new BootstrapperCollection())->addMany([
     new EnvironmentVariableBootstrapper(__DIR__ . '/.env'),
     new ConfigurationBootstrapper($globalConfigurationBuilder),
     new GlobalExceptionHandlerBootstrapper($container)
