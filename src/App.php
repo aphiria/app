@@ -25,6 +25,7 @@ use Aphiria\DependencyInjection\Binders\Metadata\Caching\IBinderMetadataCollecti
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Binders\ControllerBinder;
+use Aphiria\Framework\Api\Exceptions\ExceptionHandler;
 use Aphiria\Framework\Application\AphiriaComponents;
 use Aphiria\Framework\Configuration\Bootstrappers\ConfigurationBootstrapper;
 use Aphiria\Framework\Configuration\Bootstrappers\EnvironmentVariableBootstrapper;
@@ -36,6 +37,7 @@ use Aphiria\Framework\Net\Binders\RequestBinder;
 use Aphiria\Framework\Routing\Binders\RoutingBinder;
 use Aphiria\Framework\Serialization\Binders\SerializerBinder;
 use Aphiria\Framework\Validation\Binders\ValidationBinder;
+use Aphiria\Middleware\MiddlewareBinding;
 use Aphiria\Net\Http\HttpException;
 use App\Demo\UserModule;
 use Exception;
@@ -77,6 +79,9 @@ final class App implements IModule
             ->withRouteAnnotations($appBuilder)
             ->withValidatorAnnotations($appBuilder)
             ->withCommandAnnotations($appBuilder)
+            ->withGlobalMiddleware($appBuilder, [
+                new MiddlewareBinding(ExceptionHandler::class)
+            ])
             ->withBinders($appBuilder, [
                 new ExceptionHandlerBinder(),
                 new RequestBinder(),

@@ -4,4 +4,7 @@
     <testsuite name="App">
         <directory>tests</directory>
     </testsuite>
+    <php>
+        <server name="APP_ENV" value="testing"/>
+    </php>
 </phpunit>
