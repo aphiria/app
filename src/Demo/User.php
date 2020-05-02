@@ -54,14 +54,4 @@ class User
     {
         return $this->id;
     }
-
-    /**
-     * Sets the user ID
-     *
-     * @param int $id The new ID
-     */
-    public function setId(int $id): void
-    {
-        $this->id = $id;
-    }
 }

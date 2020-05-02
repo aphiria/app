@@ -18,6 +18,7 @@ use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IResponse;
 use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StringBody;
+use Aphiria\Routing\Annotations\Delete;
 use Aphiria\Routing\Annotations\Get;
 use Aphiria\Routing\Annotations\Middleware;
 use Aphiria\Routing\Annotations\Post;
@@ -73,6 +74,16 @@ final class UserController extends Controller
     {
         // Demonstrate how to use content negotiation on request and response bodies
         return $this->userService->createUser($user);
+    }
+
+    /**
+     * Deletes all the users
+     *
+     * @Delete("")
+     */
+    public function deleteAllUsers(): void
+    {
+        $this->userService->deleteAllUsers();
     }
 
     /**

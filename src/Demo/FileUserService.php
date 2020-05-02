@@ -47,18 +47,22 @@ final class FileUserService implements IUserService
      */
     public function createUser(User $user): User
     {
-        $user->setId(\random_int(0, 1000000));
+        $users = $this->readUsersFromFile();
+        $users[] = $user;
+        $encodedUsers = [];
 
-        if (\file_exists($this->filePath)) {
-            $encodedUsers = \json_decode(\file_get_contents($this->filePath), true);
-        } else {
-            $encodedUsers = [];
+        foreach ($users as $decodedUser) {
+            $encodedUsers[] = ['id' => $decodedUser->getId(), 'email' => $decodedUser->getEmail()];
         }
 
-        $encodedUsers[] = ['id' => $user->getId(), 'email' => $user->getEmail()];
         \file_put_contents($this->filePath, \json_encode($encodedUsers));
 
         return $user;
+    }
+
+    public function deleteAllUsers(): void
+    {
+        @\unlink($this->filePath);
     }
 
     /**
@@ -66,18 +70,7 @@ final class FileUserService implements IUserService
      */
     public function getAllUsers(): array
     {
-        if (!\file_exists($this->filePath)) {
-            return [];
-        }
-
-        $encodedUsers = \json_decode(\file_get_contents($this->filePath), true);
-        $decodedUsers = [];
-
-        foreach ($encodedUsers as $encodedUser) {
-            $decodedUsers[] = new User($encodedUser['id'], $encodedUser['email']);
-        }
-
-        return $decodedUsers;
+        return $this->readUsersFromFile();
     }
 
     public function getNumUsers(): int
@@ -111,5 +104,31 @@ final class FileUserService implements IUserService
         }
 
         throw new UserNotFoundException("No user with ID $id found");
+    }
+
+    /**
+     * Reads the users from the local file
+     *
+     * @return User[] The list of users
+     */
+    private function readUsersFromFile(): array
+    {
+        if (!\file_exists($this->filePath)) {
+            return [];
+        }
+
+        $encodedUsers = \json_decode(\file_get_contents($this->filePath), true);
+
+        if (!\is_array($encodedUsers)) {
+            return [];
+        }
+
+        $decodedUsers = [];
+
+        foreach ($encodedUsers as $encodedUser) {
+            $decodedUsers[] = new User($encodedUser['id'], $encodedUser['email']);
+        }
+
+        return $decodedUsers;
     }
 }
