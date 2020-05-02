@@ -12,32 +12,24 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo;
 
-use Aphiria\Framework\Testing\PhpUnit\IntegrationTestCase;
 use App\Demo\User;
+use App\Tests\Integration\IntegrationTestCase;
 
 class UserTest extends IntegrationTestCase
 {
     public function testGettingAllUsers(): void
     {
-        $request = $this->requestBuilder->withMethod('GET')
-            ->withUri('http://localhost/users?letMeIn=1')
-            ->build();
-        $response = $this->client->send($request);
+        $response = $this->get('http://localhost/users?letMeIn=1');
         $this->assertStatusCodeEquals(200, $response);
-        // TODO: Need to have some setup that creates/deletes users
         $this->assertParsedBodyEquals(
             [new User(192153, 'foo@bar.com')],
-            $request,
             $response
         );
     }
 
     public function testGettingInvalidUserReturns404(): void
     {
-        $request = $this->requestBuilder->withMethod('GET')
-            ->withUri('http://localhost/users/-1')
-            ->build();
-        $response = $this->client->send($request);
+        $response = $this->get('http://localhost/users/-1');
         $this->assertStatusCodeEquals(404, $response);
     }
 }
