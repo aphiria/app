@@ -1,7 +1,10 @@
 <phpunit
-        bootstrap="vendor/autoload.php"
+        bootstrap="phpunit.bootstrap.php"
         colors="true">
     <testsuite name="App">
         <directory>tests</directory>
     </testsuite>
+    <php>
+        <env name="APP_ENV" value="testing" force="true" />
+    </php>
 </phpunit>

@@ -34,6 +34,11 @@ interface IUserService
     public function createUser(User $user): User;
 
     /**
+     * Deletes all users
+     */
+    public function deleteAllUsers(): void;
+
+    /**
      * Gets all the users
      *
      * @return User[] All the users
