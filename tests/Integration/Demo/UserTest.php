@@ -22,19 +22,19 @@ class UserTest extends IntegrationTestCase
         parent::setUp();
 
         // Seed a user
-        $this->post('http://localhost/users', [], new User(123, 'foo@bar.com'));
+        $this->post('/users', [], new User(123, 'foo@bar.com'));
     }
 
     protected function tearDown(): void
     {
         parent::tearDown();
 
-        $this->delete('http://localhost/users');
+        $this->delete('/users');
     }
 
     public function testGettingAllUsers(): void
     {
-        $response = $this->get('http://localhost/users?letMeIn=1');
+        $response = $this->get('/users?letMeIn=1');
         $this->assertStatusCodeEquals(200, $response);
         $this->assertParsedBodyEquals(
             [new User(123, 'foo@bar.com')],
@@ -44,7 +44,7 @@ class UserTest extends IntegrationTestCase
 
     public function testGettingInvalidUserReturns404(): void
     {
-        $response = $this->get('http://localhost/users/-1');
+        $response = $this->get('/users/-1');
         $this->assertStatusCodeEquals(404, $response);
     }
 }
