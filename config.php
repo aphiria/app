@@ -12,16 +12,18 @@ declare(strict_types=1);
 
 use Aphiria\Net\Http\ContentNegotiation\AcceptCharsetEncodingMatcher;
 use Aphiria\Net\Http\ContentNegotiation\AcceptLanguageMatcher;
-use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\FormUrlEncodedMediaTypeFormatter;
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\HtmlMediaTypeFormatter;
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\JsonMediaTypeFormatter;
 use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\PlainTextMediaTypeFormatter;
-use Aphiria\Serialization\Encoding\CamelCasePropertyNameFormatter;
-use Aphiria\Serialization\FormUrlEncodedSerializer;
-use Aphiria\Serialization\JsonSerializer;
+use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\XmlMediaTypeFormatter;
 use Aphiria\Validation\ErrorMessages\DefaultErrorMessageTemplateRegistry;
 use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageInterpolator;
 use Monolog\Handler\StreamHandler;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 return [
     /**
@@ -82,7 +84,7 @@ return [
             'languageMatcher' => AcceptLanguageMatcher::class,
             'mediaTypeFormatters' => [
                 JsonMediaTypeFormatter::class,
-                FormUrlEncodedMediaTypeFormatter::class,
+                XmlMediaTypeFormatter::class,
                 HtmlMediaTypeFormatter::class,
                 PlainTextMediaTypeFormatter::class
             ],
@@ -136,19 +138,31 @@ return [
 
         /**
          * ----------------------------------------------------------
-         * Configure the serializer
+         * Configure the Symfony serializer
          * ----------------------------------------------------------
          *
          * dateFormat => The format to use for all dates
-         * propertyNameFormatter => The formatter to use for property names (can be null)
-         * serializers => The list of supported serializers
+         * encoders => The list of encoders the serializer will use
+         * nameConverter => The property name converter (can be null)
+         * normalizers => The list of normalizers the serializer will use
+         * xml.removeEmptyTags => Whether or not to remove empty XML tags
+         * xml.rootNodeName => The name of the default XML root node
          */
         'serialization' => [
             'dateFormat' => DateTime::ATOM,
-            'propertyNameFormatter' => CamelCasePropertyNameFormatter::class,
-            'serializers' => [
-                JsonSerializer::class,
-                FormUrlEncodedSerializer::class
+            'encoders' => [
+                JsonEncoder::class,
+                XmlEncoder::class
+            ],
+            'nameConverter' => null,
+            'normalizers' => [
+                ObjectNormalizer::class,
+                DateTimeNormalizer::class,
+                ArrayDenormalizer::class
+            ],
+            'xml' => [
+                'removeEmptyTags' => false,
+                'rootNodeName' => 'response'
             ]
         ],
 
