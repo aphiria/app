@@ -35,7 +35,7 @@ use Aphiria\Framework\Exceptions\Bootstrappers\GlobalExceptionHandlerBootstrappe
 use Aphiria\Framework\Net\Binders\ContentNegotiationBinder;
 use Aphiria\Framework\Net\Binders\RequestBinder;
 use Aphiria\Framework\Routing\Binders\RoutingBinder;
-use Aphiria\Framework\Serialization\Binders\SerializerBinder;
+use Aphiria\Framework\Serialization\Binders\SymfonySerializerBinder;
 use Aphiria\Framework\Validation\Binders\ValidationBinder;
 use Aphiria\Middleware\MiddlewareBinding;
 use Aphiria\Net\Http\HttpException;
@@ -85,7 +85,7 @@ final class App implements IModule
             ->withBinders($appBuilder, [
                 new ExceptionHandlerBinder(),
                 new RequestBinder(),
-                new SerializerBinder(),
+                new SymfonySerializerBinder(),
                 new ValidationBinder(),
                 new ContentNegotiationBinder(),
                 new ControllerBinder(),
