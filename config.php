@@ -178,7 +178,7 @@ return [
          */
         'validation' => [
             'annotationPaths' => [__DIR__ . '/src'],
-            'constraintsCachePath' => __DIR__ . '/tmp/framework/constraints.txt',
+            'constraintsCachePath' => __DIR__ . '/tmp/framework/constraintsCache.txt',
             'errorMessageInterpolator' => [
                 'type' => StringReplaceErrorMessageInterpolator::class
             ],
