@@ -10,12 +10,12 @@
 
 declare(strict_types=1);
 
-use Aphiria\Net\Http\ContentNegotiation\AcceptCharsetEncodingMatcher;
-use Aphiria\Net\Http\ContentNegotiation\AcceptLanguageMatcher;
-use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\HtmlMediaTypeFormatter;
-use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\JsonMediaTypeFormatter;
-use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\PlainTextMediaTypeFormatter;
-use Aphiria\Net\Http\ContentNegotiation\MediaTypeFormatters\XmlMediaTypeFormatter;
+use Aphiria\ContentNegotiation\AcceptCharsetEncodingMatcher;
+use Aphiria\ContentNegotiation\AcceptLanguageMatcher;
+use Aphiria\ContentNegotiation\MediaTypeFormatters\HtmlMediaTypeFormatter;
+use Aphiria\ContentNegotiation\MediaTypeFormatters\JsonMediaTypeFormatter;
+use Aphiria\ContentNegotiation\MediaTypeFormatters\PlainTextMediaTypeFormatter;
+use Aphiria\ContentNegotiation\MediaTypeFormatters\XmlMediaTypeFormatter;
 use Aphiria\Validation\ErrorMessages\DefaultErrorMessageTemplateRegistry;
 use Aphiria\Validation\ErrorMessages\StringReplaceErrorMessageInterpolator;
 use Monolog\Handler\StreamHandler;
