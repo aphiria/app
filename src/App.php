@@ -14,10 +14,12 @@ namespace App;
 
 use Aphiria\Application\BootstrapperCollection;
 use Aphiria\Application\Builders\IApplicationBuilder;
+use Aphiria\Application\Configuration\Bootstrappers\ConfigurationBootstrapper;
+use Aphiria\Application\Configuration\Bootstrappers\DotEnvBootstrapper;
+use Aphiria\Application\Configuration\GlobalConfiguration;
+use Aphiria\Application\Configuration\GlobalConfigurationBuilder;
+use Aphiria\Application\Configuration\MissingConfigurationValueException;
 use Aphiria\Application\IModule;
-use Aphiria\Configuration\GlobalConfiguration;
-use Aphiria\Configuration\GlobalConfigurationBuilder;
-use Aphiria\Configuration\MissingConfigurationValueException;
 use Aphiria\DependencyInjection\Binders\IBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\LazyBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\Metadata\Caching\FileBinderMetadataCollectionCache;
@@ -27,8 +29,6 @@ use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Binders\ControllerBinder;
 use Aphiria\Framework\Api\Exceptions\ExceptionHandler;
 use Aphiria\Framework\Application\AphiriaComponents;
-use Aphiria\Framework\Configuration\Bootstrappers\ConfigurationBootstrapper;
-use Aphiria\Framework\Configuration\Bootstrappers\EnvironmentVariableBootstrapper;
 use Aphiria\Framework\Console\Binders\CommandBinder;
 use Aphiria\Framework\Exceptions\Binders\ExceptionHandlerBinder;
 use Aphiria\Framework\Exceptions\Bootstrappers\GlobalExceptionHandlerBootstrapper;
@@ -59,7 +59,7 @@ final class App implements IModule
         $globalConfigurationBuilder = (new GlobalConfigurationBuilder())->withEnvironmentVariables()
             ->withPhpFileConfigurationSource(__DIR__ . '/../config.php');
         (new BootstrapperCollection())->addMany([
-            new EnvironmentVariableBootstrapper(__DIR__ . '/../.env'),
+            new DotEnvBootstrapper(__DIR__ . '/../.env'),
             new ConfigurationBootstrapper($globalConfigurationBuilder),
             new GlobalExceptionHandlerBootstrapper($container)
         ])->bootstrapAll();
