@@ -14,9 +14,9 @@ namespace App\Demo\Api\Middleware;
 
 use Aphiria\Middleware\IMiddleware;
 use Aphiria\Net\Formatting\UriParser;
-use Aphiria\Net\Http\Handlers\IRequestHandler;
 use Aphiria\Net\Http\HttpStatusCodes;
 use Aphiria\Net\Http\IRequest;
+use Aphiria\Net\Http\IRequestHandler;
 use Aphiria\Net\Http\IResponse;
 use Aphiria\Net\Http\Response;
 

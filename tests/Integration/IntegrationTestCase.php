@@ -15,7 +15,7 @@ namespace App\Tests\Integration;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Builders\ApiApplicationBuilder;
 use Aphiria\Framework\Api\Testing\PhpUnit\IntegrationTestCase as BaseIntegrationTestCase;
-use Aphiria\Net\Http\Handlers\IRequestHandler;
+use Aphiria\Net\Http\IRequestHandler;
 use App\App;
 
 /**
