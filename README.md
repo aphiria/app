@@ -29,4 +29,4 @@ php aphiria app:serve
 
 ## Learn More
 
-To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/master/introduction.html).
+To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/0.x/introduction.html).
