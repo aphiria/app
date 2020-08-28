@@ -16,7 +16,7 @@ This application is a useful starting point for projects that use the Aphiria fr
 Aphiria can be installed using Composer:
 
 ```bash
-composer create-project aphiria/app --prefer-dist
+composer create-project aphiria/app --prefer-dist --stability dev
 ```
 
 ## Running Locally
