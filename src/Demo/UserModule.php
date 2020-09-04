@@ -8,8 +8,6 @@ use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\Application\IModule;
 use Aphiria\Framework\Application\AphiriaComponents;
 use Aphiria\Net\Http\HttpStatusCodes;
-use Aphiria\Net\Http\IRequest;
-use Aphiria\Net\Http\IResponseFactory;
 use App\Demo\Binders\UserServiceBinder;
 
 /**
