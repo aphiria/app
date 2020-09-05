@@ -150,9 +150,9 @@ return [
             ],
             'nameConverter' => null,
             'normalizers' => [
+                ProblemDetailsNormalizer::class,
                 ObjectNormalizer::class,
                 DateTimeNormalizer::class,
-                ProblemDetailsNormalizer::class,
                 ArrayDenormalizer::class
             ],
             'xml' => [
