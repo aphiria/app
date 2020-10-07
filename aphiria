@@ -8,10 +8,8 @@ use Aphiria\DependencyInjection\IContainer;
 use Aphiria\DependencyInjection\IServiceResolver;
 use Aphiria\Framework\Console\Builders\ConsoleApplicationBuilder;
 use App\App;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 
-$autoloader = require __DIR__ . '/vendor/autoload.php';
-AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
+require __DIR__ . '/vendor/autoload.php';
 
 // Create our DI container
 $container = new Container();

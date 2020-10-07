@@ -55,11 +55,11 @@ return [
          * Configure the console
          * ----------------------------------------------------------
          *
-         * annotationPaths => The paths to search for command annotations
+         * attributePaths => The paths to search for command attributes
          * commandCachePath => The path to the compiled commands
          */
         'console' => [
-            'annotationPaths' => [__DIR__ . '/src'],
+            'attributePaths' => [__DIR__ . '/src'],
             'commandCachePath' => __DIR__ . '/tmp/framework/console/commandCache.txt'
         ],
 
@@ -120,12 +120,12 @@ return [
          * Configure the router
          * ----------------------------------------------------------
          *
-         * annotationPaths => The paths to search for route annotations
+         * attributePaths => The paths to search for route attributes
          * routeCachePath => The path to the route cache
          * trieCachePath => The path to the trie cache
          */
         'routing' => [
-            'annotationPaths' => [__DIR__ . '/src'],
+            'attributePaths' => [__DIR__ . '/src'],
             'routeCachePath' => __DIR__ . '/tmp/framework/api/routeCache.txt',
             'trieCachePath' => __DIR__ . '/tmp/framework/api/trieCache.txt'
         ],
@@ -166,13 +166,13 @@ return [
          * Configure the validator
          * ----------------------------------------------------------
          *
-         * annotationPaths => The paths to search for constraint annotations
+         * attributePaths => The paths to search for constraint attributes
          * constraintsCachePath => The path to the constraint cache
          * errorMessageInterpolator => The error message interpolator to use
          * errorMessageTemplates => The error message template registry to use
          */
         'validation' => [
-            'annotationPaths' => [__DIR__ . '/src'],
+            'attributePaths' => [__DIR__ . '/src'],
             'constraintsCachePath' => __DIR__ . '/tmp/framework/constraintsCache.txt',
             'errorMessageInterpolator' => [
                 'type' => StringReplaceErrorMessageInterpolator::class

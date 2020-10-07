@@ -11,19 +11,12 @@ use Aphiria\Validation\Constraints\Annotations\Email;
  */
 class User
 {
-    /** @var int The user ID */
-    private int $id;
-    /** @var string The user email */
-    private string $email;
-
     /**
      * @param int $id The user ID
      * @param string $email The user email
      */
-    public function __construct(int $id, string $email)
+    public function __construct(private int $id, private string $email)
     {
-        $this->id = $id;
-        $this->email = $email;
     }
 
     /**

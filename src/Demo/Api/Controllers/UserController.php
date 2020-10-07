@@ -10,11 +10,11 @@ use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IResponse;
 use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StringBody;
-use Aphiria\Routing\Annotations\Delete;
-use Aphiria\Routing\Annotations\Get;
-use Aphiria\Routing\Annotations\Middleware;
-use Aphiria\Routing\Annotations\Post;
-use Aphiria\Routing\Annotations\RouteGroup;
+use Aphiria\Routing\Attributes\Delete;
+use Aphiria\Routing\Attributes\Get;
+use Aphiria\Routing\Attributes\Middleware;
+use Aphiria\Routing\Attributes\Post;
+use Aphiria\Routing\Attributes\RouteGroup;
 use App\Demo\Api\Middleware\DummyAuthorization;
 use App\Demo\IUserService;
 use App\Demo\User;
@@ -27,15 +27,11 @@ use App\Demo\UserNotFoundException;
  */
 final class UserController extends Controller
 {
-    /** @var IUserService The user service */
-    private IUserService $userService;
-
     /**
      * @param IUserService $userService The user service
      */
-    public function __construct(IUserService $userService)
+    public function __construct(private IUserService $userService)
     {
-        $this->userService = $userService;
     }
 
     /**
@@ -43,9 +39,8 @@ final class UserController extends Controller
      *
      * @return User[] The list of created users
      * @throws HttpException Thrown if the request body could not be read
-     *
-     * @Post("many")
      */
+    #[Post('many')]
     public function createManyUsers(): array
     {
         // Demonstrate how to read the body as an array of models
@@ -59,9 +54,8 @@ final class UserController extends Controller
      *
      * @param User $user The user to create
      * @return User The created user
-     *
-     * @Post("")
      */
+    #[Post('')]
     public function createUser(User $user): User
     {
         // Demonstrate how to use content negotiation on request and response bodies
@@ -70,9 +64,8 @@ final class UserController extends Controller
 
     /**
      * Deletes all the users
-     *
-     * @Delete("")
      */
+    #[Delete('')]
     public function deleteAllUsers(): void
     {
         $this->userService->deleteAllUsers();
@@ -83,10 +76,8 @@ final class UserController extends Controller
      *
      * @return IResponse The response containing all users
      * @throws HttpException Thrown if there was an error creating the response
-     *
-     * @Get("")
-     * @Middleware(DummyAuthorization::class)
      */
+    #[Get(''), Middleware(DummyAuthorization::class)]
     public function getAllUsers(): IResponse
     {
         // Demonstrate how to use controller helper methods to create a response
@@ -98,9 +89,8 @@ final class UserController extends Controller
      *
      * @return IResponse The response containing the user
      * @throws HttpException Thrown if there was an error creating the response
-     *
-     * @Get("random")
      */
+    #[Get('random')]
     public function getRandomUser(): IResponse
     {
         $user = $this->userService->getRandomUser();
@@ -123,9 +113,8 @@ final class UserController extends Controller
      * @param int $id The ID of the user to get
      * @return User The user with the input ID
      * @throws UserNotFoundException Thrown if there was no user with the input ID
-     *
-     * @Get(":id(int)")
      */
+    #[Get(':id(int)')]
     public function getUserById(int $id): User
     {
         // Demonstrate how to use route variables and response body negotiation

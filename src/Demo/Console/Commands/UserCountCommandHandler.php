@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Demo\Console\Commands;
 
-use Aphiria\Console\Commands\Annotations\Command;
+use Aphiria\Console\Commands\Attributes\Command;
 use Aphiria\Console\Commands\ICommandHandler;
 use Aphiria\Console\Input\Input;
 use Aphiria\Console\Output\IOutput;
@@ -12,20 +12,15 @@ use App\Demo\IUserService;
 
 /**
  * Defines the user count command handler
- *
- * @Command("users:count", description="An example command that counts the number of users")
  */
+#[Command('users:count', description: 'An example command that counts the number of users')]
 final class UserCountCommandHandler implements ICommandHandler
 {
-    /** @var IUserService The user service */
-    private IUserService $userService;
-
     /**
      * @param IUserService $userService The user service
      */
-    public function __construct(IUserService $userService)
+    public function __construct(private IUserService $userService)
     {
-        $this->userService = $userService;
     }
 
     /**
