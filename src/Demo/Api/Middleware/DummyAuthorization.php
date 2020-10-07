@@ -26,7 +26,7 @@ final class DummyAuthorization implements IMiddleware
 
         // For the love of god - this is just a proof-of-concept.  Do not use this.
         if (!$uriParser->parseQueryString($request->getUri())->containsKey('letMeIn')) {
-            return new Response(HttpStatusCodes::HTTP_UNAUTHORIZED);
+            return new Response(HttpStatusCodes::UNAUTHORIZED);
         }
 
         return $next->handle($request);

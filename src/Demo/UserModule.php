@@ -29,7 +29,7 @@ final class UserModule implements IModule
                 null,
                 null,
                 null,
-                HttpStatusCodes::HTTP_NOT_FOUND
+                HttpStatusCodes::NOT_FOUND
             );
     }
 }
