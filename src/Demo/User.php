@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Demo;
 
-use Aphiria\Validation\Constraints\Annotations\Email;
+use Aphiria\Validation\Constraints\Attributes\Email;
 
 /**
  * Defines the user model
@@ -23,8 +23,8 @@ class User
      * Gets the user email
      *
      * @return string The email
-     * @Email
      */
+    #[Email]
     public function getEmail(): string
     {
         return $this->email;
