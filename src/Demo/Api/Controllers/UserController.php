@@ -23,7 +23,7 @@ use App\Demo\UserNotFoundException;
 /**
  * Defines the user controller
  */
-#[RouteGroup('users')]
+#[RouteGroup('demo/users')]
 final class UserController extends Controller
 {
     /**
