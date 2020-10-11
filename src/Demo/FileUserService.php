@@ -9,15 +9,11 @@ namespace App\Demo;
  */
 final class FileUserService implements IUserService
 {
-    /** @var string The path to the file that contains the users */
-    private string $filePath;
-
     /**
      * @param string $filePath The path to the file that contains the users
      */
-    public function __construct(string $filePath)
+    public function __construct(private string $filePath)
     {
-        $this->filePath = $filePath;
     }
 
     /**

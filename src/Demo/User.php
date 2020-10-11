@@ -4,34 +4,27 @@ declare(strict_types=1);
 
 namespace App\Demo;
 
-use Aphiria\Validation\Constraints\Annotations\Email;
+use Aphiria\Validation\Constraints\Attributes\Email;
 
 /**
  * Defines the user model
  */
 class User
 {
-    /** @var int The user ID */
-    private int $id;
-    /** @var string The user email */
-    private string $email;
-
     /**
      * @param int $id The user ID
      * @param string $email The user email
      */
-    public function __construct(int $id, string $email)
+    public function __construct(private int $id, private string $email)
     {
-        $this->id = $id;
-        $this->email = $email;
     }
 
     /**
      * Gets the user email
      *
      * @return string The email
-     * @Email
      */
+    #[Email]
     public function getEmail(): string
     {
         return $this->email;

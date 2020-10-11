@@ -9,10 +9,8 @@ use Aphiria\Framework\Api\Builders\ApiApplicationBuilder;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\StreamResponseWriter;
 use App\App;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 
-$autoloader = require __DIR__ . '/../vendor/autoload.php';
-AnnotationRegistry::registerLoader([$autoloader, 'loadClass']);
+require __DIR__ . '/../vendor/autoload.php';
 
 // Create our DI container
 $container = new Container();

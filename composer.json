@@ -27,11 +27,10 @@
     "require": {
         "aphiria/aphiria": "0.*@dev",
         "ext-mbstring": "*",
-        "php": ">=7.4",
-        "symfony/dotenv": "~5.0"
+        "php": ">=8.0",
+        "symfony/dotenv": "~5.1"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.0",
         "phpunit/phpunit": "~9.4"
     },
     "scripts": {

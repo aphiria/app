@@ -68,9 +68,9 @@ final class App implements IModule
         // Configure the app
         $this->withBinderDispatcher($appBuilder, $this->getBinderDispatcher())
             ->withFrameworkCommands($appBuilder)
-            ->withRouteAnnotations($appBuilder)
-            ->withValidatorAnnotations($appBuilder)
-            ->withCommandAnnotations($appBuilder)
+            ->withRouteAttributes($appBuilder)
+            ->withValidatorAttributes($appBuilder)
+            ->withCommandAttributes($appBuilder)
             ->withGlobalMiddleware($appBuilder, [
                 new MiddlewareBinding(ExceptionHandler::class)
             ])
