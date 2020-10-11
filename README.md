@@ -27,6 +27,10 @@ You can run your app locally (defaults to http://localhost):
 php aphiria app:serve
 ```
 
+## Removing Demo Code
+
+To remove the built-in demo code, simply delete the _src/Demo_ and _tests/Integration/Demo_ directories, and remove the `DemoModule` from _src/App.php_.
+
 ## Learn More
 
 To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/0.x/introduction.html).
