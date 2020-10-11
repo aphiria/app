@@ -11,9 +11,9 @@ use Aphiria\Net\Http\HttpStatusCodes;
 use App\Demo\Binders\UserServiceBinder;
 
 /**
- * Defines the example user module
+ * Defines the demo module
  */
-final class UserModule implements IModule
+final class DemoModule implements IModule
 {
     use AphiriaComponents;
 

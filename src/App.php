@@ -31,7 +31,7 @@ use Aphiria\Framework\Serialization\Binders\SymfonySerializerBinder;
 use Aphiria\Framework\Validation\Binders\ValidationBinder;
 use Aphiria\Middleware\MiddlewareBinding;
 use Aphiria\Net\Http\HttpException;
-use App\Demo\UserModule;
+use App\Demo\DemoModule;
 use Exception;
 use Psr\Log\LogLevel;
 
@@ -88,7 +88,7 @@ final class App implements IModule
                 return $ex->getResponse()->getStatusCode() >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
             })
             ->withModules($appBuilder, [
-                new UserModule()
+                new DemoModule()
             ]);
     }
 
