@@ -18,7 +18,7 @@ Container::$globalInstance = $container;
 $container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 
 // Build and run our application
-$app = (new ApiApplicationBuilder($container))->withModule(new App($container))
-    ->build();
-$response = $app->handle($container->resolve(IRequest::class));
+$response = (new ApiApplicationBuilder($container))->withModule(new App($container))
+    ->build()
+    ->handle($container->resolve(IRequest::class));
 (new StreamResponseWriter())->writeResponse($response);

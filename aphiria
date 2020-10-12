@@ -17,7 +17,8 @@ Container::$globalInstance = $container;
 $container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 
 // Build and run our application
-$app = (new ConsoleApplicationBuilder($container))->withModule(new App($container))
-    ->build();
 global $argv;
-exit($app->handle($argv));
+$statusCode = (new ConsoleApplicationBuilder($container))->withModule(new App($container))
+    ->build()
+    ->handle($argv);
+exit($statusCode);
