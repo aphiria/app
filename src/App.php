@@ -103,7 +103,7 @@ final class App implements IModule
         // Always bind the cache so that we have the option to clear it in any environment
         $cachePath = GlobalConfiguration::getString('aphiria.binders.metadataCachePath');
         $cache = new FileBinderMetadataCollectionCache($cachePath);
-        Container::$globalInstance->bindInstance(IBinderMetadataCollectionCache::class, $cache);
+        Container::$globalInstance?->bindInstance(IBinderMetadataCollectionCache::class, $cache);
 
         if (\getenv('APP_ENV') === 'production') {
             return new LazyBinderDispatcher($cache);

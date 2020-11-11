@@ -105,6 +105,7 @@ final class FileUserService implements IUserService
             return [];
         }
 
+        /** @var array<array{id: int, email: string}>|false $encodedUsers */
         $encodedUsers = \json_decode(\file_get_contents($this->filePath), true);
 
         if (!\is_array($encodedUsers)) {

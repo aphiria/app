@@ -26,3 +26,5 @@ jobs:
         run: vendor/bin/phpunit --verbose
       #- name: Run Linter
       #  run: composer run-script lint-check
+      - name: Run Psalm Static Analysis
+        run: vendor/bin/psalm

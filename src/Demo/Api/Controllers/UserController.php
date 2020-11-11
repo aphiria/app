@@ -43,6 +43,7 @@ final class UserController extends Controller
     public function createManyUsers(): array
     {
         // Demonstrate how to read the body as an array of models
+        /** @var User[] $users */
         $users = $this->readRequestBodyAs(User::class . '[]');
 
         return $this->userService->createManyUsers($users);
