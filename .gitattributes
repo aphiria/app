@@ -1,5 +1,5 @@
 # Auto detect text files and perform LF normalization
-* text=lf
+* text eol=lf
 
 # Ignore files/directories on export
 /.github export-ignore
