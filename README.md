@@ -33,4 +33,4 @@ To remove the built-in demo code, simply delete the _src/Demo_ and _tests/Integr
 
 ## Learn More
 
-To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/0.x/introduction.html).
+To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/1.x/introduction.html).
