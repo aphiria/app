@@ -23,8 +23,8 @@ jobs:
       - name: Install Dependencies
         run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
       - name: Run Tests
-        run: vendor/bin/phpunit --verbose
+        run: composer phpunit
       - name: Run Linter
         run: composer phpcs-test
       - name: Run Psalm Static Analysis
-        run: vendor/bin/psalm
+        run: composer psalm
