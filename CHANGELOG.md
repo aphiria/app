@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Updated default port number to 8080 ([#15](https://github.com/aphiria/app/pull/15))
 - Reintroduced PHP-CS-Fixer and ran it ([#11](https://github.com/aphiria/app/pull/11))
 - Updated Psalm, added checks for unused suppressions ([#13](https://github.com/aphiria/app/pull/13))
 - Updated copyright year
