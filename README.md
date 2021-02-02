@@ -21,13 +21,17 @@ composer create-project aphiria/app --prefer-dist --stability dev
 
 ## Running Locally
 
-You can run your app locally (defaults to http://localhost):
+You can run your app locally (defaults to http://localhost:8080):
 
 ```php
 php aphiria app:serve
 ```
 
-## Removing Demo Code
+## Demo
+
+This app comes with an extremely simple demo that can store and retrieve users from local file storage.  It should not be used in production - it is simply a demo of some Aphiria features.  The demo routes can be found in _src/Demo/Api/Controllers/UserController.php_ as PHP attributes.
+
+### Removing Demo Code
 
 To remove the built-in demo code, simply delete the _src/Demo_ and _tests/Integration/Demo_ directories, and remove the `DemoModule` from _src/App.php_.
 
