@@ -5,6 +5,8 @@
 ### Changed
 
 - Updated Composer scripts to not run `php aphiria framework:flushcaches` anymore after `composer install` and `composer update` ([#18](https://github.com/aphiria/app/pull/18))
+- Updated Psalm to 4.10 ([#19](https://github.com/aphiria/app/pull/19))
+- Updated PHP-CS-Fixer to 3.1 ([#19](https://github.com/aphiria/app/pull/19))
 
 ## [v1.0.0-alpha2](https://github.com/aphiria/app/compare/v1.0.0-alpha1...v1.0.0-alpha2) (2021-2-15)
 
