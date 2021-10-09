@@ -40,7 +40,7 @@ final class FileUserService implements IUserService
         $encodedUsers = [];
 
         foreach ($users as $decodedUser) {
-            $encodedUsers[] = ['id' => $decodedUser->getId(), 'email' => $decodedUser->getEmail()];
+            $encodedUsers[] = ['id' => $decodedUser->id, 'email' => $decodedUser->email];
         }
 
         \file_put_contents($this->filePath, \json_encode($encodedUsers));
@@ -86,7 +86,7 @@ final class FileUserService implements IUserService
     public function getUserById(int $id): User
     {
         foreach ($this->getAllUsers() as $user) {
-            if ($user->getId() === $id) {
+            if ($user->id === $id) {
                 return $user;
             }
         }

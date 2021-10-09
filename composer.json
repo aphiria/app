@@ -25,16 +25,22 @@
         }
     },
     "require": {
-        "aphiria/aphiria": "1.*@dev",
+        "aphiria/aphiria": "*",
         "ext-mbstring": "*",
-        "php": ">=8.0",
-        "symfony/dotenv": "~5.2"
+        "php": ">=8.1",
+        "symfony/dotenv": "~5.3"
     },
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^2.18",
+        "friendsofphp/php-cs-fixer": "^3.2",
         "phpunit/phpunit": "~9.5",
-        "vimeo/psalm": "^4.4"
+        "vimeo/psalm": "^4.10"
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../aphiria"
+        }
+    ],
     "scripts": {
         "phpcs-test": "@phpcs-fix --dry-run",
         "phpcs-fix": "php-cs-fixer fix --config=.php_cs.dist -v --diff",

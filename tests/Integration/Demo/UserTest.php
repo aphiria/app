@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo;
 
+use Aphiria\Net\Http\HttpStatusCode;
 use App\Demo\User;
 use App\Tests\Integration\IntegrationTestCase;
 
@@ -34,6 +35,6 @@ class UserTest extends IntegrationTestCase
     public function testGettingInvalidUserReturns404(): void
     {
         $response = $this->get('/demo/users/-1');
-        $this->assertStatusCodeEquals(404, $response);
+        $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
     }
 }

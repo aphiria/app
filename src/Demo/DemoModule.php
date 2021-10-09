@@ -7,7 +7,7 @@ namespace App\Demo;
 use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\Application\IModule;
 use Aphiria\Framework\Application\AphiriaComponents;
-use Aphiria\Net\Http\HttpStatusCodes;
+use Aphiria\Net\Http\HttpStatusCode;
 use App\Demo\Binders\UserServiceBinder;
 
 /**
@@ -26,7 +26,7 @@ final class DemoModule implements IModule
             ->withProblemDetails(
                 $appBuilder,
                 UserNotFoundException::class,
-                status: HttpStatusCodes::NOT_FOUND
+                status: HttpStatusCode::NotFound
             );
     }
 }
