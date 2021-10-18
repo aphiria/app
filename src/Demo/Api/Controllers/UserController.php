@@ -29,7 +29,7 @@ final class UserController extends Controller
     /**
      * @param IUserService $userService The user service
      */
-    public function __construct(private IUserService $userService)
+    public function __construct(private readonly IUserService $userService)
     {
     }
 
