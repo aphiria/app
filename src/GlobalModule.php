@@ -91,7 +91,7 @@ final class GlobalModule implements IBootstrapper, IModule
                 new CommandBinder()
             ])
             ->withLogLevelFactory($appBuilder, HttpException::class, static function (HttpException $ex) {
-                return $ex->getResponse()->getStatusCode() >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
+                return $ex->getResponse()->getStatusCode()->value >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
             })
             ->withModules($appBuilder, [
                 new DemoModule()
