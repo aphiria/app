@@ -8,7 +8,7 @@ use Aphiria\DependencyInjection\IServiceResolver;
 use Aphiria\Framework\Api\Builders\ApiApplicationBuilder;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\StreamResponseWriter;
-use App\App;
+use App\GlobalModule;
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -18,7 +18,9 @@ Container::$globalInstance = $container;
 $container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 
 // Build and run our application
-$response = (new ApiApplicationBuilder($container))->withModule(new App($container))
+$globalModule = new GlobalModule($container);
+$globalModule->bootstrap();
+$response = (new ApiApplicationBuilder($container))->withModule($globalModule)
     ->build()
     ->handle($container->resolve(IRequest::class));
 (new StreamResponseWriter())->writeResponse($response);

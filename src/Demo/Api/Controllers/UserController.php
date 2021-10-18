@@ -76,7 +76,6 @@ final class UserController extends Controller
      *
      * @return IResponse The response containing all users
      * @throws HttpException Thrown if there was an error creating the response
-     * @psalm-suppress ArgumentTypeCoercion https://github.com/vimeo/psalm/issues/4871
      */
     #[Get(''), Middleware(DummyAuthorization::class)]
     public function getAllUsers(): IResponse

@@ -8,7 +8,7 @@ use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Builders\ApiApplicationBuilder;
 use Aphiria\Framework\Api\Testing\PhpUnit\IntegrationTestCase as BaseIntegrationTestCase;
 use Aphiria\Net\Http\IRequestHandler;
-use App\App;
+use App\GlobalModule;
 
 /**
  * Defines the base integration test case
@@ -20,7 +20,10 @@ class IntegrationTestCase extends BaseIntegrationTestCase
      */
     protected function createApplication(IContainer $container): IRequestHandler
     {
-        return (new ApiApplicationBuilder($container))->withModule(new App($container))
+        $globalModule = new GlobalModule($container);
+        $globalModule->bootstrap();
+
+        return (new ApiApplicationBuilder($container))->withModule($globalModule)
             ->build();
     }
 }
