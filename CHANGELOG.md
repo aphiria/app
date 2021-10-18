@@ -4,6 +4,8 @@
 
 ### Changed
 
+- Renamed `App\App` to `App\GlobalModule` ([#21](https://github.com/aphiria/app/pull/21))
+- Renamed all `IModule::build()` methods to `configure()` ([#21](https://github.com/aphiria/app/pull/21))
 - Updated Composer scripts to not run `php aphiria framework:flushcaches` anymore after `composer install` and `composer update` ([#18](https://github.com/aphiria/app/pull/18))
 
 ## [v1.0.0-alpha2](https://github.com/aphiria/app/compare/v1.0.0-alpha1...v1.0.0-alpha2) (2021-2-15)
