@@ -4,6 +4,8 @@
 
 ### Changed
 
+- Renamed `App\App` to `App\GlobalModule` ([#21](https://github.com/aphiria/app/pull/21))
+- Renamed all `IModule::build()` methods to `configure()` ([#21](https://github.com/aphiria/app/pull/21))
 - Updated Composer scripts to not run `php aphiria framework:flushcaches` anymore after `composer install` and `composer update` ([#18](https://github.com/aphiria/app/pull/18))
 - Updated Psalm to 4.10 ([#19](https://github.com/aphiria/app/pull/19))
 - Updated PHP-CS-Fixer to 3.1 ([#19](https://github.com/aphiria/app/pull/19))

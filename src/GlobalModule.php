@@ -11,7 +11,7 @@ use Aphiria\Application\Configuration\Bootstrappers\DotEnvBootstrapper;
 use Aphiria\Application\Configuration\GlobalConfiguration;
 use Aphiria\Application\Configuration\GlobalConfigurationBuilder;
 use Aphiria\Application\Configuration\MissingConfigurationValueException;
-use Aphiria\Application\IModule;
+use Aphiria\Application\IBootstrapper;
 use Aphiria\DependencyInjection\Binders\IBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\LazyBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\Metadata\Caching\FileBinderMetadataCollectionCache;
@@ -20,7 +20,7 @@ use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Binders\ControllerBinder;
 use Aphiria\Framework\Api\Exceptions\ExceptionHandler;
-use Aphiria\Framework\Application\AphiriaComponents;
+use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Framework\Console\Binders\CommandBinder;
 use Aphiria\Framework\ContentNegotiation\Binders\ContentNegotiationBinder;
 use Aphiria\Framework\Exceptions\Binders\ExceptionHandlerBinder;
@@ -36,24 +36,28 @@ use Exception;
 use Psr\Log\LogLevel;
 
 /**
- * Defines the application
+ * Defines the global module for our application
  */
-final class App implements IModule
+final class GlobalModule extends AphiriaModule implements IBootstrapper
 {
-    use AphiriaComponents;
-
     /**
      * @param IContainer $container The application's DI container
      */
-    public function __construct(IContainer $container)
+    public function __construct(private IContainer $container)
     {
-        // Bootstrap the application
+    }
+
+    /**
+     * Bootstraps our application, which is the first thing done when starting an application
+     */
+    public function bootstrap(): void
+    {
         $globalConfigurationBuilder = (new GlobalConfigurationBuilder())->withEnvironmentVariables()
             ->withPhpFileConfigurationSource(__DIR__ . '/../config.php');
         (new BootstrapperCollection())->addMany([
             new DotEnvBootstrapper(__DIR__ . '/../.env'),
             new ConfigurationBootstrapper($globalConfigurationBuilder),
-            new GlobalExceptionHandlerBootstrapper($container)
+            new GlobalExceptionHandlerBootstrapper($this->container)
         ])->bootstrapAll();
     }
 
@@ -63,9 +67,8 @@ final class App implements IModule
      * @param IApplicationBuilder $appBuilder The builder that will build our app
      * @throws Exception Thrown if there was an error building the app
      */
-    public function build(IApplicationBuilder $appBuilder): void
+    public function configure(IApplicationBuilder $appBuilder): void
     {
-        // Configure the app
         $this->withBinderDispatcher($appBuilder, $this->getBinderDispatcher())
             ->withFrameworkCommands($appBuilder)
             ->withRouteAttributes($appBuilder)
