@@ -5,18 +5,15 @@ declare(strict_types=1);
 namespace App\Demo;
 
 use Aphiria\Application\Builders\IApplicationBuilder;
-use Aphiria\Application\IModule;
-use Aphiria\Framework\Application\AphiriaComponents;
+use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\HttpStatusCodes;
 use App\Demo\Binders\UserServiceBinder;
 
 /**
  * Defines the demo module
  */
-final class DemoModule implements IModule
+final class DemoModule extends AphiriaModule
 {
-    use AphiriaComponents;
-
     /**
      * @inheritdoc
      */
