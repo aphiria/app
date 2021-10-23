@@ -12,8 +12,8 @@ interface IUserService
     /**
      * Creates many users
      *
-     * @param User[] $users The users to create
-     * @return User[] The users that were created
+     * @param list<User> $users The users to create
+     * @return list<User> The users that were created
      */
     public function createManyUsers(array $users): array;
 
@@ -33,7 +33,7 @@ interface IUserService
     /**
      * Gets all the users
      *
-     * @return User[] All the users
+     * @return list<User> All the users
      */
     public function getAllUsers(): array;
 
