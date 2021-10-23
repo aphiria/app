@@ -97,7 +97,7 @@ final class FileUserService implements IUserService
     /**
      * Reads the users from the local file
      *
-     * @return User[] The list of users
+     * @return list<User> The list of users
      */
     private function readUsersFromFile(): array
     {
