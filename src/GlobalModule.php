@@ -12,7 +12,6 @@ use Aphiria\Application\Configuration\GlobalConfiguration;
 use Aphiria\Application\Configuration\GlobalConfigurationBuilder;
 use Aphiria\Application\Configuration\MissingConfigurationValueException;
 use Aphiria\Application\IBootstrapper;
-use Aphiria\Application\IModule;
 use Aphiria\DependencyInjection\Binders\IBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\LazyBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\Metadata\Caching\FileBinderMetadataCollectionCache;
@@ -21,7 +20,7 @@ use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Binders\ControllerBinder;
 use Aphiria\Framework\Api\Exceptions\ExceptionHandler;
-use Aphiria\Framework\Application\AphiriaComponents;
+use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Framework\Console\Binders\CommandBinder;
 use Aphiria\Framework\ContentNegotiation\Binders\ContentNegotiationBinder;
 use Aphiria\Framework\Exceptions\Binders\ExceptionHandlerBinder;
@@ -39,10 +38,8 @@ use Psr\Log\LogLevel;
 /**
  * Defines the global module for our application
  */
-final class GlobalModule implements IBootstrapper, IModule
+final class GlobalModule extends AphiriaModule implements IBootstrapper
 {
-    use AphiriaComponents;
-
     /**
      * @param IContainer $container The application's DI container
      */
