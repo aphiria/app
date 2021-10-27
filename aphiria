@@ -3,7 +3,6 @@
 
 declare(strict_types=1);
 
-use Aphiria\Console\StatusCode;
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\DependencyInjection\IServiceResolver;
@@ -24,4 +23,4 @@ $globalModule->bootstrap();
 $statusCode = (new ConsoleApplicationBuilder($container))->withModule($globalModule)
     ->build()
     ->handle($argv);
-exit($statusCode instanceof StatusCode ? $statusCode->value : $statusCode);
+exit($statusCode);
