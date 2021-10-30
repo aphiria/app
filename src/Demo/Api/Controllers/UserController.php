@@ -102,7 +102,7 @@ final class UserController extends Controller
         // Demonstrate how to manually create a response
         $headers = new Headers();
         $headers->add('Content-Type', 'application/json');
-        $body = new StringBody('{"id":' . $user->getId() . ',"email":"' . $user->getEmail() . '"}');
+        $body = new StringBody('{"id":' . $user->id . ',"email":"' . $user->email . '"}');
 
         return new Response(200, $headers, $body);
     }

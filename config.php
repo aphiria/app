@@ -151,9 +151,9 @@ return [
             ],
             'nameConverter' => null,
             'normalizers' => [
-                ProblemDetailsNormalizer::class,
                 DateTimeNormalizer::class,
                 BackedEnumNormalizer::class,
+                ProblemDetailsNormalizer::class,
                 ObjectNormalizer::class,
                 ArrayDenormalizer::class
             ],
