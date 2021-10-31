@@ -8,6 +8,7 @@ use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\HttpStatusCode;
 use App\Demo\Binders\UserServiceBinder;
+use Psr\Log\LogLevel;
 
 /**
  * Defines the demo module
@@ -24,6 +25,11 @@ final class DemoModule extends AphiriaModule
                 $appBuilder,
                 UserNotFoundException::class,
                 status: HttpStatusCode::NotFound
+            )
+            ->withLogLevelFactory(
+                $appBuilder,
+                UserNotFoundException::class,
+                static fn (UserNotFoundException $ex): string => LogLevel::INFO
             );
     }
 }
