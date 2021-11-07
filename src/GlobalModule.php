@@ -42,7 +42,7 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
     /**
      * @param IContainer $container The application's DI container
      */
-    public function __construct(private IContainer $container)
+    public function __construct(private readonly IContainer $container)
     {
     }
 
@@ -86,8 +86,8 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
                 new RoutingBinder(),
                 new CommandBinder()
             ])
-            ->withLogLevelFactory($appBuilder, HttpException::class, static function (HttpException $ex) {
-                return $ex->getResponse()->getStatusCode() >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
+            ->withLogLevelFactory($appBuilder, HttpException::class, static function (HttpException $ex): string {
+                return $ex->getResponse()->getStatusCode()->value >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
             })
             ->withModules($appBuilder, [
                 new DemoModule()

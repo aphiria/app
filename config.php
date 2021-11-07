@@ -16,6 +16,7 @@ use Monolog\Handler\StreamHandler;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
+use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
@@ -150,8 +151,9 @@ return [
             ],
             'nameConverter' => null,
             'normalizers' => [
-                ProblemDetailsNormalizer::class,
                 DateTimeNormalizer::class,
+                BackedEnumNormalizer::class,
+                ProblemDetailsNormalizer::class,
                 ObjectNormalizer::class,
                 ArrayDenormalizer::class
             ],
