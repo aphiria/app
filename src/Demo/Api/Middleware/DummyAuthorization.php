@@ -6,7 +6,7 @@ namespace App\Demo\Api\Middleware;
 
 use Aphiria\Middleware\IMiddleware;
 use Aphiria\Net\Formatting\UriParser;
-use Aphiria\Net\Http\HttpStatusCodes;
+use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\IRequestHandler;
 use Aphiria\Net\Http\IResponse;
@@ -26,7 +26,7 @@ final class DummyAuthorization implements IMiddleware
 
         // This is just a proof-of-concept - do not use this!
         if (!$uriParser->parseQueryString($request->getUri())->containsKey('letMeIn')) {
-            return new Response(HttpStatusCodes::UNAUTHORIZED);
+            return new Response(HttpStatusCode::Unauthorized);
         }
 
         return $next->handle($request);
