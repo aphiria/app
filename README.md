@@ -29,11 +29,11 @@ php aphiria app:serve
 
 ## Demo
 
-This app comes with an extremely simple demo that can store and retrieve users from local file storage.  It should not be used in production - it is simply a demo of some Aphiria features.  The demo routes can be found as PHP attributes in _src/Demo/Api/Controllers/UserController.php_.
+This app comes with an extremely simple demo that can store and retrieve users from local file storage.  It should not be used in production - it is simply a demo of some Aphiria features.  The demo routes can be found as PHP attributes in [_src/Demo/Api/Controllers/UserController.php_](src/Demo/Api/Controllers/UserController.php).
 
 ### Removing Demo Code
 
-To remove the built-in demo code, simply delete the _src/Demo_ and _tests/Integration/Demo_ directories, and remove the `DemoModule` from _src/GlobalModule.php_.
+To remove the built-in demo code, simply delete the [_src/Demo_](src/Demo) and [_tests/Integration/Demo_](tests/Integration/Demo) directories, and remove the `DemoModule` from [_src/GlobalModule.php_](src/GlobalModule.php).
 
 ## Learn More
 
