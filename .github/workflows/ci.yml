@@ -27,6 +27,5 @@ jobs:
         run: composer phpunit
       - name: Run Linter
         run: composer phpcs-test
-      # For now, do not run Psalm until it fully supports this PHP version
-      #- name: Run Psalm Static Analysis
-      #  run: composer psalm
+      - name: Run Psalm Static Analysis
+        run: composer psalm

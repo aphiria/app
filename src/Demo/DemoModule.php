@@ -20,6 +20,7 @@ final class DemoModule extends AphiriaModule
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
+        /** @psalm-suppress UnusedClosureParam We are purposely not using the exception in the log level factory */
         $this->withBinders($appBuilder, new UserServiceBinder())
             ->withProblemDetails(
                 $appBuilder,
