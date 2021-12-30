@@ -20,6 +20,8 @@ use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Binders\ControllerBinder;
 use Aphiria\Framework\Api\Exceptions\ExceptionHandler;
 use Aphiria\Framework\Application\AphiriaModule;
+use Aphiria\Framework\Authentication\Binders\AuthenticationBinder;
+use Aphiria\Framework\Authorization\Binders\AuthorizationBinder;
 use Aphiria\Framework\Console\Binders\CommandBinder;
 use Aphiria\Framework\ContentNegotiation\Binders\ContentNegotiationBinder;
 use Aphiria\Framework\Exceptions\Binders\ExceptionHandlerBinder;
@@ -84,7 +86,9 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
                 new ContentNegotiationBinder(),
                 new ControllerBinder(),
                 new RoutingBinder(),
-                new CommandBinder()
+                new CommandBinder(),
+                new AuthenticationBinder(),
+                new AuthorizationBinder()
             ])
             ->withLogLevelFactory($appBuilder, HttpException::class, static function (HttpException $ex): string {
                 return $ex->response->getStatusCode()->value >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
