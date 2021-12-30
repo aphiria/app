@@ -42,6 +42,17 @@ return [
 
         /**
          * ----------------------------------------------------------
+         * Configure authorization
+         * ----------------------------------------------------------
+         *
+         * continueOnFailure => Whether or not to continue requirement checks on failure
+         */
+        'authorization' => [
+            'continueOnFailure' => true
+        ],
+
+        /**
+         * ----------------------------------------------------------
          * Configure the binders
          * ----------------------------------------------------------
          *
