@@ -44,7 +44,8 @@ final class DummyAuthenticationHandler implements IAuthenticationSchemeHandler
 
         // Note: This is just a really silly demo - do not use this in production
         if ($this->requestParser->parseQueryString($request)->containsKey('letMeIn')) {
-            $user = new User(new Identity([new Claim(ClaimType::NameIdentifier, 1, 'example.com')]));
+            $claimsIssuer = $scheme->options->claimsIssuer ?? $scheme->name;
+            $user = new User(new Identity([new Claim(ClaimType::NameIdentifier, 1, $claimsIssuer)]));
 
             return AuthenticationResult::pass($user);
         }
