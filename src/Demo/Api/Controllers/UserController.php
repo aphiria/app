@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Demo\Api\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
+use Aphiria\Authentication\Attributes\Authenticate;
 use Aphiria\Net\Http\Headers;
 use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IResponse;
@@ -12,10 +13,8 @@ use Aphiria\Net\Http\Response;
 use Aphiria\Net\Http\StringBody;
 use Aphiria\Routing\Attributes\Delete;
 use Aphiria\Routing\Attributes\Get;
-use Aphiria\Routing\Attributes\Middleware;
 use Aphiria\Routing\Attributes\Post;
 use Aphiria\Routing\Attributes\RouteGroup;
-use App\Demo\Api\Middleware\DummyAuthorization;
 use App\Demo\IUserService;
 use App\Demo\User;
 use App\Demo\UserNotFoundException;
@@ -77,7 +76,7 @@ final class UserController extends Controller
      * @return IResponse The response containing all users
      * @throws HttpException Thrown if there was an error creating the response
      */
-    #[Get(''), Middleware(DummyAuthorization::class)]
+    #[Get(''), Authenticate('dummy')]
     public function getAllUsers(): IResponse
     {
         // Demonstrate how to use controller helper methods to create a response
