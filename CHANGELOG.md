@@ -4,6 +4,7 @@
 
 ### Changed
 
+- Updated to use Aphiria's auth library ([#27](https://github.com/aphiria/app/pull/27))
 - Renamed `App\App` to `App\GlobalModule` ([#21](https://github.com/aphiria/app/pull/21))
 - Renamed all `IModule::build()` methods to `configure()` ([#21](https://github.com/aphiria/app/pull/21))
 - Updated Composer scripts to not run `php aphiria framework:flushcaches` anymore after `composer install` and `composer update` ([#18](https://github.com/aphiria/app/pull/18))
