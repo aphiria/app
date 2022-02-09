@@ -24,7 +24,7 @@ class UserTest extends IntegrationTestCase
         $this->post('/demo/users', [], new User(123, 'foo@bar.com'));
         $this->post('/demo/users', [], new User(456, 'baz@qux.com'));
         // Get the users
-        $response = $this->get('/demo/users?letMeIn=1');
+        $response = $this->get('/demo/users?letMeIn=1&userId=123');
         $this->assertStatusCodeEquals(200, $response);
         $this->assertParsedBodyEquals(
             [new User(123, 'foo@bar.com'), new User(456, 'baz@qux.com')],
