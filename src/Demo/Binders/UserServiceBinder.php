@@ -19,7 +19,7 @@ final class UserServiceBinder extends Binder
      */
     public function bind(IContainer $container): void
     {
-        $filePath = __DIR__ . '/../../../tmp/demo/users-' . \getenv('APP_ENV') . '.json';
+        $filePath = __DIR__ . '/../../../tmp/demo/users-' . (string)\getenv('APP_ENV') . '.json';
         $userService = new FileUserService($filePath);
         $container->bindInstance(IUserService::class, $userService);
     }
