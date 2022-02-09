@@ -16,6 +16,8 @@ use Aphiria\Security\Claim;
 use Aphiria\Security\ClaimType;
 use Aphiria\Security\Identity;
 use Aphiria\Security\User;
+use App\Demo\IUserService;
+use App\Demo\UserNotFoundException;
 use RuntimeException;
 
 /**
@@ -26,10 +28,13 @@ use RuntimeException;
 final class DummyAuthenticationHandler implements IAuthenticationSchemeHandler
 {
     /**
+     * @param IUserService $users The user service to retrieve users from
      * @param RequestParser $requestParser The request parser to use
      */
-    public function __construct(private readonly RequestParser $requestParser = new RequestParser())
-    {
+    public function __construct(
+        private readonly IUserService $users,
+        private readonly RequestParser $requestParser = new RequestParser()
+    ) {
     }
 
     /**
@@ -43,14 +48,25 @@ final class DummyAuthenticationHandler implements IAuthenticationSchemeHandler
         }
 
         // Note: This is just a really silly demo - do not use this in production
-        if ($this->requestParser->parseQueryString($request)->containsKey('letMeIn')) {
-            $claimsIssuer = $scheme->options->claimsIssuer ?? $scheme->name;
-            $user = new User(new Identity([new Claim(ClaimType::NameIdentifier, 1, $claimsIssuer)]));
+        $queryString = $this->requestParser->parseQueryString($request);
 
-            return AuthenticationResult::pass($user);
+        if (!$queryString->containsKey('letMeIn') || !$queryString->containsKey('userId')) {
+            return AuthenticationResult::fail('Could not authenticate user');
         }
 
-        return AuthenticationResult::fail('Could not authenticate user');
+        try {
+            $currUser = $this->users->getUserById((int)$queryString->get('userId'));
+        } catch (UserNotFoundException) {
+            return AuthenticationResult::fail('No user with this ID found');
+        }
+
+        $claimsIssuer = $scheme->options->claimsIssuer ?? $scheme->name;
+        $claims = [
+            new Claim(ClaimType::NameIdentifier, $currUser->id, $claimsIssuer),
+            new Claim(ClaimType::Email, $currUser->email, $claimsIssuer)
+        ];
+
+        return AuthenticationResult::pass(new User(new Identity($claims)));
     }
 
     /**
