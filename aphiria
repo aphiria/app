@@ -3,11 +3,10 @@
 
 declare(strict_types=1);
 
-use Aphiria\Console\StatusCode;
+use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\DependencyInjection\IServiceResolver;
-use Aphiria\Framework\Console\Builders\ConsoleApplicationBuilder;
 use App\GlobalModule;
 
 require __DIR__ . '/vendor/autoload.php';
@@ -18,10 +17,17 @@ Container::$globalInstance = $container;
 $container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 
 // Build and run our application
-global $argv;
 $globalModule = new GlobalModule($container);
 $globalModule->bootstrap();
-$statusCode = (new ConsoleApplicationBuilder($container))->withModule($globalModule)
-    ->build()
-    ->handle($argv);
-exit($statusCode instanceof StatusCode ? $statusCode->value : $statusCode);
+$appBuilderClass = (string)\getenv('APP_BUILDER_CONSOLE');
+
+if (!\class_exists($appBuilderClass) || !\is_subclass_of($appBuilderClass, IApplicationBuilder::class)) {
+    throw new TypeError('Environment variable "APP_BUILDER_CONSOLE" must implement ' . IApplicationBuilder::class);
+}
+
+exit(
+    $container->resolve($appBuilderClass)
+        ->withModule($globalModule)
+        ->build()
+        ->run()
+);

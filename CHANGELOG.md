@@ -1,15 +1,21 @@
 # Changelog
 
-## [v1.0.0-alpha3](https://github.com/aphiria/app/compare/v1.0.0-alpha2...v1.0.0-alpha3) (?)
+## [v1.0.0-alpha3](https://github.com/aphiria/app/compare/v1.0.0-alpha2...v1.0.0-alpha3) (2022-11-27)
 
 ### Changed
 
+- Updated to use Aphiria's new app builders in _index.php_ and _aphiria_ to simplify supporting of asynchronous runtimes such as Swoole and ReactPHP ([#30](https://github.com/aphiria/app/pull/30))
+  - Updated `IntegrationTestCase` to return an `IApplication` instance ([#30](https://github.com/aphiria/app/pull/30))
 - Updated to use Aphiria's auth library ([#27](https://github.com/aphiria/app/pull/27))
 - Renamed `App\App` to `App\GlobalModule` ([#21](https://github.com/aphiria/app/pull/21))
 - Renamed all `IModule::build()` methods to `configure()` ([#21](https://github.com/aphiria/app/pull/21))
 - Updated Composer scripts to not run `php aphiria framework:flushcaches` anymore after `composer install` and `composer update` ([#18](https://github.com/aphiria/app/pull/18))
 - Updated Psalm to 4.10 ([#19](https://github.com/aphiria/app/pull/19))
 - Updated PHP-CS-Fixer to 3.2 ([#19](https://github.com/aphiria/app/pull/19))
+
+### Added
+
+- Added `APP_BUILDER_API` and `APP_BUILDER_CONSOLE` environment variables to _.env.dist_ ([#30](https://github.com/aphiria/app/pull/30))
 
 ## [v1.0.0-alpha2](https://github.com/aphiria/app/compare/v1.0.0-alpha1...v1.0.0-alpha2) (2021-2-15)
 

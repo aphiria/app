@@ -2,12 +2,10 @@
 
 declare(strict_types=1);
 
+use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\DependencyInjection\IServiceResolver;
-use Aphiria\Framework\Api\Builders\ApiApplicationBuilder;
-use Aphiria\Net\Http\IRequest;
-use Aphiria\Net\Http\StreamResponseWriter;
 use App\GlobalModule;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -20,7 +18,15 @@ $container->bindInstance([IServiceResolver::class, IContainer::class, Container:
 // Build and run our application
 $globalModule = new GlobalModule($container);
 $globalModule->bootstrap();
-$response = (new ApiApplicationBuilder($container))->withModule($globalModule)
-    ->build()
-    ->handle($container->resolve(IRequest::class));
-(new StreamResponseWriter())->writeResponse($response);
+$appBuilderClass = (string)\getenv('APP_BUILDER_API');
+
+if (!\class_exists($appBuilderClass) || !\is_subclass_of($appBuilderClass, IApplicationBuilder::class)) {
+    throw new TypeError('Environment variable "APP_BUILDER_API" must implement ' . IApplicationBuilder::class);
+}
+
+exit(
+    $container->resolve($appBuilderClass)
+        ->withModule($globalModule)
+        ->build()
+        ->run()
+);
