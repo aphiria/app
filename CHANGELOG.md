@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.0.0-alpha4](https://github.com/aphiria/app/compare/v1.0.0-alpha3...v1.0.0-alpha4) (?)
+
+### Changed
+
+- Updated to require PHP 8.2 ([#31](https://github.com/aphiria/app/pull/31))
+
 ## [v1.0.0-alpha3](https://github.com/aphiria/app/compare/v1.0.0-alpha2...v1.0.0-alpha3) (2022-11-27)
 
 ### Changed

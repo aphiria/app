@@ -9,13 +9,13 @@ use Aphiria\Validation\Constraints\Attributes\Email;
 /**
  * Defines the user model
  */
-class User
+readonly class User
 {
     /**
      * @param int $id The user ID
      * @param string $email The user email
      */
-    public function __construct(public readonly int $id, #[Email] public readonly string $email)
+    public function __construct(public int $id, #[Email] public string $email)
     {
     }
 }
