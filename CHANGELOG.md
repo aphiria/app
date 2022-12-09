@@ -1,6 +1,6 @@
 # Changelog
 
-## [v1.0.0-alpha4](https://github.com/aphiria/app/compare/v1.0.0-alpha3...v1.0.0-alpha4) (?)
+## [v1.0.0-alpha4](https://github.com/aphiria/app/compare/v1.0.0-alpha3...v1.0.0-alpha4) (2022-12-10)
 
 ### Changed
 
