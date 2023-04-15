@@ -1,5 +1,10 @@
 <?xml version="1.0"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd">
+    <coverage>
+        <report>
+            <html outputDirectory="./.coverage"/>
+        </report>
+    </coverage>
     <testsuites>
         <testsuite name="Integration">
             <directory>tests/Integration</directory>
