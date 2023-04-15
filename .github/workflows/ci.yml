@@ -19,8 +19,9 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extensions: curl, dom, libxml, mbstring, pcntl, zip
+          extensions: curl, dom, libxml, mbstring, pcntl, xdebug, zip
           tools: composer:v2
+          coverage: xdebug
       - name: Install Dependencies
         run: composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress
       - name: Run Tests
