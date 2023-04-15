@@ -1,5 +1,11 @@
 # Changelog
 
+## [v1.0.0-alpha5](https://github.com/aphiria/app/compare/v1.0.0-alpha4...v1.0.0-alpha5) (?)
+
+### Changed
+
+- Updated PHPUnit and Psalm ([#33](https://github.com/aphiria/app/pull/33))
+
 ## [v1.0.0-alpha4](https://github.com/aphiria/app/compare/v1.0.0-alpha3...v1.0.0-alpha4) (2022-12-10)
 
 ### Changed
