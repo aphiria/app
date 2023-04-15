@@ -61,6 +61,7 @@ final class DummyAuthenticationHandler implements IAuthenticationSchemeHandler
         }
 
         $claimsIssuer = $scheme->options->claimsIssuer ?? $scheme->name;
+        /** @var list<Claim<mixed>> $claims */
         $claims = [
             new Claim(ClaimType::NameIdentifier, $currUser->id, $claimsIssuer),
             new Claim(ClaimType::Email, $currUser->email, $claimsIssuer)

@@ -22,7 +22,10 @@ final class DemoModule extends AphiriaModule
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
-        /** @psalm-suppress UnusedClosureParam We are purposely not using the exception in the log level factory */
+        /**
+         * @psalm-suppress UnusedClosureParam We are purposely not using the exception in the log level factory
+         * @psalm-suppress InvalidCast This is a Psalm bug (https://github.com/vimeo/psalm/issues/8810)
+         */
         $this->withBinders($appBuilder, new UserServiceBinder())
             ->withAuthenticationScheme(
                 $appBuilder,
