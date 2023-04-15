@@ -55,7 +55,7 @@
         ],
         "psalm": [
             "Composer\\Config::disableProcessTimeout",
-            "php vendor/vimeo/psalm/psalm --find-unused-psalm-suppress"
+            "php vendor/vimeo/psalm/psalm"
         ],
         "test": [
             "@phpunit",
