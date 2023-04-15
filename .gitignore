@@ -1,5 +1,6 @@
 .env
 !.env.dist
+/.coverage/
 /.idea/
 /.php-cs-fixer.cache
 /.phpunit.result.cache
