@@ -62,7 +62,7 @@ class UserTest extends IntegrationTestCase
         // Create some users
         $response = $this->post('/demo/users', [], $newUser);
         /** @var UserViewModel $createdUser */
-        $createdUser = $this->negotiateResponseBody(UserViewModel::class, $response);
+        $createdUser = $this->readResponseBodyAs(UserViewModel::class, $response);
         // Make sure we clean this user up later
         $this->createdUsers[] = $createdUser;
 
@@ -86,7 +86,7 @@ class UserTest extends IntegrationTestCase
         $adminUser = new User(new Identity($claims));
         $createUserResponse = $this->post('/demo/users', body: new NewUser('test@example.com', 'password'));
         /** @var UserViewModel $createdUser */
-        $createdUser = $this->negotiateResponseBody(UserViewModel::class, $createUserResponse);
+        $createdUser = $this->readResponseBodyAs(UserViewModel::class, $createUserResponse);
         $deleteUserResponse = $this->actingAs($adminUser)->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $deleteUserResponse);
     }
