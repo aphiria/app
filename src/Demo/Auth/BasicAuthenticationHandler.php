@@ -37,6 +37,9 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
     {
     }
 
+    /**
+     * @inheritdoc
+     */
     protected function createAuthenticationResultFromCredentials(
         string $username,
         string $password,
