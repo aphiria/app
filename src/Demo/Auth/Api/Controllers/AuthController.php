@@ -33,26 +33,12 @@ final class AuthController extends Controller
     {
     }
 
-    #[Post('/login'), Authenticate('usernamePassword')]
+    #[Post('/login'), Authenticate('basic')]
     public function logIn(): IResponse
     {
-        // TODO: Should I just use a basic auth for logging in?
+        // We authenticate via basic auth, and then log in using cookies for future requests
         $response = new Response();
-        /*
-         * TODO: The below should work, but we're going to try using an attribute to set the user, instead
-        $authResult = $this->authenticator->authenticate($this->request, 'usernamePassword');
-
-        if (!$authResult->passed) {
-            $this->authenticator->challenge($this->request, $response, 'usernamePassword');
-
-            return $response;
-        }
-
-        $this->authenticator->logIn($authResult->user, $this->request, $response, 'token');
-
-        return $response;
-        */
-        $this->authenticator->logIn($this->getUser(), $this->request, $response, 'token');
+        $this->authenticator->logIn($this->getUser(), $this->request, $response, 'cookie');
 
         return $response;
     }
@@ -61,7 +47,7 @@ final class AuthController extends Controller
     public function logOut(): IResponse
     {
         $response = new Response();
-        $this->authenticator->logOut($this->request, $response, 'token');
+        $this->authenticator->logOut($this->request, $response, 'cookie');
 
         return $response;
     }

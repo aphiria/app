@@ -40,7 +40,6 @@ final class UserController extends Controller
     #[Post('')]
     public function createUser(NewUser $user): UserViewModel
     {
-        // Demonstrate how to use content negotiation on request and response bodies
         return $this->userService->createUser($user);
     }
 
@@ -53,10 +52,9 @@ final class UserController extends Controller
      * @throws HttpException Thrown if there was an error creating the response
      * @throws InvalidPageException Thrown if the pagination parameters were invalid
      */
-    #[Get(''), Authenticate('token'), AuthorizeRoles('admin')]
+    #[Get(''), Authenticate('cookie'), AuthorizeRoles('admin')]
     public function getPagedUsers(int $pageNumber = 0, int $pageSize = 100): IResponse
     {
-        // Demonstrate how to use controller helper methods to create a response
         return $this->ok($this->userService->getPagedUsers($pageNumber, $pageSize));
     }
 
@@ -67,10 +65,9 @@ final class UserController extends Controller
      * @return UserViewModel The user with the input ID
      * @throws UserNotFoundException Thrown if there was no user with the input ID
      */
-    #[Get(':id'), Authenticate('token')]
+    #[Get(':id'), Authenticate('cookie')]
     public function getUserById(string $id): UserViewModel
     {
-        // Demonstrate how to use route variables and response body negotiation
         return $this->userService->getUserById($id);
     }
 }

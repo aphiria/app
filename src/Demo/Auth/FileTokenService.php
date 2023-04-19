@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace App\Demo\Auth;
 
-use App\Demo\Users\UserViewModel;
 use JsonException;
 
 /**

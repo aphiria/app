@@ -14,14 +14,9 @@ namespace App\Demo\Auth;
 
 use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\AuthenticationScheme;
-use Aphiria\Authentication\AuthenticationSchemeOptions;
-use Aphiria\Authentication\Schemes\BasicAuthenticationHandler;
+use Aphiria\Authentication\Schemes\BasicAuthenticationHandler as BaseBasicAuthenticationHandler;
 use Aphiria\Authentication\Schemes\BasicAuthenticationOptions;
-use Aphiria\Authentication\Schemes\IAuthenticationSchemeHandler;
-use Aphiria\ContentNegotiation\IContentNegotiator;
-use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Net\Http\IRequest;
-use Aphiria\Net\Http\IResponse;
 use Aphiria\Security\Claim;
 use Aphiria\Security\ClaimType;
 use Aphiria\Security\Identity;
@@ -29,11 +24,11 @@ use Aphiria\Security\User;
 use App\Demo\Users\IUserService;
 
 /**
- * Defines the username/password authentication handler
+ * Defines the basic authentication handler
  *
- * @extends  BasicAuthenticationHandler<BasicAuthenticationOptions>
+ * @extends  BaseBasicAuthenticationHandler<BasicAuthenticationOptions>
  */
-final class UsernamePasswordAuthenticationHandler extends BasicAuthenticationHandler
+final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
 {
     /**
      * @param IUserService $users The user service

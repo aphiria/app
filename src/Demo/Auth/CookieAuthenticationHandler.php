@@ -6,7 +6,7 @@ namespace App\Demo\Auth;
 
 use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\AuthenticationScheme;
-use Aphiria\Authentication\Schemes\CookieAuthenticationHandler;
+use Aphiria\Authentication\Schemes\CookieAuthenticationHandler as BaseCookieAuthenticationHandler;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Security\Claim;
 use Aphiria\Security\ClaimType;
@@ -17,11 +17,11 @@ use App\Demo\Users\IUserService;
 use App\Demo\Users\UserNotFoundException;
 
 /**
- * Defines a token authentication scheme handler
+ * Defines a cookie authentication scheme handler
  *
- * @extends CookieAuthenticationHandler
+ * @extends BaseCookieAuthenticationHandler
  */
-final class TokenAuthenticationHandler extends CookieAuthenticationHandler
+final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
 {
     /**
      * @param ITokenService $tokens The token service to create/retrieve tokens from

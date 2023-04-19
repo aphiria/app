@@ -34,8 +34,8 @@ final class AuthModule extends AphiriaModule
             ->withAuthenticationScheme(
                 $appBuilder,
                 new AuthenticationScheme(
-                    'token',
-                    TokenAuthenticationHandler::class,
+                    'cookie',
+                    CookieAuthenticationHandler::class,
                     new CookieAuthenticationOptions(
                         cookieName: 'authToken',
                         cookieMaxAge: 360,
@@ -53,8 +53,8 @@ final class AuthModule extends AphiriaModule
             ->withAuthenticationScheme(
                 $appBuilder,
                 new AuthenticationScheme(
-                    'usernamePassword',
-                    UsernamePasswordAuthenticationHandler::class,
+                    'basic',
+                    BasicAuthenticationHandler::class,
                     new BasicAuthenticationOptions((string)\getenv('APP_URL'))
                 )
             );

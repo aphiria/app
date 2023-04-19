@@ -6,8 +6,6 @@ namespace App\Demo\Users\Binders;
 
 use Aphiria\DependencyInjection\Binders\Binder;
 use Aphiria\DependencyInjection\IContainer;
-use App\Demo\Auth\FileTokenService;
-use App\Demo\Auth\ITokenService;
 use App\Demo\Users\FileUserService;
 use App\Demo\Users\IUserService;
 
