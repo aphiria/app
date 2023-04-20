@@ -26,7 +26,7 @@ final class UserCountCommandHandler implements ICommandHandler
     /**
      * @inheritdoc
      */
-    public function handle(Input $input, IOutput $output)
+    public function handle(Input $input, IOutput $output): void
     {
         $output->writeln("Number of users: <info>{$this->userService->getNumUsers()}</info>");
     }
