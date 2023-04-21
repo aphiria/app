@@ -4,37 +4,54 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo;
 
+use Aphiria\DependencyInjection\Container;
 use Aphiria\Net\Http\HttpStatusCode;
-use App\Demo\User;
+use App\Demo\Users\NewUser;
+use App\Demo\Users\UserSeeder;
+use App\Demo\Users\UserViewModel;
 use App\Tests\Integration\IntegrationTestCase;
+use PHPUnit\Framework\Attributes\TestWith;
 
 class UserTest extends IntegrationTestCase
 {
+    /** @var list<UserViewModel> The list of users to delete at the end of each test */
+    private array $createdUsers = [];
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $userSeeder = Container::$globalInstance?->resolve(UserSeeder::class);
+        $userSeeder?->seed();
+    }
+
     protected function tearDown(): void
     {
         parent::tearDown();
 
         // Clean up after our integration tests
-        $this->delete('/demo/users');
+        foreach ($this->createdUsers as $user) {
+            // TODO: Needs auth
+            $this->delete("/demo/users/$user->id");
+        }
     }
 
-    public function testGettingAllUsers(): void
+    #[TestWith([[new NewUser('foo@bar.com', 'foo')]])]
+    public function testCreatingUsersMakesThemRetrievable(NewUser $newUser): void
     {
-        // Seed some users
-        $this->post('/demo/users', [], new User(123, 'foo@bar.com'));
-        $this->post('/demo/users', [], new User(456, 'baz@qux.com'));
-        // Get the users
-        $response = $this->get('/demo/users?letMeIn=1&userId=123');
+        // Create some users
+        // $this->createdUsers[] = ??? TODO: Need to somehow populate createdUsers with "UserViewModel" objects
+        $this->post('/demo/users', [], $newUser);
+
+        // Check that the user can be retrieved
+        $response = $this->get("/demo/users/$user->id");
         $this->assertStatusCodeEquals(200, $response);
-        $this->assertParsedBodyEquals(
-            [new User(123, 'foo@bar.com'), new User(456, 'baz@qux.com')],
-            $response
-        );
+        $this->assertParsedBodyEquals($user, $response);
     }
 
     public function testGettingInvalidUserReturns404(): void
     {
-        $response = $this->get('/demo/users/-1');
+        $response = $this->get('/demo/users/0');
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
     }
 }

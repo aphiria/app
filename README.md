@@ -33,7 +33,7 @@ This app comes with an extremely simple demo that can store and retrieve users f
 
 ### Removing Demo Code
 
-To remove the built-in demo code, simply delete the [_src/Demo_](src/Demo) and [_tests/Integration/Demo_](tests/Integration/Demo) directories, and remove the `DemoModule` from [_src/GlobalModule.php_](src/GlobalModule.php).
+To remove the built-in demo code, simply delete the [_src/Demo_](src/Demo) and [_tests/Integration/Demo_](tests/Integration/Demo) directories, and remove the `UserModule` and `AuthDemo` from [_src/GlobalModule.php_](src/GlobalModule.php).
 
 ## Learn More
 

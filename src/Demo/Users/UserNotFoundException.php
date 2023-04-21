@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Demo;
+namespace App\Demo\Users;
 
 use Exception;
 
