@@ -18,8 +18,6 @@ use App\Demo\Users\UserNotFoundException;
 
 /**
  * Defines a cookie authentication scheme handler
- *
- * @extends BaseCookieAuthenticationHandler
  */
 final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
 {

@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Aphiria
- *
- * @link      https://www.aphiria.com
- * @copyright Copyright (C) 2023 David Young
- * @license   https://github.com/aphiria/app/blob/1.x/LICENSE.md
- */
-
 declare(strict_types=1);
 
 namespace App\Demo\Auth;
@@ -15,7 +7,6 @@ namespace App\Demo\Auth;
 use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\AuthenticationScheme;
 use Aphiria\Authentication\Schemes\BasicAuthenticationHandler as BaseBasicAuthenticationHandler;
-use Aphiria\Authentication\Schemes\BasicAuthenticationOptions;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Security\Claim;
 use Aphiria\Security\ClaimType;
@@ -25,8 +16,6 @@ use App\Demo\Users\IUserService;
 
 /**
  * Defines the basic authentication handler
- *
- * @extends  BaseBasicAuthenticationHandler<BasicAuthenticationOptions>
  */
 final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
 {

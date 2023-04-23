@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Aphiria
- *
- * @link      https://www.aphiria.com
- * @copyright Copyright (C) 2023 David Young
- * @license   https://github.com/aphiria/app/blob/1.x/LICENSE.md
- */
-
 declare(strict_types=1);
 
 namespace App\Demo\Auth;
@@ -16,6 +8,7 @@ use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\Authentication\AuthenticationScheme;
 use Aphiria\Authentication\Schemes\BasicAuthenticationOptions;
 use Aphiria\Authentication\Schemes\CookieAuthenticationOptions;
+use Aphiria\Authorization\AuthorizationPolicy;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\Headers\SameSiteMode;
 use App\Demo\Auth\Binders\AuthServiceBinder;
@@ -56,6 +49,18 @@ final class AuthModule extends AphiriaModule
                     'basic',
                     BasicAuthenticationHandler::class,
                     new BasicAuthenticationOptions((string)\getenv('APP_URL'))
+                )
+            )
+            ->withAuthorizationRequirementHandler(
+                $appBuilder,
+                AuthorizedUserDeleterRequirement::class,
+                new AuthorizedUserDeleterRequirementHandler()
+            )
+            ->withAuthorizationPolicy(
+                $appBuilder,
+                new AuthorizationPolicy(
+                    'authorized-user-deleter',
+                    new AuthorizedUserDeleterRequirement('admin')
                 )
             );
     }

@@ -9,6 +9,8 @@ use JsonException;
 
 /**
  * Defines the user service backed by file storage
+ *
+ * Note: This is merely a proof of concept and should be replaced with a more scalable form of storage
  */
 final class FileUserService implements IUserService
 {
@@ -24,6 +26,8 @@ final class FileUserService implements IUserService
 
     /**
      * @inheritdoc
+     * @throws JsonException Thrown if there was an error decoding or encoding JSON
+     * @throws Exception Thrown if there was an error generating the user's ID
      */
     public function createUser(NewUser $newUser, bool $allowRoles = false): UserViewModel
     {
@@ -37,6 +41,7 @@ final class FileUserService implements IUserService
 
         while (\count($pagedUserEntities = $this->readUsersFromFile($pageNumber, self::MAX_PAGE_SIZE)) > 0) {
             $userEntities = [...$userEntities, ...$pagedUserEntities];
+            $pageNumber++;
         }
 
         $newUserEntity = self::createUserEntityFromNewUser($newUser);
@@ -48,6 +53,32 @@ final class FileUserService implements IUserService
 
     /**
      * @inheritdoc
+     * @throws JsonException Thrown if there was an error decoding or encoding JSON
+     */
+    public function deleteUser(string $id): void
+    {
+        /** @var list<UserEntity> $userEntities */
+        $userEntities = [];
+        $pageNumber = 0;
+
+        while (\count($pagedUserEntities = $this->readUsersFromFile($pageNumber, self::MAX_PAGE_SIZE)) > 0) {
+            $userEntities = [...$userEntities, ...$pagedUserEntities];
+            $pageNumber++;
+        }
+
+        foreach ($userEntities as $i => $userEntity) {
+            if ($userEntity->id === $id) {
+                unset($userEntities[$i]);
+                break;
+            }
+        }
+
+        $this->writeUsersToFile(\array_values($userEntities));
+    }
+
+    /**
+     * @inheritdoc
+     * @throws JsonException Thrown if there was an error decoding JSON
      */
     public function getPagedUsers(int $pageNumber = 0, int $pageSize = 100): array
     {
@@ -70,6 +101,7 @@ final class FileUserService implements IUserService
 
     /**
      * @inheritdoc
+     * @throws JsonException Thrown if there was an error decoding JSON
      */
     public function getUserByEmailAndPassword(string $email, string $password): ?UserViewModel
     {
@@ -96,6 +128,7 @@ final class FileUserService implements IUserService
 
     /**
      * @inheritdoc
+     * @throws JsonException Thrown if there was an error decoding JSON
      */
     public function getUserById(string $id): UserViewModel
     {
@@ -165,6 +198,7 @@ final class FileUserService implements IUserService
      * @param int $pageNumber The page to retrieve
      * @param int $pageSize The size of the page to retrieve
      * @return list<UserEntity> The list of users
+     * @throws JsonException Thrown if there was an error decoding JSON
      */
     private function readUsersFromFile(int $pageNumber, int $pageSize): array
     {
@@ -173,13 +207,13 @@ final class FileUserService implements IUserService
         }
 
         /** @var array<array{id: string, email: string, roles: list<string>, hashedPassword: string}>|false $encodedUserEntities */
-        $encodedUserEntities = \json_decode(\file_get_contents($this->filePath), true);
+        $encodedUserEntities = \json_decode(\file_get_contents($this->filePath), true, 512, JSON_THROW_ON_ERROR);
 
         if (!\is_array($encodedUserEntities)) {
             return [];
         }
 
-        $pagedEncodedUserEntities = \array_slice($encodedUserEntities, $pageNumber, $pageSize);
+        $pagedEncodedUserEntities = \array_slice($encodedUserEntities, $pageNumber * $pageSize, $pageSize);
         $decodedUserEntities = [];
 
         foreach ($pagedEncodedUserEntities as $encodedUser) {

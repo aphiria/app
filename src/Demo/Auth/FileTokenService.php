@@ -1,21 +1,16 @@
 <?php
 
-/**
- * Aphiria
- *
- * @link      https://www.aphiria.com
- * @copyright Copyright (C) 2023 David Young
- * @license   https://github.com/aphiria/app/blob/1.x/LICENSE.md
- */
-
 declare(strict_types=1);
 
 namespace App\Demo\Auth;
 
+use Exception;
 use JsonException;
 
 /**
  * Defines the token service backed by file storage
+ *
+ * Note: This is merely a proof of concept and should be replaced with a more scalable form of storage
  */
 final class FileTokenService implements ITokenService
 {
@@ -34,6 +29,7 @@ final class FileTokenService implements ITokenService
     /**
      * @inheritdoc
      * @throws JsonException Thrown if there was an error decoding or encoding the JSON
+     * @throws Exception Thrown if there was an error generating the token
      */
     public function createToken(string $userId): string
     {
@@ -111,7 +107,7 @@ final class FileTokenService implements ITokenService
             return [];
         }
 
-        return \array_slice($tokensToUserIds, $pageNumber, $pageSize);
+        return \array_slice($tokensToUserIds, $pageNumber * $pageSize, $pageSize);
     }
 
     /**

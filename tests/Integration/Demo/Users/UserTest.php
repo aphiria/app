@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Integration\Demo;
+namespace App\Tests\Integration\Demo\Users;
 
 use Aphiria\DependencyInjection\Container;
 use Aphiria\Net\Http\HttpStatusCode;
@@ -49,9 +49,41 @@ class UserTest extends IntegrationTestCase
         $this->assertParsedBodyEquals($user, $response);
     }
 
+    public function testDeletingAnotherUserAsAdminReturns204(): void
+    {
+        // TODO
+        $response = $this->actingAs($someUser)->delete('/demo/users/someId');
+        $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $response);
+    }
+
+    public function testDeletingAnotherUserAsNonAdminReturns403(): void
+    {
+        // TODO
+    }
+
+    public function testDeletingNonExistentUserReturns404(): void
+    {
+        // TODO
+    }
+
+    public function testDeletingYourOwnUserReturns204(): void
+    {
+        // TODO
+    }
+
     public function testGettingInvalidUserReturns404(): void
     {
         $response = $this->get('/demo/users/0');
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
+    }
+
+    public function testGettingPagedUsersReturnsForbiddenResponseForNonAdmins(): void
+    {
+        // TODO
+    }
+
+    public function testGettingPagedUsersReturnsSuccessfullyForAdmins(): void
+    {
+        // TODO
     }
 }

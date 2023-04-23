@@ -7,8 +7,12 @@ namespace App\Demo\Users\Api\Controllers;
 use Aphiria\Api\Controllers\Controller;
 use Aphiria\Authentication\Attributes\Authenticate;
 use Aphiria\Authorization\Attributes\AuthorizeRoles;
+use Aphiria\Authorization\IAuthority;
+use Aphiria\Authorization\PolicyNotFoundException;
+use Aphiria\Authorization\RequirementHandlerNotFoundException;
 use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IResponse;
+use Aphiria\Routing\Attributes\Delete;
 use Aphiria\Routing\Attributes\Get;
 use Aphiria\Routing\Attributes\Post;
 use Aphiria\Routing\Attributes\RouteGroup;
@@ -25,10 +29,13 @@ use App\Demo\Users\UserViewModel;
 final class UserController extends Controller
 {
     /**
-     * @param IUserService $userService The user service
+     * @param IUserService $users The user service
+     * @param IAuthority $authority The authority
      */
-    public function __construct(private readonly IUserService $userService)
-    {
+    public function __construct(
+        private readonly IUserService $users,
+        private readonly IAuthority $authority
+    ) {
     }
 
     /**
@@ -40,7 +47,34 @@ final class UserController extends Controller
     #[Post('')]
     public function createUser(NewUser $user): UserViewModel
     {
-        return $this->userService->createUser($user);
+        return $this->users->createUser($user);
+    }
+
+    /**
+     * Deletes a user
+     *
+     * @param string $id The ID of the user to delete
+     * @return IResponse The response
+     * @throws HttpException Thrown if the content could not be negotiated
+     * @throws PolicyNotFoundException|RequirementHandlerNotFoundException Thrown if there was an error authorizing this request
+     */
+    #[Delete('/:id'), Authenticate('cookie')]
+    public function deleteUser(string $id): IResponse
+    {
+        try {
+            $userToDelete = $this->users->getUserById($id);
+        } catch (UserNotFoundException $ex) {
+            return $this->notFound();
+        }
+
+        /** @psalm-suppress PossiblyNullArgument The user will be set */
+        if (!$this->authority->authorize($this->getUser(), 'authorized-user-deleter', $userToDelete)->passed) {
+            return $this->forbidden();
+        }
+
+        $this->users->deleteUser($id);
+
+        return $this->noContent();
     }
 
     /**
@@ -55,7 +89,7 @@ final class UserController extends Controller
     #[Get(''), Authenticate('cookie'), AuthorizeRoles('admin')]
     public function getPagedUsers(int $pageNumber = 0, int $pageSize = 100): IResponse
     {
-        return $this->ok($this->userService->getPagedUsers($pageNumber, $pageSize));
+        return $this->ok($this->users->getPagedUsers($pageNumber, $pageSize));
     }
 
     /**
@@ -68,6 +102,6 @@ final class UserController extends Controller
     #[Get(':id'), Authenticate('cookie')]
     public function getUserById(string $id): UserViewModel
     {
-        return $this->userService->getUserById($id);
+        return $this->users->getUserById($id);
     }
 }

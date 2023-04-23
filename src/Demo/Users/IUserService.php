@@ -19,11 +19,18 @@ interface IUserService
     public function createUser(NewUser $newUser, bool $allowRoles = false): UserViewModel;
 
     /**
+     * Deletes a user
+     *
+     * @param string $id The ID of the user to delete
+     */
+    public function deleteUser(string $id): void;
+
+    /**
      * Gets a page of users
      *
      * @param int $pageNumber The page number (0-indexed) to retrieve from
      * @param int $pageSize The size of the page
-     * @return UserViewModel The page of users
+     * @return list<UserViewModel> The page of users
      * @throws InvalidPageException Thrown if the page number or size was invalid
      */
     public function getPagedUsers(int $pageNumber = 0, int $pageSize = 100): array;

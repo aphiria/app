@@ -10,7 +10,7 @@ use App\Demo\Auth\FileTokenService;
 use App\Demo\Auth\ITokenService;
 
 /**
- * Defines the user service binder
+ * Defines the auth service binder
  */
 final class AuthServiceBinder extends Binder
 {
