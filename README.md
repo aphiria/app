@@ -29,7 +29,7 @@ php aphiria app:serve
 
 ## Demo
 
-This app comes with an extremely simple demo that can store and retrieve users from local file storage.  It should not be used in production - it is simply a demo of some Aphiria features.  The demo routes can be found as PHP attributes in [_src/Demo/Api/Controllers/UserController.php_](src/Demo/Api/Controllers/UserController.php).
+This app comes with a simple demo that can store, retrieve, and authenticate users from a local SQLite database.
 
 ### Removing Demo Code
 
