@@ -8,8 +8,7 @@ use Aphiria\Console\Commands\Attributes\Command;
 use Aphiria\Console\Commands\ICommandHandler;
 use Aphiria\Console\Input\Input;
 use Aphiria\Console\Output\IOutput;
-use App\Demo\Auth\SqlTokenSeeder;
-use App\Demo\Users\SqlUserSeeder;
+use App\Demo\Database\GlobalDatabaseSeeder;
 
 /**
  * Defines the database seeder command handler
@@ -18,10 +17,9 @@ use App\Demo\Users\SqlUserSeeder;
 final class DatabaseSeederCommandHandler implements ICommandHandler
 {
     /**
-     * @param SqlUserSeeder $userSeeder What we'll use to seed the user service
-     * @param SqlTokenSeeder $tokenSeeder What we'll use to seed the token service
+     * @param GlobalDatabaseSeeder $globalDatabaseSeeder The global database seeder
      */
-    public function __construct(private readonly SqlUserSeeder $userSeeder, private readonly SqlTokenSeeder $tokenSeeder)
+    public function __construct(private readonly GlobalDatabaseSeeder $globalDatabaseSeeder)
     {
     }
 
@@ -30,12 +28,8 @@ final class DatabaseSeederCommandHandler implements ICommandHandler
      */
     public function handle(Input $input, IOutput $output): void
     {
-        $output->writeln('Seeding users');
-        $this->userSeeder->seed();
-        $output->writeln('<info>Users seeded</info>');
-
-        $output->writeln('Seeding tokens');
-        $this->tokenSeeder->seed();
-        $output->writeln('<info>Tokens seeded</info>');
+        $output->writeln('<info>Seeding database...</info>');
+        $this->globalDatabaseSeeder->seed();
+        $output->writeln('<success>Database seeded</success>');
     }
 }

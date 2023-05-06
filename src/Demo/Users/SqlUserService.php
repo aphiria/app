@@ -24,7 +24,7 @@ final class SqlUserService implements IUserService
     /**
      * @inheritdoc
      */
-    public function createUser(NewUser $newUser, bool $allowRoles = false): UserViewModel
+    public function createUser(NewUser $newUser, bool $allowRoles = false): User
     {
         if (!$allowRoles) {
             // Remove the user's roles
@@ -35,7 +35,8 @@ final class SqlUserService implements IUserService
 
         $this->pdo->beginTransaction();
         // Insert the user
-        $createUserStatement = $this->pdo->prepare(<<<SQL
+        $createUserStatement = $this->pdo->prepare(
+            <<<SQL
 INSERT INTO users (email, hashed_password) VALUES (:email, :hashedPassword)
 SQL
         );
@@ -43,7 +44,7 @@ SQL
             'email' => $normalizedEmail,
             'hashedPassword' => self::hashPassword($newUser->password)
         ]);
-        $createdUser = new UserViewModel(
+        $createdUser = new User(
             (int)$this->pdo->lastInsertId(),
             $normalizedEmail,
             $newUser->roles
@@ -51,7 +52,8 @@ SQL
 
         // Insert the roles
         foreach ($newUser->roles as $role) {
-            $createRoleStatement = $this->pdo->prepare(<<<SQL
+            $createRoleStatement = $this->pdo->prepare(
+                <<<SQL
 INSERT INTO user_roles (user_id, role) VALUES (:userId, :role)
 SQL
             );
@@ -74,14 +76,16 @@ SQL
         $this->pdo->beginTransaction();
 
         // Delete the user roles
-        $deleteRolesStatement = $this->pdo->prepare(<<<SQL
+        $deleteRolesStatement = $this->pdo->prepare(
+            <<<SQL
 DELETE FROM user_roles WHERE user_id = :userId
 SQL
         );
         $deleteRolesStatement->execute(['userId' => $id]);
 
         // Delete the user
-        $deleteUserStatement = $this->pdo->prepare(<<<SQL
+        $deleteUserStatement = $this->pdo->prepare(
+            <<<SQL
 DELETE FROM users WHERE id = :userId
 SQL
         );
@@ -126,7 +130,7 @@ SQL
     /**
      * @inheritdoc
      */
-    public function getUserByEmail(string $email): ?UserViewModel
+    public function getUserByEmail(string $email): ?User
     {
         $rows = $this->queryUserByEmail($email);
 
@@ -140,7 +144,7 @@ SQL
     /**
      * @inheritdoc
      */
-    public function getUserByEmailAndPassword(string $email, string $password): ?UserViewModel
+    public function getUserByEmailAndPassword(string $email, string $password): ?User
     {
         $rows = $this->queryUserByEmail($email);
 
@@ -154,7 +158,7 @@ SQL
     /**
      * @inheritdoc
      */
-    public function getUserById(int $id): UserViewModel
+    public function getUserById(int $id): User
     {
         $statement = $this->pdo->prepare(
             <<<SQL
@@ -179,13 +183,13 @@ SQL
      * Creates a user from an entity
      *
      * @param array{id: int, email: string, roles: ?string, hashed_password?: string} $userRow The row of user data to create the user from
-     * @return UserViewModel The created user
+     * @return User The created user
      */
-    private static function createUserFromRow(array $userRow): UserViewModel
+    private static function createUserFromRow(array $userRow): User
     {
         $roles = $userRow['roles'] === null ? [] : \explode(',', $userRow['roles']);
 
-        return new UserViewModel(
+        return new User(
             (int)$userRow['id'],
             (string)$userRow['email'],
             $roles

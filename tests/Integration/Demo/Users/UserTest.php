@@ -7,7 +7,10 @@ namespace App\Tests\Integration\Demo\Users;
 use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\IAuthenticator;
 use Aphiria\Authentication\IUserAccessor;
+use Aphiria\ContentNegotiation\FailedContentNegotiationException;
+use Aphiria\ContentNegotiation\MediaTypeFormatters\SerializationException;
 use Aphiria\DependencyInjection\Container;
+use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\IResponse;
@@ -15,26 +18,24 @@ use Aphiria\Security\Claim;
 use Aphiria\Security\ClaimType;
 use Aphiria\Security\Identity;
 use Aphiria\Security\IPrincipal;
-use Aphiria\Security\User;
+use Aphiria\Security\User as Principal;
+use App\Demo\Database\GlobalDatabaseSeeder;
 use App\Demo\Users\NewUser;
-use App\Demo\Users\SqlUserSeeder;
-use App\Demo\Users\UserViewModel;
+use App\Demo\Users\User;
 use App\Tests\Integration\IntegrationTestCase;
-use PHPUnit\Framework\Attributes\TestWith;
+use Exception;
 
 class UserTest extends IntegrationTestCase
 {
     private IAuthenticator $authenticator;
-    /** @var list<UserViewModel> The list of users to delete at the end of each test */
+    /** @var list<User> The list of users to delete at the end of each test */
     private array $createdUsers = [];
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        // TODO: Figure out how to run ALL seeders (maybe the CLI command??)
-        $userSeeder = Container::$globalInstance?->resolve(SqlUserSeeder::class);
-        $userSeeder?->seed();
+        Container::$globalInstance?->resolve(GlobalDatabaseSeeder::class)->seed();
         $this->createTestingAuthenticator();
 
         /**
@@ -50,29 +51,32 @@ class UserTest extends IntegrationTestCase
     {
         parent::tearDown();
 
+        // Create an admin user to delete the user with
+        $claims = [
+            new Claim(ClaimType::NameIdentifier, 'foo', 'example.com'),
+            new Claim(ClaimType::Role, 'admin', 'example.com')
+        ];
+        $adminUser = new Principal(new Identity($claims));
+
         // Clean up after our integration tests
         foreach ($this->createdUsers as $user) {
-            // TODO: Needs auth
-            $this->delete("/demo/users/$user->id");
+            $this->assertStatusCodeEquals(
+                HttpStatusCode::NoContent,
+                $this->actingAs($adminUser)->delete("/demo/users/$user->id")
+            );
         }
     }
 
-    #[TestWith([new NewUser('foo@bar.com', 'foo')])]
-    public function testCreatingUsersMakesThemRetrievableAsAdminUser(NewUser $newUser): void
+    public function testCreatingUsersMakesThemRetrievableAsAdminUser(): void
     {
-        // Create some users
-        $response = $this->post('/demo/users', [], $newUser);
-        /** @var UserViewModel $createdUser */
-        $createdUser = $this->readResponseBodyAs(UserViewModel::class, $response);
-        // Make sure we clean this user up later
-        $this->createdUsers[] = $createdUser;
+        $createdUser = $this->createUser();
 
         // Check that the user can be retrieved
         $claims = [
             new Claim(ClaimType::NameIdentifier, 'foo', 'example.com'),
             new Claim(ClaimType::Role, 'admin', 'example.com')
         ];
-        $adminUser = new User(new Identity($claims));
+        $adminUser = new Principal(new Identity($claims));
         $response = $this->actingAs($adminUser)->get("/demo/users/{$createdUser->id}");
         $this->assertStatusCodeEquals(200, $response);
         $this->assertParsedBodyEquals($createdUser, $response);
@@ -80,26 +84,28 @@ class UserTest extends IntegrationTestCase
 
     public function testDeletingAnotherUserAsAdminReturns204(): void
     {
+        $createdUser = $this->createUser();
+
+        // Try deleting the created user
         $claims = [
             new Claim(ClaimType::NameIdentifier, 'foo', 'example.com'),
             new Claim(ClaimType::Role, 'admin', 'example.com')
         ];
-        $adminUser = new User(new Identity($claims));
-        $createUserResponse = $this->post('/demo/users', body: new NewUser('test@example.com', 'password'));
-        /** @var UserViewModel $createdUser */
-        $createdUser = $this->readResponseBodyAs(UserViewModel::class, $createUserResponse);
+        $adminUser = new Principal(new Identity($claims));
         $deleteUserResponse = $this->actingAs($adminUser)->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $deleteUserResponse);
     }
 
     public function testDeletingAnotherUserAsNonAdminReturns403(): void
     {
+        $createdUser = $this->createUser();
+
+        // Try deleting the created user
         $claims = [
             new Claim(ClaimType::NameIdentifier, 'foo', 'example.com')
         ];
-        $nonAdminUser = new User(new Identity($claims));
-        // TODO: This is a hard-coded user ID.  Needs to be dynamically created once I've figured out way of grabbing parsed body.
-        $response = $this->actingAs($nonAdminUser)->delete('/demo/users/452b0ee6-7597-45a1-83e2-c70f2ad939f0');
+        $nonAdminUser = new Principal(new Identity($claims));
+        $response = $this->actingAs($nonAdminUser)->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
@@ -115,7 +121,7 @@ class UserTest extends IntegrationTestCase
 
     public function testGettingInvalidUserReturns404(): void
     {
-        $response = $this->get('/demo/users/0');
+        $response = $this->actingAs(new Principal(new Identity([])))->get('/demo/users/0');
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
     }
 
@@ -189,5 +195,23 @@ class UserTest extends IntegrationTestCase
 
         // Bind these mocks to the container
         Container::$globalInstance?->bindInstance(IAuthenticator::class, $this->authenticator);
+    }
+
+    /**
+     * Creates a user for use in integration tests
+     *
+     * @return User The created user
+     * @throws FailedContentNegotiationException|SerializationException|HttpException|Exception Thrown if there was an error creating the user
+     */
+    private function createUser(): User
+    {
+        // Create a unique email address so we do not have collisions
+        $newUser = new NewUser(\bin2hex(\random_bytes(8)) . '@example.com', 'password');
+        /** @var User $createdUser */
+        $createdUser = $this->readResponseBodyAs(User::class, $this->post('/demo/users', body: $newUser));
+        // Make sure we clean this user up later
+        $this->createdUsers[] = $createdUser;
+
+        return $createdUser;
     }
 }

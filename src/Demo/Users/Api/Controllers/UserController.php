@@ -19,8 +19,8 @@ use Aphiria\Routing\Attributes\RouteGroup;
 use App\Demo\Users\InvalidPageException;
 use App\Demo\Users\IUserService;
 use App\Demo\Users\NewUser;
+use App\Demo\Users\User;
 use App\Demo\Users\UserNotFoundException;
-use App\Demo\Users\UserViewModel;
 
 /**
  * Defines the user controller
@@ -42,10 +42,10 @@ final class UserController extends Controller
      * Creates a user
      *
      * @param NewUser $user The user to create
-     * @return UserViewModel The created user
+     * @return User The created user
      */
     #[Post('')]
-    public function createUser(NewUser $user): UserViewModel
+    public function createUser(NewUser $user): User
     {
         return $this->users->createUser($user);
     }
@@ -96,11 +96,11 @@ final class UserController extends Controller
      * Gets a user with the input ID
      *
      * @param int $id The ID of the user to get
-     * @return UserViewModel The user with the input ID
+     * @return User The user with the input ID
      * @throws UserNotFoundException Thrown if there was no user with the input ID
      */
     #[Get(':id'), Authenticate('cookie')]
-    public function getUserById(int $id): UserViewModel
+    public function getUserById(int $id): User
     {
         return $this->users->getUserById($id);
     }

@@ -8,13 +8,13 @@ use Aphiria\Authorization\AuthorizationContext;
 use Aphiria\Authorization\IAuthorizationRequirementHandler;
 use Aphiria\Security\ClaimType;
 use Aphiria\Security\IPrincipal;
-use App\Demo\Users\UserViewModel;
+use App\Demo\Users\User;
 use InvalidArgumentException;
 
 /**
  * Defines the requirement handler that checks if a user is authorized to delete another user's account
  *
- * @implements IAuthorizationRequirementHandler<AuthorizedUserDeleterRequirement, UserViewModel>
+ * @implements IAuthorizationRequirementHandler<AuthorizedUserDeleterRequirement, User>
  */
 final class AuthorizedUserDeleterRequirementHandler implements IAuthorizationRequirementHandler
 {
@@ -29,8 +29,8 @@ final class AuthorizedUserDeleterRequirementHandler implements IAuthorizationReq
 
         $userToDelete = $authorizationContext->resource;
 
-        if (!$userToDelete instanceof UserViewModel) {
-            throw new InvalidArgumentException('Resource must be of type ' . UserViewModel::class);
+        if (!$userToDelete instanceof User) {
+            throw new InvalidArgumentException('Resource must be of type ' . User::class);
         }
 
         if ($userToDelete->id === (int)$user->getPrimaryIdentity()?->getNameIdentifier()) {

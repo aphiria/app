@@ -7,9 +7,9 @@ namespace App\Demo\Users;
 use Aphiria\Validation\Constraints\Attributes\Email;
 
 /**
- * Defines the user view model
+ * Defines a registered user
  */
-readonly class UserViewModel
+readonly class User
 {
     /**
      * @param int $id The user's ID

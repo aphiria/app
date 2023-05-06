@@ -12,18 +12,22 @@ use Aphiria\Authorization\AuthorizationPolicy;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\Headers\SameSiteMode;
 use App\Demo\Auth\Binders\AuthServiceBinder;
+use App\Demo\Database\Components\DatabaseComponents;
 
 /**
  * Defines the auth module
  */
 final class AuthModule extends AphiriaModule
 {
+    use DatabaseComponents;
+
     /**
      * @inheritdoc
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
         $this->withBinders($appBuilder, new AuthServiceBinder())
+            ->withDatabaseSeeders($appBuilder, SqlTokenSeeder::class)
             ->withAuthenticationScheme(
                 $appBuilder,
                 new AuthenticationScheme(

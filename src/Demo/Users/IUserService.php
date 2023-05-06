@@ -14,9 +14,9 @@ interface IUserService
      *
      * @param NewUser $newUser The user to create
      * @param bool $allowRoles Whether we allow the new user to specify their roles (mostly useful with seeding the users with an admin user)
-     * @return UserViewModel The created user
+     * @return User The created user
      */
-    public function createUser(NewUser $newUser, bool $allowRoles = false): UserViewModel;
+    public function createUser(NewUser $newUser, bool $allowRoles = false): User;
 
     /**
      * Deletes a user
@@ -30,7 +30,7 @@ interface IUserService
      *
      * @param int $pageNumber The page number (0-indexed) to retrieve from
      * @param int $pageSize The size of the page
-     * @return list<UserViewModel> The page of users
+     * @return list<User> The page of users
      * @throws InvalidPageException Thrown if the page number or size was invalid
      */
     public function getPagedUsers(int $pageNumber = 1, int $pageSize = 100): array;
@@ -39,25 +39,25 @@ interface IUserService
      * Gets a user with the input email address
      *
      * @param string $email The email address to look up
-     * @return UserViewModel|null The user if one was found, otherwise null
+     * @return User|null The user if one was found, otherwise null
      */
-    public function getUserByEmail(string $email): ?UserViewModel;
+    public function getUserByEmail(string $email): ?User;
 
     /**
      * Gets a user with the input credentials
      *
      * @param string $email The email address to look up
      * @param string $password The user password
-     * @return UserViewModel|null The user if one was found, otherwise null
+     * @return User|null The user if one was found, otherwise null
      */
-    public function getUserByEmailAndPassword(string $email, string $password): ?UserViewModel;
+    public function getUserByEmailAndPassword(string $email, string $password): ?User;
 
     /**
      * Gets a user by ID
      *
      * @param int $id The ID to search for
-     * @return UserViewModel The user with the corresponding ID
+     * @return User The user with the corresponding ID
      * @throws UserNotFoundException Thrown if no user with that ID was found
      */
-    public function getUserById(int $id): UserViewModel;
+    public function getUserById(int $id): User;
 }
