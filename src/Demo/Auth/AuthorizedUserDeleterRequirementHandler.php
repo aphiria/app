@@ -33,7 +33,7 @@ final class AuthorizedUserDeleterRequirementHandler implements IAuthorizationReq
             throw new InvalidArgumentException('Resource must be of type ' . UserViewModel::class);
         }
 
-        if ($userToDelete->id === $user->getPrimaryIdentity()?->getNameIdentifier()) {
+        if ($userToDelete->id === (int)$user->getPrimaryIdentity()?->getNameIdentifier()) {
             // The user being deleted is the current user
             $authorizationContext->requirementPassed($requirement);
 

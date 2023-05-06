@@ -6,8 +6,8 @@ namespace App\Demo\Users\Binders;
 
 use Aphiria\DependencyInjection\Binders\Binder;
 use Aphiria\DependencyInjection\IContainer;
-use App\Demo\Users\FileUserService;
 use App\Demo\Users\IUserService;
+use App\Demo\Users\SqlUserService;
 
 /**
  * Defines the user service binder
@@ -20,8 +20,6 @@ final class UserServiceBinder extends Binder
     public function bind(IContainer $container): void
     {
         // Configure the user service
-        $filePath = __DIR__ . '/../../../../tmp/demo/users-' . (string)\getenv('APP_ENV') . '.json';
-        $users = new FileUserService($filePath);
-        $container->bindInstance(IUserService::class, $users);
+        $container->bindClass(IUserService::class, SqlUserService::class, resolveAsSingleton: true);
     }
 }

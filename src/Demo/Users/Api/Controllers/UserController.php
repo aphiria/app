@@ -53,13 +53,13 @@ final class UserController extends Controller
     /**
      * Deletes a user
      *
-     * @param string $id The ID of the user to delete
+     * @param int $id The ID of the user to delete
      * @return IResponse The response
      * @throws HttpException Thrown if the content could not be negotiated
      * @throws PolicyNotFoundException|RequirementHandlerNotFoundException Thrown if there was an error authorizing this request
      */
     #[Delete('/:id'), Authenticate('cookie')]
-    public function deleteUser(string $id): IResponse
+    public function deleteUser(int $id): IResponse
     {
         try {
             $userToDelete = $this->users->getUserById($id);
@@ -87,7 +87,7 @@ final class UserController extends Controller
      * @throws InvalidPageException Thrown if the pagination parameters were invalid
      */
     #[Get(''), Authenticate('cookie'), AuthorizeRoles('admin')]
-    public function getPagedUsers(int $pageNumber = 0, int $pageSize = 100): IResponse
+    public function getPagedUsers(int $pageNumber = 1, int $pageSize = 100): IResponse
     {
         return $this->ok($this->users->getPagedUsers($pageNumber, $pageSize));
     }
@@ -95,12 +95,12 @@ final class UserController extends Controller
     /**
      * Gets a user with the input ID
      *
-     * @param string $id The ID of the user to get
+     * @param int $id The ID of the user to get
      * @return UserViewModel The user with the input ID
      * @throws UserNotFoundException Thrown if there was no user with the input ID
      */
     #[Get(':id'), Authenticate('cookie')]
-    public function getUserById(string $id): UserViewModel
+    public function getUserById(int $id): UserViewModel
     {
         return $this->users->getUserById($id);
     }

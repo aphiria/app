@@ -12,23 +12,26 @@ interface ITokenService
     /**
      * Creates a token for a user
      *
-     * @param string $userId The user ID that the token belongs to
+     * @param int $userId The user ID that the token belongs to
+     * @param int $ttlSeconds The number of seconds the token is valid for
      * @return string The token
      */
-    public function createToken(string $userId): string;
+    public function createToken(int $userId, int $ttlSeconds): string;
 
     /**
      * Expires the input token
      *
+     * @param int $userId The ID of the user whose token we're expiring
      * @param string $token The token to expire
      */
-    public function expireToken(string $token): void;
+    public function expireToken(int $userId, string $token): void;
 
     /**
-     * Gets the user ID with the input token
+     * Validates a token
      *
-     * @param string $token The token to search for
-     * @return string|null The user ID if one was found, otherwise null
+     * @param int $userId The ID of the user who the token belongs to
+     * @param string $token The token to validate
+     * @return bool True if the token is valid for the given user, otherwise false
      */
-    public function getUserIdFromToken(string $token): ?string;
+    public function validateToken(int $userId, string $token): bool;
 }

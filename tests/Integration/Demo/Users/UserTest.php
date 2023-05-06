@@ -17,22 +17,23 @@ use Aphiria\Security\Identity;
 use Aphiria\Security\IPrincipal;
 use Aphiria\Security\User;
 use App\Demo\Users\NewUser;
-use App\Demo\Users\UserSeeder;
+use App\Demo\Users\SqlUserSeeder;
 use App\Demo\Users\UserViewModel;
 use App\Tests\Integration\IntegrationTestCase;
 use PHPUnit\Framework\Attributes\TestWith;
 
 class UserTest extends IntegrationTestCase
 {
+    private IAuthenticator $authenticator;
     /** @var list<UserViewModel> The list of users to delete at the end of each test */
     private array $createdUsers = [];
-    private IAuthenticator $authenticator;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $userSeeder = Container::$globalInstance?->resolve(UserSeeder::class);
+        // TODO: Figure out how to run ALL seeders (maybe the CLI command??)
+        $userSeeder = Container::$globalInstance?->resolve(SqlUserSeeder::class);
         $userSeeder?->seed();
         $this->createTestingAuthenticator();
 
@@ -128,6 +129,16 @@ class UserTest extends IntegrationTestCase
         // TODO
     }
 
+    // TODO: Figure out where to actually put this logic
+    // TODO: This should be scoped for a single request, whereas it's setting the user for all subsequent requests.  Maybe it should take a callback with the client call or something?
+    protected function actingAs(IPrincipal $user): static
+    {
+        // TODO: How should this work in real life?  I'd have to check if IAuthenticator is an instance of some new TestAuthentication, which would have that public property, and if so it'd set that property.  However, is that too constraining to impose a specific test authenticator on users?
+        $this->authenticator->expectedAuthenticationResult = AuthenticationResult::pass($user);
+
+        return $this;
+    }
+
     // TODO: Remove this once I've done some PoC work
     protected function createTestingAuthenticator(): void
     {
@@ -178,15 +189,5 @@ class UserTest extends IntegrationTestCase
 
         // Bind these mocks to the container
         Container::$globalInstance?->bindInstance(IAuthenticator::class, $this->authenticator);
-    }
-
-    // TODO: Figure out where to actually put this logic
-    // TODO: This should be scoped for a single request, whereas it's setting the user for all subsequent requests.  Maybe it should take a callback with the client call or something?
-    protected function actingAs(IPrincipal $user): static
-    {
-        // TODO: How should this work in real life?  I'd have to check if IAuthenticator is an instance of some new TestAuthentication, which would have that public property, and if so it'd set that property.  However, is that too constraining to impose a specific test authenticator on users?
-        $this->authenticator->expectedAuthenticationResult = AuthenticationResult::pass($user);
-
-        return $this;
     }
 }

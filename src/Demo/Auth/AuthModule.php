@@ -31,7 +31,7 @@ final class AuthModule extends AphiriaModule
                     CookieAuthenticationHandler::class,
                     new CookieAuthenticationOptions(
                         cookieName: 'authToken',
-                        cookieMaxAge: 360,
+                        cookieMaxAge: 3600,
                         cookiePath: '/',
                         cookieDomain: (string)\getenv('APP_COOKIE_DOMAIN'),
                         cookieIsSecure: (bool)\getenv('APP_COOKIE_SECURE'),

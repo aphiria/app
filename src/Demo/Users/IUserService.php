@@ -21,9 +21,9 @@ interface IUserService
     /**
      * Deletes a user
      *
-     * @param string $id The ID of the user to delete
+     * @param int $id The ID of the user to delete
      */
-    public function deleteUser(string $id): void;
+    public function deleteUser(int $id): void;
 
     /**
      * Gets a page of users
@@ -33,7 +33,15 @@ interface IUserService
      * @return list<UserViewModel> The page of users
      * @throws InvalidPageException Thrown if the page number or size was invalid
      */
-    public function getPagedUsers(int $pageNumber = 0, int $pageSize = 100): array;
+    public function getPagedUsers(int $pageNumber = 1, int $pageSize = 100): array;
+
+    /**
+     * Gets a user with the input email address
+     *
+     * @param string $email The email address to look up
+     * @return UserViewModel|null The user if one was found, otherwise null
+     */
+    public function getUserByEmail(string $email): ?UserViewModel;
 
     /**
      * Gets a user with the input credentials
@@ -47,9 +55,9 @@ interface IUserService
     /**
      * Gets a user by ID
      *
-     * @param string $id The ID to search for
+     * @param int $id The ID to search for
      * @return UserViewModel The user with the corresponding ID
      * @throws UserNotFoundException Thrown if no user with that ID was found
      */
-    public function getUserById(string $id): UserViewModel;
+    public function getUserById(int $id): UserViewModel;
 }

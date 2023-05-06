@@ -27,6 +27,8 @@
     "require": {
         "aphiria/aphiria": "1.x-dev",
         "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-sqlite3": "*",
         "php": ">=8.2",
         "symfony/dotenv": "^6.1"
     },

@@ -36,6 +36,7 @@ use Aphiria\Framework\Validation\Binders\ValidationBinder;
 use Aphiria\Middleware\MiddlewareBinding;
 use Aphiria\Net\Http\HttpException;
 use App\Demo\Auth\AuthModule;
+use App\Demo\Database\DatabaseModule;
 use App\Demo\Users\UserModule;
 use Exception;
 use Psr\Log\LogLevel;
@@ -101,6 +102,7 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
                 return $ex->response->getStatusCode()->value >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
             })
             ->withModules($appBuilder, [
+                new DatabaseModule(),
                 new UserModule(),
                 new AuthModule()
             ]);
