@@ -14,7 +14,7 @@ use App\Demo\Database\IDatabaseSeeder;
 trait DatabaseComponents
 {
     /**
-     * Registers database seeders to the application
+     * Registers a database seeder or seeders to the application
      *
      * @param IApplicationBuilder $appBuilder The application builder
      * @param class-string<IDatabaseSeeder>|list<class-string<IDatabaseSeeder>> $classNames The name or names of database seeder classes to add
@@ -27,7 +27,7 @@ trait DatabaseComponents
         }
 
         $appBuilder->getComponent(DatabaseSeederComponent::class)
-            ->withDatabaseSeeder($classNames);
+            ->withDatabaseSeeders($classNames);
 
         return $this;
     }

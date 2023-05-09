@@ -39,12 +39,12 @@ final class DatabaseSeederComponent implements IComponent
     }
 
     /**
-     * Adds a database seeder to the application
+     * Adds a database seeder or seeders to the application
      *
      * @param class-string<IDatabaseSeeder>|list<class-string<IDatabaseSeeder>> $classNames The name or names of database seeders to register
      * @return static For chaining
      */
-    public function withDatabaseSeeder(array|string $classNames): static
+    public function withDatabaseSeeders(array|string $classNames): static
     {
         $classNames = \is_string($classNames) ? [$classNames] : $classNames;
         $this->databaseSeeders = [...$this->databaseSeeders, ...$classNames];

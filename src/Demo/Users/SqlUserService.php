@@ -187,7 +187,7 @@ SQL
      */
     private static function createUserFromRow(array $userRow): User
     {
-        $roles = $userRow['roles'] === null ? [] : \explode(',', $userRow['roles']);
+        $roles = \explode(',', $userRow['roles'] ?? '');
 
         return new User(
             (int)$userRow['id'],
