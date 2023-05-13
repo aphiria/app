@@ -86,7 +86,7 @@ final class UserController extends Controller
      * @throws HttpException Thrown if there was an error creating the response
      * @throws InvalidPageException Thrown if the pagination parameters were invalid
      */
-    #[Get(''), Authenticate('cookie'), AuthorizeRoles('admin')]
+    #[Get(''), AuthorizeRoles('admin')]
     public function getPagedUsers(int $pageNumber = 1, int $pageSize = 100): IResponse
     {
         return $this->ok($this->users->getPagedUsers($pageNumber, $pageSize));

@@ -57,7 +57,8 @@ class UserTest extends IntegrationTestCase
         $adminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
                 $identity->withNameIdentifier('foo')
-                    ->withRoles('admin');
+                    ->withRoles('admin')
+                    ->withAuthenticationSchemeName('cookie');
             })->build();
 
         // Clean up after our integration tests
@@ -168,7 +169,7 @@ class UserTest extends IntegrationTestCase
             })->build();
         $response = $this->actingAs($adminUser)->get('/demo/users');
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
-        $this->assertNotEmpty($response->getBody()->readAsString());
+        $this->assertNotEmpty($response->getBody()?->readAsString());
     }
 
     // TODO: Figure out where to actually put this logic

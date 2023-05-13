@@ -30,6 +30,7 @@ final class AuthModule extends AphiriaModule
     {
         $this->withBinders($appBuilder, new AuthServiceBinder())
             ->withDatabaseSeeders($appBuilder, SqlTokenSeeder::class)
+            // Add our default authentication scheme
             ->withAuthenticationScheme(
                 $appBuilder,
                 new AuthenticationScheme(
@@ -47,7 +48,8 @@ final class AuthModule extends AphiriaModule
                         forbiddenPagePath: '/access-denied',
                         claimsIssuer: (string)\getenv('APP_COOKIE_DOMAIN')
                     )
-                )
+                ),
+                true
             )
             ->withAuthenticationScheme(
                 $appBuilder,
