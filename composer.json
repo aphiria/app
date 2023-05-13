@@ -45,6 +45,7 @@
             "php -r \"file_exists('.env') || copy('.env.dist', '.env');\""
         ],
         "post-create-project-cmd": [
+            "php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
             "php -r \"echo 'Important: make ' . __DIR__ . DIRECTORY_SEPARATOR . 'tmp writable' . PHP_EOL;\""
         ],
         "post-install-cmd": [

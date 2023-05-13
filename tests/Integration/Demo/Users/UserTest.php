@@ -17,7 +17,9 @@ use Aphiria\Net\Http\IResponse;
 use Aphiria\Security\Claim;
 use Aphiria\Security\ClaimType;
 use Aphiria\Security\Identity;
+use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\IPrincipal;
+use Aphiria\Security\PrincipalBuilder;
 use Aphiria\Security\User as Principal;
 use App\Demo\Database\GlobalDatabaseSeeder;
 use App\Demo\Users\NewUser;
@@ -52,11 +54,11 @@ class UserTest extends IntegrationTestCase
         parent::tearDown();
 
         // Create an admin user to delete the user with
-        $claims = [
-            new Claim(ClaimType::NameIdentifier, 'foo', 'example.com'),
-            new Claim(ClaimType::Role, 'admin', 'example.com')
-        ];
-        $adminUser = new Principal(new Identity($claims));
+        $adminUser = (new PrincipalBuilder('example.com'))
+            ->withIdentity(function (IdentityBuilder $identity) {
+                $identity->withNameIdentifier('foo')
+                    ->withRoles('admin');
+            })->build();
 
         // Clean up after our integration tests
         foreach ($this->createdUsers as $user) {
@@ -72,11 +74,11 @@ class UserTest extends IntegrationTestCase
         $createdUser = $this->createUser();
 
         // Check that the user can be retrieved
-        $claims = [
-            new Claim(ClaimType::NameIdentifier, 'foo', 'example.com'),
-            new Claim(ClaimType::Role, 'admin', 'example.com')
-        ];
-        $adminUser = new Principal(new Identity($claims));
+        $adminUser = (new PrincipalBuilder('example.com'))
+            ->withIdentity(function (IdentityBuilder $identity) {
+                $identity->withNameIdentifier('foo')
+                    ->withRoles('admin');
+            })->build();
         $response = $this->actingAs($adminUser)->get("/demo/users/{$createdUser->id}");
         $this->assertStatusCodeEquals(200, $response);
         $this->assertParsedBodyEquals($createdUser, $response);
@@ -84,14 +86,14 @@ class UserTest extends IntegrationTestCase
 
     public function testDeletingAnotherUserAsAdminReturns204(): void
     {
-        $createdUser = $this->createUser();
+        $createdUser = $this->createUser(false);
 
         // Try deleting the created user
-        $claims = [
-            new Claim(ClaimType::NameIdentifier, 'foo', 'example.com'),
-            new Claim(ClaimType::Role, 'admin', 'example.com')
-        ];
-        $adminUser = new Principal(new Identity($claims));
+        $adminUser = (new PrincipalBuilder('example.com'))
+            ->withIdentity(function (IdentityBuilder $identity) {
+                $identity->withNameIdentifier('foo')
+                    ->withRoles('admin');
+            })->build();
         $deleteUserResponse = $this->actingAs($adminUser)->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $deleteUserResponse);
     }
@@ -101,10 +103,10 @@ class UserTest extends IntegrationTestCase
         $createdUser = $this->createUser();
 
         // Try deleting the created user
-        $claims = [
-            new Claim(ClaimType::NameIdentifier, 'foo', 'example.com')
-        ];
-        $nonAdminUser = new Principal(new Identity($claims));
+        $nonAdminUser = (new PrincipalBuilder('example.com'))
+            ->withIdentity(function (IdentityBuilder $identity) {
+                $identity->withNameIdentifier('foo');
+            })->build();
         $response = $this->actingAs($nonAdminUser)->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
@@ -200,17 +202,21 @@ class UserTest extends IntegrationTestCase
     /**
      * Creates a user for use in integration tests
      *
+     * @param bool $cleanUp Whether to clean up the user after each test has run
      * @return User The created user
      * @throws FailedContentNegotiationException|SerializationException|HttpException|Exception Thrown if there was an error creating the user
      */
-    private function createUser(): User
+    private function createUser(bool $cleanUp = true): User
     {
         // Create a unique email address so we do not have collisions
         $newUser = new NewUser(\bin2hex(\random_bytes(8)) . '@example.com', 'password');
         /** @var User $createdUser */
         $createdUser = $this->readResponseBodyAs(User::class, $this->post('/demo/users', body: $newUser));
-        // Make sure we clean this user up later
-        $this->createdUsers[] = $createdUser;
+
+        if ($cleanUp) {
+            // Make sure we clean this user up later
+            $this->createdUsers[] = $createdUser;
+        }
 
         return $createdUser;
     }
