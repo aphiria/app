@@ -113,12 +113,27 @@ class UserTest extends IntegrationTestCase
 
     public function testDeletingNonExistentUserReturns404(): void
     {
-        // TODO
+        $adminUser = (new PrincipalBuilder('example.com'))
+            ->withIdentity(function (IdentityBuilder $identity) {
+                $identity->withNameIdentifier('foo')
+                    ->withRoles('admin');
+            })->build();
+        // Pass in a dummy user ID
+        $deleteUserResponse = $this->actingAs($adminUser)->delete("/demo/users/0");
+        $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $deleteUserResponse);
     }
 
     public function testDeletingYourOwnUserReturns204(): void
     {
-        // TODO
+        $createdUser = $this->createUser(false);
+
+        // Try deleting the created user
+        $createdUserPrincipal = (new PrincipalBuilder('example.com'))
+            ->withIdentity(function (IdentityBuilder $identity) use ($createdUser) {
+                $identity->withNameIdentifier($createdUser->id);
+            })->build();
+        $response = $this->actingAs($createdUserPrincipal)->delete("/demo/users/$createdUser->id");
+        $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $response);
     }
 
     public function testGettingInvalidUserReturns404(): void
@@ -129,7 +144,14 @@ class UserTest extends IntegrationTestCase
 
     public function testGettingPagedUsersReturnsForbiddenResponseForNonAdmins(): void
     {
-        // TODO
+        $nonAdminUser = (new PrincipalBuilder('example.com'))
+            ->withIdentity(function (IdentityBuilder $identity) {
+                $identity->withNameIdentifier('foo')
+                    // TODO: Do I need this?  Regardless, it's causing a 500.
+                    ->withAuthenticationSchemeName('cookie');
+            })->build();
+        $response = $this->actingAs($nonAdminUser)->get("/demo/users");
+        $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
     public function testGettingPagedUsersReturnsSuccessfullyForAdmins(): void
