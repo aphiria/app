@@ -14,8 +14,6 @@ use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\IResponse;
-use Aphiria\Security\Claim;
-use Aphiria\Security\ClaimType;
 use Aphiria\Security\Identity;
 use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\IPrincipal;
@@ -120,7 +118,7 @@ class UserTest extends IntegrationTestCase
                     ->withRoles('admin');
             })->build();
         // Pass in a dummy user ID
-        $deleteUserResponse = $this->actingAs($adminUser)->delete("/demo/users/0");
+        $deleteUserResponse = $this->actingAs($adminUser)->delete('/demo/users/0');
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $deleteUserResponse);
     }
 
@@ -152,7 +150,7 @@ class UserTest extends IntegrationTestCase
                     // TODO: Should #[Authorize] automatically include #[Authenticate]?  What's the precedence in other frameworks?
                     ->withAuthenticationSchemeName('cookie');
             })->build();
-        $response = $this->actingAs($nonAdminUser)->get("/demo/users");
+        $response = $this->actingAs($nonAdminUser)->get('/demo/users');
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 

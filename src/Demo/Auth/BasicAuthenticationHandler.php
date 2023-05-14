@@ -8,9 +8,8 @@ use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\AuthenticationScheme;
 use Aphiria\Authentication\Schemes\BasicAuthenticationHandler as BaseBasicAuthenticationHandler;
 use Aphiria\Net\Http\IRequest;
-use Aphiria\Security\Claim;
-use Aphiria\Security\ClaimType;
-use Aphiria\Security\Identity;
+use Aphiria\Security\IdentityBuilder;
+use Aphiria\Security\PrincipalBuilder;
 use Aphiria\Security\User;
 use App\Demo\Users\IUserService;
 
@@ -39,19 +38,14 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
             return AuthenticationResult::fail('Invalid credentials');
         }
 
-        $claimsIssuer = $scheme->options->claimsIssuer ?? $scheme->name;
-        $claims = [
-            new Claim(ClaimType::NameIdentifier, $user->id, $claimsIssuer),
-            new Claim(ClaimType::Email, $user->email, $claimsIssuer)
-        ];
-
-        foreach ($user->roles as $role) {
-            $claims[] = new Claim(ClaimType::Role, $role, $claimsIssuer);
-        }
-
-        /** @var list<Claim<mixed>> $claims */
         return AuthenticationResult::pass(
-            new User(new Identity($claims, $scheme->name))
+            (new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name))
+                ->withIdentity(function (IdentityBuilder $identity) use ($user, $scheme) {
+                    $identity->withNameIdentifier($user->id)
+                        ->withEmail($user->email)
+                        ->withRoles($user->roles)
+                        ->withAuthenticationSchemeName($scheme->name);
+                })->build()
         );
     }
 }
