@@ -9,6 +9,8 @@ use Aphiria\Authentication\AuthenticationScheme;
 use Aphiria\Authentication\Schemes\BasicAuthenticationOptions;
 use Aphiria\Authentication\Schemes\CookieAuthenticationOptions;
 use Aphiria\Authorization\AuthorizationPolicy;
+use Aphiria\Authorization\RequirementHandlers\RolesRequirement;
+use Aphiria\Authorization\RequirementHandlers\RolesRequirementHandler;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\Headers\SameSiteMode;
 use App\Demo\Auth\Binders\AuthServiceBinder;
@@ -59,6 +61,11 @@ final class AuthModule extends AphiriaModule
                 $appBuilder,
                 AuthorizedUserDeleterRequirement::class,
                 new AuthorizedUserDeleterRequirementHandler()
+            )
+            ->withAuthorizationRequirementHandler(
+                $appBuilder,
+                RolesRequirement::class,
+                new RolesRequirementHandler()
             )
             ->withAuthorizationPolicy(
                 $appBuilder,

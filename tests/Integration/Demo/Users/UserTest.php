@@ -147,7 +147,8 @@ class UserTest extends IntegrationTestCase
         $nonAdminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
                 $identity->withNameIdentifier('foo')
-                    // TODO: Do I need this?  Regardless, it's causing a 500.
+                    // TODO: Should I need to be specifying auth scheme here and elsewhere?  Why or why not?
+                    // TODO: Should #[Authorize] automatically include #[Authenticate]?  What's the precedence in other frameworks?
                     ->withAuthenticationSchemeName('cookie');
             })->build();
         $response = $this->actingAs($nonAdminUser)->get("/demo/users");
@@ -156,7 +157,18 @@ class UserTest extends IntegrationTestCase
 
     public function testGettingPagedUsersReturnsSuccessfullyForAdmins(): void
     {
-        // TODO
+        // Since our testing database may have many users, we can't know for sure what the result will be
+        // So, just test that this returns ok
+        $this->createUser();
+        $adminUser = (new PrincipalBuilder('example.com'))
+            ->withIdentity(function (IdentityBuilder $identity) {
+                $identity->withNameIdentifier('foo')
+                    ->withRoles('admin')
+                    ->withAuthenticationSchemeName('cookie');
+            })->build();
+        $response = $this->actingAs($adminUser)->get('/demo/users');
+        $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
+        $this->assertNotEmpty($response->getBody()->readAsString());
     }
 
     // TODO: Figure out where to actually put this logic
