@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Demo\Database;
 
-use Aphiria\Application\Builders\IApplicationBuilder;
+use Aphiria\Application\IApplicationBuilder;
 use Aphiria\Framework\Application\AphiriaModule;
 use App\Demo\Database\Binders\DatabaseBinder;
 

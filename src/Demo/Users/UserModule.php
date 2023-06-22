@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Demo\Users;
 
-use Aphiria\Application\Builders\IApplicationBuilder;
+use Aphiria\Application\IApplicationBuilder;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\HttpStatusCode;
 use App\Demo\Database\Components\DatabaseComponents;

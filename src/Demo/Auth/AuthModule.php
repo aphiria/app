@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Demo\Auth;
 
-use Aphiria\Application\Builders\IApplicationBuilder;
+use Aphiria\Application\IApplicationBuilder;
 use Aphiria\Authentication\AuthenticationScheme;
 use Aphiria\Authentication\Schemes\BasicAuthenticationOptions;
 use Aphiria\Authentication\Schemes\CookieAuthenticationOptions;

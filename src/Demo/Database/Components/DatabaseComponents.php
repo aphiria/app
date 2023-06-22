@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Demo\Database\Components;
 
-use Aphiria\Application\Builders\IApplicationBuilder;
+use Aphiria\Application\IApplicationBuilder;
 use Aphiria\DependencyInjection\Container;
 use App\Demo\Database\IDatabaseSeeder;
 
