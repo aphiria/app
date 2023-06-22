@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration;
 
-use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\Application\IApplication;
+use Aphiria\Application\IApplicationBuilder;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\Framework\Api\Testing\PhpUnit\IntegrationTestCase as BaseIntegrationTestCase;
 use App\GlobalModule;
