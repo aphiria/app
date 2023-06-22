@@ -51,13 +51,13 @@ final class DummyAuthenticationHandler implements IAuthenticationSchemeHandler
         $queryString = $this->requestParser->parseQueryString($request);
 
         if (!$queryString->containsKey('letMeIn') || !$queryString->containsKey('userId')) {
-            return AuthenticationResult::fail('Could not authenticate user');
+            return AuthenticationResult::fail('Could not authenticate user', $scheme->name);
         }
 
         try {
             $currUser = $this->users->getUserById((int)$queryString->get('userId'));
         } catch (UserNotFoundException) {
-            return AuthenticationResult::fail('No user with this ID found');
+            return AuthenticationResult::fail('No user with this ID found', $scheme->name);
         }
 
         $claimsIssuer = $scheme->options->claimsIssuer ?? $scheme->name;
@@ -67,7 +67,7 @@ final class DummyAuthenticationHandler implements IAuthenticationSchemeHandler
             new Claim(ClaimType::Email, $currUser->email, $claimsIssuer)
         ];
 
-        return AuthenticationResult::pass(new User(new Identity($claims)));
+        return AuthenticationResult::pass(new User(new Identity($claims)), $scheme->name);
     }
 
     /**
