@@ -13,7 +13,6 @@ use Aphiria\Net\Http\IResponse;
 use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\IPrincipal;
 use Aphiria\Security\PrincipalBuilder;
-use Aphiria\Security\User;
 use App\Demo\Users\IUserService;
 use App\Demo\Users\UserNotFoundException;
 use JsonException;
@@ -71,18 +70,18 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
             /** @var array{userId: int, token: string} $decodedCookieValue */
             $decodedCookieValue = \json_decode(\base64_decode($cookieValue), true, 512, JSON_THROW_ON_ERROR);
         } catch (JsonException) {
-            return AuthenticationResult::fail('Token format is invalid');
+            return AuthenticationResult::fail('Token format is invalid', $scheme->name);
         }
 
         if (!isset($decodedCookieValue['userId'], $decodedCookieValue['token'])) {
-            return AuthenticationResult::fail('Token format is invalid');
+            return AuthenticationResult::fail('Token format is invalid', $scheme->name);
         }
 
         $userId = (int)$decodedCookieValue['userId'];
         $token = (string)$decodedCookieValue['token'];
 
         if (!$this->tokens->validateToken($userId, $token)) {
-            return AuthenticationResult::fail('Invalid token');
+            return AuthenticationResult::fail('Invalid token', $scheme->name);
         }
 
         $user = $this->users->getUserById($userId);
@@ -94,7 +93,8 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
                         ->withEmail($user->email)
                         ->withRoles($user->roles)
                         ->withAuthenticationSchemeName($scheme->name);
-                })->build()
+                })->build(),
+            $scheme->name
         );
     }
 

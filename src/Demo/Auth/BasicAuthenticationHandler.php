@@ -10,7 +10,6 @@ use Aphiria\Authentication\Schemes\BasicAuthenticationHandler as BaseBasicAuthen
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\PrincipalBuilder;
-use Aphiria\Security\User;
 use App\Demo\Users\IUserService;
 
 /**
@@ -35,7 +34,7 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
         AuthenticationScheme $scheme
     ): AuthenticationResult {
         if (($user = $this->users->getUserByEmailAndPassword($username, $password)) === null) {
-            return AuthenticationResult::fail('Invalid credentials');
+            return AuthenticationResult::fail('Invalid credentials', $scheme->name);
         }
 
         return AuthenticationResult::pass(
@@ -45,7 +44,8 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
                         ->withEmail($user->email)
                         ->withRoles($user->roles)
                         ->withAuthenticationSchemeName($scheme->name);
-                })->build()
+                })->build(),
+            $scheme->name
         );
     }
 }

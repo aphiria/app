@@ -2,6 +2,10 @@
 
 ## [v1.0.0-alpha5](https://github.com/aphiria/app/compare/v1.0.0-alpha4...v1.0.0-alpha5) (?)
 
+### Added
+
+- Added auth and user scaffolding, backed by a SQLite database ([#34](https://github.com/aphiria/app/pull/34))
+
 ### Changed
 
 - Updated PHPUnit and Psalm ([#33](https://github.com/aphiria/app/pull/33))

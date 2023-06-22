@@ -6,9 +6,9 @@ namespace App\Demo\Auth\Api\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
 use Aphiria\Authentication\Attributes\Authenticate;
+use Aphiria\Authentication\AuthenticationSchemeNotFoundException;
 use Aphiria\Authentication\IAuthenticator;
 use Aphiria\Authentication\NotAuthenticatedException;
-use Aphiria\Authentication\SchemeNotFoundException;
 use Aphiria\Authentication\UnsupportedAuthenticationHandlerException;
 use Aphiria\Net\Http\IResponse;
 use Aphiria\Net\Http\Response;
@@ -32,7 +32,7 @@ final class AuthController extends Controller
      * Attempts to log in a user with basic auth and sets an auth token cookie on success
      *
      * @return IResponse The login attempt response
-     * @throws NotAuthenticatedException|SchemeNotFoundException|UnsupportedAuthenticationHandlerException Thrown if there was an error with authentication
+     * @throws NotAuthenticatedException|AuthenticationSchemeNotFoundException|UnsupportedAuthenticationHandlerException Thrown if there was an error with authentication
      */
     #[Post('/login'), Authenticate('basic')]
     public function logIn(): IResponse
@@ -49,7 +49,7 @@ final class AuthController extends Controller
      * Logs out the user
      *
      * @return IResponse The logout response
-     * @throws SchemeNotFoundException|UnsupportedAuthenticationHandlerException Thrown if there was an issue with authentication
+     * @throws AuthenticationSchemeNotFoundException|UnsupportedAuthenticationHandlerException Thrown if there was an issue with authentication
      */
     #[Post('/logout')]
     public function logOut(): IResponse

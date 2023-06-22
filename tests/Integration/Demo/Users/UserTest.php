@@ -6,7 +6,6 @@ namespace App\Tests\Integration\Demo\Users;
 
 use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\IAuthenticator;
-use Aphiria\Authentication\IUserAccessor;
 use Aphiria\ContentNegotiation\FailedContentNegotiationException;
 use Aphiria\ContentNegotiation\MediaTypeFormatters\SerializationException;
 use Aphiria\DependencyInjection\Container;
@@ -63,7 +62,7 @@ class UserTest extends IntegrationTestCase
         foreach ($this->createdUsers as $user) {
             $this->assertStatusCodeEquals(
                 HttpStatusCode::NoContent,
-                $this->actingAs($adminUser)->delete("/demo/users/$user->id")
+                $this->actingAs($adminUser, 'cookie')->delete("/demo/users/$user->id")
             );
         }
     }
@@ -78,7 +77,7 @@ class UserTest extends IntegrationTestCase
                 $identity->withNameIdentifier('foo')
                     ->withRoles('admin');
             })->build();
-        $response = $this->actingAs($adminUser)->get("/demo/users/{$createdUser->id}");
+        $response = $this->actingAs($adminUser, 'cookie')->get("/demo/users/{$createdUser->id}");
         $this->assertStatusCodeEquals(200, $response);
         $this->assertParsedBodyEquals($createdUser, $response);
     }
@@ -93,7 +92,7 @@ class UserTest extends IntegrationTestCase
                 $identity->withNameIdentifier('foo')
                     ->withRoles('admin');
             })->build();
-        $deleteUserResponse = $this->actingAs($adminUser)->delete("/demo/users/$createdUser->id");
+        $deleteUserResponse = $this->actingAs($adminUser, 'cookie')->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $deleteUserResponse);
     }
 
@@ -106,7 +105,7 @@ class UserTest extends IntegrationTestCase
             ->withIdentity(function (IdentityBuilder $identity) {
                 $identity->withNameIdentifier('foo');
             })->build();
-        $response = $this->actingAs($nonAdminUser)->delete("/demo/users/$createdUser->id");
+        $response = $this->actingAs($nonAdminUser, 'cookie')->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
@@ -118,7 +117,7 @@ class UserTest extends IntegrationTestCase
                     ->withRoles('admin');
             })->build();
         // Pass in a dummy user ID
-        $deleteUserResponse = $this->actingAs($adminUser)->delete('/demo/users/0');
+        $deleteUserResponse = $this->actingAs($adminUser, 'cookie')->delete('/demo/users/0');
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $deleteUserResponse);
     }
 
@@ -131,13 +130,13 @@ class UserTest extends IntegrationTestCase
             ->withIdentity(function (IdentityBuilder $identity) use ($createdUser) {
                 $identity->withNameIdentifier($createdUser->id);
             })->build();
-        $response = $this->actingAs($createdUserPrincipal)->delete("/demo/users/$createdUser->id");
+        $response = $this->actingAs($createdUserPrincipal, 'cookie')->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $response);
     }
 
     public function testGettingInvalidUserReturns404(): void
     {
-        $response = $this->actingAs(new Principal(new Identity([])))->get('/demo/users/0');
+        $response = $this->actingAs(new Principal(new Identity([])), 'cookie')->get('/demo/users/0');
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
     }
 
@@ -150,7 +149,7 @@ class UserTest extends IntegrationTestCase
                     // TODO: Should #[Authorize] automatically include #[Authenticate]?  What's the precedence in other frameworks?
                     ->withAuthenticationSchemeName('cookie');
             })->build();
-        $response = $this->actingAs($nonAdminUser)->get('/demo/users');
+        $response = $this->actingAs($nonAdminUser, 'cookie')->get('/demo/users');
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
@@ -165,17 +164,18 @@ class UserTest extends IntegrationTestCase
                     ->withRoles('admin')
                     ->withAuthenticationSchemeName('cookie');
             })->build();
-        $response = $this->actingAs($adminUser)->get('/demo/users');
+        $response = $this->actingAs($adminUser, 'cookie')->get('/demo/users');
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertNotEmpty($response->getBody()?->readAsString());
     }
 
     // TODO: Figure out where to actually put this logic
     // TODO: This should be scoped for a single request, whereas it's setting the user for all subsequent requests.  Maybe it should take a callback with the client call or something?
-    protected function actingAs(IPrincipal $user): static
+    protected function actingAs(IPrincipal $user, array|string $schemeNames): static
     {
         // TODO: How should this work in real life?  I'd have to check if IAuthenticator is an instance of some new TestAuthentication, which would have that public property, and if so it'd set that property.  However, is that too constraining to impose a specific test authenticator on users?
-        $this->authenticator->expectedAuthenticationResult = AuthenticationResult::pass($user);
+        // TODO: Ideally, scheme names would be optional and default to the default scheme.  Need to add support for this.
+        $this->authenticator->expectedAuthenticationResult = AuthenticationResult::pass($user, $schemeNames);
 
         return $this;
     }
@@ -183,32 +183,24 @@ class UserTest extends IntegrationTestCase
     // TODO: Remove this once I've done some PoC work
     protected function createTestingAuthenticator(): void
     {
-        $this->authenticator = new class (Container::$globalInstance?->resolve(IUserAccessor::class)) implements IAuthenticator {
+        $this->authenticator = new class () implements IAuthenticator {
             public ?AuthenticationResult $expectedAuthenticationResult = null;
 
-            public function __construct(private readonly IUserAccessor $userAccessor)
-            {
-            }
-
-            public function authenticate(IRequest $request, string $schemeName = null): AuthenticationResult
+            public function authenticate(IRequest $request, array|string $schemeNames = null): AuthenticationResult
             {
                 if ($this->expectedAuthenticationResult === null) {
                     throw new \Exception('Expected authentication result is not set');
                 }
 
-                if ($this->expectedAuthenticationResult->passed) {
-                    $this->userAccessor->setUser($this->expectedAuthenticationResult->user, $request);
-                }
-
                 return $this->expectedAuthenticationResult;
             }
 
-            public function challenge(IRequest $request, IResponse $response, string $schemeName = null): void
+            public function challenge(IRequest $request, IResponse $response, array|string $schemeNames = null): void
             {
                 // TODO: Implement challenge() method.
             }
 
-            public function forbid(IRequest $request, IResponse $response, string $schemeName = null): void
+            public function forbid(IRequest $request, IResponse $response, array|string $schemeNames = null): void
             {
                 // TODO: Implement forbid() method.
             }
@@ -217,14 +209,14 @@ class UserTest extends IntegrationTestCase
                 IPrincipal $user,
                 IRequest $request,
                 IResponse $response,
-                string $schemeName = null
+                array|string $schemeNames = null
             ): void {
-                $this->userAccessor->setUser($user, $request);
+                // Don't do anything
             }
 
-            public function logOut(IRequest $request, IResponse $response, string $schemeName = null): void
+            public function logOut(IRequest $request, IResponse $response, array|string $schemeNames = null): void
             {
-                $this->userAccessor->setUser(null, $request);
+                // Don't do anything
             }
         };
 
