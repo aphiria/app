@@ -41,7 +41,6 @@ class UserTest extends IntegrationTestCase
          *
          * Should also create mockable IAuthority
          *      This should probably do some real work, eg looking up policy by name like the real one so that integration tests are slightly more realistic.  This would require some refactoring to either an abstract class or an overridable Authority class.
-         * Should update mockable IAuthenticator to likewise to some more realistic lookups to ensure that things like schemes actually exist
          */
     }
 
@@ -77,7 +76,7 @@ class UserTest extends IntegrationTestCase
                     ->withRoles('admin');
             })->build();
         $response = $this->actingAs($adminUser)->get("/demo/users/{$createdUser->id}");
-        $this->assertStatusCodeEquals(200, $response);
+        $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertParsedBodyEquals($createdUser, $response);
     }
 
@@ -145,7 +144,6 @@ class UserTest extends IntegrationTestCase
             ->withIdentity(function (IdentityBuilder $identity) {
                 $identity->withNameIdentifier('foo')
                     // TODO: Should I need to be specifying auth scheme here and elsewhere?  Why or why not?
-                    // TODO: Should #[Authorize] automatically include #[Authenticate]?  What's the precedence in other frameworks?
                     ->withAuthenticationSchemeName('cookie');
             })->build();
         $response = $this->actingAs($nonAdminUser)->get('/demo/users');

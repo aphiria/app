@@ -31,6 +31,9 @@ class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthentic
         $this->actorSchemes = $schemeNames;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function authenticate(IRequest $request, array|string $schemeNames = null): AuthenticationResult
     {
         $authResult = parent::authenticate($request, $this->actorSchemes);
