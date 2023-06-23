@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo\Users;
 
-use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\AuthenticationSchemeNotFoundException;
 use Aphiria\Authentication\IAuthenticator;
 use Aphiria\ContentNegotiation\FailedContentNegotiationException;
@@ -12,8 +11,6 @@ use Aphiria\ContentNegotiation\MediaTypeFormatters\SerializationException;
 use Aphiria\DependencyInjection\Container;
 use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\HttpStatusCode;
-use Aphiria\Net\Http\IRequest;
-use Aphiria\Net\Http\IResponse;
 use Aphiria\Security\Identity;
 use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\IPrincipal;

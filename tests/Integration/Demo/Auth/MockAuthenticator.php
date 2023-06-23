@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Integration\Demo\Auth;
 
 use Aphiria\Authentication\AuthenticationResult;
@@ -20,15 +22,6 @@ class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthentic
     /** @var list<string>|string|null The scheme name or names the actor is acting as, or null if we are not acting as anyone */
     private array|string|null $actorSchemes = null;
 
-    public function authenticate(IRequest $request, array|string $schemeNames = null): AuthenticationResult
-    {
-        $authResult = parent::authenticate($request, $this->actorSchemes);
-        // We only act as a principal for a single authentication call
-        $this->actor = $this->actorSchemes = null;
-
-        return $authResult;
-    }
-
     /**
      * @inheritdoc
      */
@@ -36,6 +29,15 @@ class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthentic
     {
         $this->actor = $user;
         $this->actorSchemes = $schemeNames;
+    }
+
+    public function authenticate(IRequest $request, array|string $schemeNames = null): AuthenticationResult
+    {
+        $authResult = parent::authenticate($request, $this->actorSchemes);
+        // We only act as a principal for a single authentication call
+        $this->actor = $this->actorSchemes = null;
+
+        return $authResult;
     }
 
     /**
