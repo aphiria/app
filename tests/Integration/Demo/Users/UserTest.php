@@ -40,8 +40,8 @@ class UserTest extends IntegrationTestCase
                 $identity->withNameIdentifier('foo')
                     ->withRoles('admin');
             })->build();
-        $deleteUserResponse = $this->actingAs($adminUser)->delete("/demo/users/$createdUser->id");
-        $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $deleteUserResponse);
+        $response = $this->actingAs($adminUser)->delete("/demo/users/$createdUser->id");
+        $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $response);
     }
 
     public function testDeletingAnotherUserAsNonAdminReturns403(): void
@@ -65,8 +65,8 @@ class UserTest extends IntegrationTestCase
                     ->withRoles('admin');
             })->build();
         // Pass in a dummy user ID
-        $deleteUserResponse = $this->actingAs($adminUser)->delete('/demo/users/0');
-        $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $deleteUserResponse);
+        $response = $this->actingAs($adminUser)->delete('/demo/users/0');
+        $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
     }
 
     public function testDeletingYourOwnUserReturns204(): void

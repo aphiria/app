@@ -16,6 +16,7 @@ class AuthTest extends IntegrationTestCase
     public function testLoggingInAndOutUnsetsTokenCookie(): void
     {
         $user = $this->createUser(password: 'foo');
+        // TODO: Update the HTTP client to accept a Headers value as the headers, too
         $loginResponse = $this->post('/demo/auth/login', ['Authorization' => 'Basic ' . \base64_encode("$user->email:foo")]);
         $this->assertHasCookie($loginResponse, 'authToken');
         // TODO: Add an easier way to parse response cookie value in integration tests (probably by including ResponseHeaderParser)
@@ -43,6 +44,7 @@ class AuthTest extends IntegrationTestCase
     {
         $response = $this->post('/demo/auth/logout');
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
+        // TODO: Add assertion that checks if a cookie was unset
         $this->assertHeaderMatchesRegex('/authToken=;/', $response, 'Set-Cookie');
     }
 }
