@@ -36,12 +36,8 @@ class UserTest extends IntegrationTestCase
         Container::$globalInstance?->resolve(GlobalDatabaseSeeder::class)->seed();
         $this->createTestingAuthenticator();
 
-        /**
-         * TODO
-         *
-         * Should also create mockable IAuthority
-         *      This should probably do some real work, eg looking up policy by name like the real one so that integration tests are slightly more realistic.  This would require some refactoring to either an abstract class or an overridable Authority class.
-         */
+        // TODO: Do I need a mockable authority?  It would prevent us from having to set up roles and all, but I wonder if that's actually desirable.
+        // TODO: The reason we mocked authentication is because it's a pain to set up the request, whereas setting up a principal to have the proper roles feels like something we should really be testing here.
     }
 
     protected function tearDown(): void

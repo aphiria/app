@@ -10,6 +10,8 @@ use Aphiria\Security\IPrincipal;
 
 /**
  * Defines the interface for mocked authenticators to implement
+ *
+ * TODO: This should likely be refactored into Aphiria
  */
 interface IMockedAuthenticator extends IAuthenticator
 {
