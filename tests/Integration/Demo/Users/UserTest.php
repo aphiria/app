@@ -19,13 +19,14 @@ use Aphiria\Security\User as Principal;
 use App\Demo\Database\GlobalDatabaseSeeder;
 use App\Demo\Users\NewUser;
 use App\Demo\Users\User;
+use App\Tests\Integration\Demo\Auth\IMockedAuthenticator;
 use App\Tests\Integration\Demo\Auth\MockAuthenticator;
 use App\Tests\Integration\IntegrationTestCase;
 use Exception;
 
 class UserTest extends IntegrationTestCase
 {
-    private MockAuthenticator $authenticator;
+    private IMockedAuthenticator $authenticator;
     /** @var list<User> The list of users to delete at the end of each test */
     private array $createdUsers = [];
 
