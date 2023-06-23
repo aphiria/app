@@ -4,63 +4,16 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo\Users;
 
-use Aphiria\Authentication\AuthenticationSchemeNotFoundException;
-use Aphiria\Authentication\IAuthenticator;
-use Aphiria\ContentNegotiation\FailedContentNegotiationException;
-use Aphiria\ContentNegotiation\MediaTypeFormatters\SerializationException;
-use Aphiria\DependencyInjection\Container;
-use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Security\Identity;
 use Aphiria\Security\IdentityBuilder;
-use Aphiria\Security\IPrincipal;
 use Aphiria\Security\PrincipalBuilder;
 use Aphiria\Security\User as Principal;
-use App\Demo\Database\GlobalDatabaseSeeder;
-use App\Demo\Users\NewUser;
-use App\Demo\Users\User;
-use App\Tests\Integration\Demo\Auth\IMockedAuthenticator;
-use App\Tests\Integration\Demo\Auth\MockAuthenticator;
 use App\Tests\Integration\IntegrationTestCase;
-use Exception;
 
 class UserTest extends IntegrationTestCase
 {
-    private IMockedAuthenticator $authenticator;
-    /** @var list<User> The list of users to delete at the end of each test */
-    private array $createdUsers = [];
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        Container::$globalInstance?->resolve(GlobalDatabaseSeeder::class)->seed();
-        $this->createTestingAuthenticator();
-
-        // TODO: Do I need a mockable authority?  It would prevent us from having to set up roles and all, but I wonder if that's actually desirable.
-        // TODO: The reason we mocked authentication is because it's a pain to set up the request, whereas setting up a principal to have the proper roles feels like something we should really be testing here.
-    }
-
-    protected function tearDown(): void
-    {
-        parent::tearDown();
-
-        // Create an admin user to delete the user with
-        $adminUser = (new PrincipalBuilder('example.com'))
-            ->withIdentity(function (IdentityBuilder $identity) {
-                $identity->withNameIdentifier('foo')
-                    ->withRoles('admin')
-                    ->withAuthenticationSchemeName('cookie');
-            })->build();
-
-        // Clean up after our integration tests
-        foreach ($this->createdUsers as $user) {
-            $this->assertStatusCodeEquals(
-                HttpStatusCode::NoContent,
-                $this->actingAs($adminUser)->delete("/demo/users/$user->id")
-            );
-        }
-    }
+    use CreateUser;
 
     public function testCreatingUsersMakesThemRetrievableAsAdminUser(): void
     {
@@ -162,51 +115,5 @@ class UserTest extends IntegrationTestCase
         $response = $this->actingAs($adminUser)->get('/demo/users');
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertNotEmpty($response->getBody()?->readAsString());
-    }
-
-
-    /**
-     * Mocks the next authentication call to act as the input principal
-     *
-     * @param IPrincipal $user The principal to act as for authentication calls
-     * @param list<string>|string|null $schemeNames The scheme name or names to authenticate with, or null if using the default scheme
-     * @throws AuthenticationSchemeNotFoundException Thrown if any of the scheme names could not be found
-     */
-    protected function actingAs(IPrincipal $user, array|string $schemeNames = null): static
-    {
-        $this->authenticator->actingAs($user, $schemeNames);
-
-        return $this;
-    }
-
-    // TODO: Remove this once I've done some PoC work
-    protected function createTestingAuthenticator(): void
-    {
-        $this->authenticator = Container::$globalInstance?->resolve(MockAuthenticator::class);
-
-        // Bind these mocks to the container
-        Container::$globalInstance?->bindInstance(IAuthenticator::class, $this->authenticator);
-    }
-
-    /**
-     * Creates a user for use in integration tests
-     *
-     * @param bool $cleanUp Whether to clean up the user after each test has run
-     * @return User The created user
-     * @throws FailedContentNegotiationException|SerializationException|HttpException|Exception Thrown if there was an error creating the user
-     */
-    private function createUser(bool $cleanUp = true): User
-    {
-        // Create a unique email address so we do not have collisions
-        $newUser = new NewUser(\bin2hex(\random_bytes(8)) . '@example.com', 'password');
-        /** @var User $createdUser */
-        $createdUser = $this->readResponseBodyAs(User::class, $this->post('/demo/users', body: $newUser));
-
-        if ($cleanUp) {
-            // Make sure we clean this user up later
-            $this->createdUsers[] = $createdUser;
-        }
-
-        return $createdUser;
     }
 }

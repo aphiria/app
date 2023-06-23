@@ -39,15 +39,20 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
     /**
      * @inheritdoc
      * @param AuthenticationScheme<CookieAuthenticationOptions> $scheme The scheme
-     * @throws JsonException Thrown if there was an error decoding the cookie value
+     * @throws InvalidCredentialsException Thrown if there was an error decoding the cookie value
      */
     public function logOut(IRequest $request, IResponse $response, AuthenticationScheme $scheme): void
     {
         $cookieValue = $this->getCookieValueFromRequest($request, $scheme);
 
         if ($cookieValue !== null) {
-            /** @var array{userId: int, token: string} $decodedCookieValue */
-            $decodedCookieValue = \json_decode(\base64_decode($cookieValue), true, 512, JSON_THROW_ON_ERROR);
+            try {
+                /** @var array{userId: int, token: string} $decodedCookieValue */
+                $decodedCookieValue = \json_decode(\base64_decode($cookieValue), true, 512, JSON_THROW_ON_ERROR);
+            } catch (JsonException $ex) {
+                throw new InvalidCredentialsException('Cookie contained invalid JSON', 0, $ex);
+            }
+
             $userId = isset($decodedCookieValue['userId']) ? (int)$decodedCookieValue['userId'] : null;
             $token = $decodedCookieValue['token'] ?? null;
 

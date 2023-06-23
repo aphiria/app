@@ -13,6 +13,7 @@ use Aphiria\Authorization\RequirementHandlers\RolesRequirement;
 use Aphiria\Authorization\RequirementHandlers\RolesRequirementHandler;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\Headers\SameSiteMode;
+use Aphiria\Net\Http\HttpStatusCode;
 use App\Demo\Auth\Binders\AuthServiceBinder;
 use App\Demo\Database\Components\DatabaseComponents;
 
@@ -75,6 +76,11 @@ final class AuthModule extends AphiriaModule
                     'authorized-user-deleter',
                     new AuthorizedUserDeleterRequirement('admin')
                 )
+            )
+            ->withProblemDetails(
+                $appBuilder,
+                InvalidCredentialsException::class,
+                status: HttpStatusCode::BadRequest
             );
     }
 }
