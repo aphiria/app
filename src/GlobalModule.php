@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App;
 
 use Aphiria\Application\BootstrapperCollection;
-use Aphiria\Application\Builders\IApplicationBuilder;
 use Aphiria\Application\Configuration\Bootstrappers\ConfigurationBootstrapper;
 use Aphiria\Application\Configuration\Bootstrappers\DotEnvBootstrapper;
 use Aphiria\Application\Configuration\GlobalConfiguration;
 use Aphiria\Application\Configuration\GlobalConfigurationBuilder;
 use Aphiria\Application\Configuration\MissingConfigurationValueException;
+use Aphiria\Application\IApplicationBuilder;
 use Aphiria\Application\IBootstrapper;
 use Aphiria\DependencyInjection\Binders\IBinderDispatcher;
 use Aphiria\DependencyInjection\Binders\LazyBinderDispatcher;
