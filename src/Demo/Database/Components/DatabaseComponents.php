@@ -7,6 +7,7 @@ namespace App\Demo\Database\Components;
 use Aphiria\Application\IApplicationBuilder;
 use Aphiria\DependencyInjection\Container;
 use App\Demo\Database\IDatabaseSeeder;
+use RuntimeException;
 
 /**
  * Defines the trait for adding database components to your application
@@ -23,7 +24,7 @@ trait DatabaseComponents
     protected function withDatabaseSeeders(IApplicationBuilder $appBuilder, string|array $classNames): static
     {
         if (!$appBuilder->hasComponent(DatabaseSeederComponent::class)) {
-            $appBuilder->withComponent(new DatabaseSeederComponent(Container::$globalInstance));
+            $appBuilder->withComponent(new DatabaseSeederComponent(Container::$globalInstance ?? throw new RuntimeException('Global instance of container not set')));
         }
 
         $appBuilder->getComponent(DatabaseSeederComponent::class)
