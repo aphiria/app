@@ -20,6 +20,7 @@ use App\Demo\Users\User;
 use App\Tests\Integration\Demo\Auth\IMockedAuthenticator;
 use App\Tests\Integration\Demo\Auth\MockAuthenticator;
 use Exception;
+use RuntimeException;
 
 /**
  * Defines the trait for creating users in integration tests
@@ -79,7 +80,11 @@ trait CreateUser
     // TODO: I think this logic probably should live in an Aphiria-provided binder
     protected function createTestingAuthenticator(): void
     {
-        $this->authenticator = Container::$globalInstance?->resolve(MockAuthenticator::class);
+        if (($container = Container::$globalInstance) === null) {
+            throw new RuntimeException('Global container instance not set');
+        }
+
+        $this->authenticator = $container->resolve(MockAuthenticator::class);
 
         // Bind these mocks to the container
         Container::$globalInstance?->bindInstance(IAuthenticator::class, $this->authenticator);

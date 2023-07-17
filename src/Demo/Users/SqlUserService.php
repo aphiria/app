@@ -169,13 +169,13 @@ GROUP BY users.id, users.email
 SQL
         );
         $statement->execute(['id' => $id]);
-        /** @var array{id: int, email: string, roles: string} $row */
         $row = $statement->fetch(PDO::FETCH_ASSOC);
 
         if (empty($row)) {
             throw new UserNotFoundException("No user found with ID $id");
         }
 
+        /** @var array{id: int, email: string, roles: string} $row */
         return self::createUserFromRow($row);
     }
 

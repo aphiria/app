@@ -55,7 +55,7 @@ class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthentic
         AuthenticationScheme $scheme,
         IAuthenticationSchemeHandler $schemeHandler
     ): AuthenticationResult {
-        if ($this->acting) {
+        if ($this->acting && $this->actor !== null) {
             return AuthenticationResult::pass($this->actor, $scheme->name);
         }
 
