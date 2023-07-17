@@ -4,13 +4,31 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo\Auth;
 
+use Aphiria\DependencyInjection\Container;
 use Aphiria\Net\Http\HttpStatusCode;
-use App\Tests\Integration\Demo\Users\CreateUser;
+use App\Tests\Integration\Demo\Authenticates;
+use App\Tests\Integration\Demo\CreatesUser;
+use App\Tests\Integration\Demo\SeedsDatabase;
 use App\Tests\Integration\IntegrationTestCase;
 
 class AuthTest extends IntegrationTestCase
 {
-    use CreateUser;
+    use Authenticates;
+    use CreatesUser;
+    use SeedsDatabase;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        if (($container = Container::$globalInstance) === null) {
+            throw new RuntimeException('No global container instance set');
+        }
+
+        // TODO: Where should this live once the PoC is done?
+        $this->seed($container);
+        $this->createTestingAuthenticator($container);
+    }
 
     public function testLoggingInAndOutUnsetsTokenCookie(): void
     {
