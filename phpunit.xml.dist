@@ -20,5 +20,6 @@
     </source>
     <php>
         <env name="APP_ENV" value="testing" force="true"/>
+        <env name="DB_PATH" value=":memory:"/>
     </php>
 </phpunit>

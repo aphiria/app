@@ -32,7 +32,7 @@ class UserTest extends IntegrationTestCase
 
     public function testDeletingAnotherUserAsAdminReturns204(): void
     {
-        $createdUser = $this->createUser(false);
+        $createdUser = $this->createUser();
 
         // Try deleting the created user
         $adminUser = (new PrincipalBuilder('example.com'))
@@ -71,7 +71,7 @@ class UserTest extends IntegrationTestCase
 
     public function testDeletingYourOwnUserReturns204(): void
     {
-        $createdUser = $this->createUser(false);
+        $createdUser = $this->createUser();
 
         // Try deleting the created user
         $createdUserPrincipal = (new PrincipalBuilder('example.com'))
