@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo\Auth;
 
-use Aphiria\Net\Http\Formatting\ResponseHeaderParser;
 use Aphiria\Net\Http\HttpStatusCode;
 use App\Tests\Integration\Demo\Users\CreateUser;
 use App\Tests\Integration\IntegrationTestCase;
@@ -16,12 +15,11 @@ class AuthTest extends IntegrationTestCase
     public function testLoggingInAndOutUnsetsTokenCookie(): void
     {
         $user = $this->createUser(password: 'foo');
-        // TODO: Update the HTTP client to accept a Headers value as the headers, too
         $loginResponse = $this->post('/demo/auth/login', ['Authorization' => 'Basic ' . \base64_encode("$user->email:foo")]);
         $this->assertHasCookie($loginResponse, 'authToken');
-        // TODO: Add an easier way to parse response cookie value in integration tests (probably by including ResponseHeaderParser)
-        $logoutResponse = $this->post('/demo/auth/logout', ['Cookie' => (string)(new ResponseHeaderParser())->parseCookies($loginResponse->getHeaders())[0]->value]);
+        $logoutResponse = $this->post('/demo/auth/logout', ['Cookie' => (string)$this->responseParser->parseCookies($loginResponse)->get('authToken')->value]);
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $logoutResponse);
+        // TODO: Add assertion that checks if a cookie was unset
         $this->assertHeaderMatchesRegex('/authToken=;/', $logoutResponse, 'Set-Cookie');
     }
 
