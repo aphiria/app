@@ -21,11 +21,11 @@
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
-        <RedundantCastGivenDocBlock>
+        <RedundantCastGivenDocblockType>
             <errorLevel type="suppress">
                 <directory name="src" />
             </errorLevel>
-        </RedundantCastGivenDocBlock
+        </RedundantCastGivenDocblockType>
         <PropertyNotSetInConstructor>
             <errorLevel type="suppress">
                 <directory name="tests" />
