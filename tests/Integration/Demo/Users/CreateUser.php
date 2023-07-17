@@ -47,7 +47,7 @@ trait CreateUser
         // Create an admin user to delete the user with
         $adminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
-                $identity->withNameIdentifier('foo')
+                $identity->withNameIdentifier(1)
                     ->withRoles('admin')
                     ->withAuthenticationSchemeName('cookie');
             })->build();

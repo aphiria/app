@@ -22,7 +22,7 @@ class UserTest extends IntegrationTestCase
         // Check that the user can be retrieved
         $adminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
-                $identity->withNameIdentifier('foo')
+                $identity->withNameIdentifier(1)
                     ->withRoles('admin');
             })->build();
         $response = $this->actingAs($adminUser)->get("/demo/users/{$createdUser->id}");
@@ -37,7 +37,7 @@ class UserTest extends IntegrationTestCase
         // Try deleting the created user
         $adminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
-                $identity->withNameIdentifier('foo')
+                $identity->withNameIdentifier(1)
                     ->withRoles('admin');
             })->build();
         $response = $this->actingAs($adminUser)->delete("/demo/users/$createdUser->id");
@@ -51,7 +51,7 @@ class UserTest extends IntegrationTestCase
         // Try deleting the created user
         $nonAdminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
-                $identity->withNameIdentifier('foo');
+                $identity->withNameIdentifier(1);
             })->build();
         $response = $this->actingAs($nonAdminUser)->delete("/demo/users/$createdUser->id");
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
@@ -61,7 +61,7 @@ class UserTest extends IntegrationTestCase
     {
         $adminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
-                $identity->withNameIdentifier('foo')
+                $identity->withNameIdentifier(1)
                     ->withRoles('admin');
             })->build();
         // Pass in a dummy user ID
@@ -92,8 +92,7 @@ class UserTest extends IntegrationTestCase
     {
         $nonAdminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
-                $identity->withNameIdentifier('foo')
-                    // TODO: Should I need to be specifying auth scheme here and elsewhere?  Why or why not?
+                $identity->withNameIdentifier(1)
                     ->withAuthenticationSchemeName('cookie');
             })->build();
         $response = $this->actingAs($nonAdminUser)->get('/demo/users');
@@ -108,7 +107,7 @@ class UserTest extends IntegrationTestCase
         $this->createUser();
         $adminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
-                $identity->withNameIdentifier('foo')
+                $identity->withNameIdentifier(1)
                     ->withRoles('admin')
                     ->withAuthenticationSchemeName('cookie');
             })->build();
