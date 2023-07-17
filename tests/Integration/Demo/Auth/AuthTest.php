@@ -10,6 +10,7 @@ use App\Tests\Integration\Demo\Authenticates;
 use App\Tests\Integration\Demo\CreatesUser;
 use App\Tests\Integration\Demo\SeedsDatabase;
 use App\Tests\Integration\IntegrationTestCase;
+use RuntimeException;
 
 class AuthTest extends IntegrationTestCase
 {
