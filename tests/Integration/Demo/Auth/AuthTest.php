@@ -19,8 +19,7 @@ class AuthTest extends IntegrationTestCase
         $this->assertHasCookie($loginResponse, 'authToken');
         $logoutResponse = $this->post('/demo/auth/logout', ['Cookie' => (string)$this->responseParser->parseCookies($loginResponse)->get('authToken')->value]);
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $logoutResponse);
-        // TODO: Add assertion that checks if a cookie was unset
-        $this->assertHeaderMatchesRegex('/authToken=;/', $logoutResponse, 'Set-Cookie');
+        $this->assertCookieIsUnset($logoutResponse, 'authToken');
     }
 
     public function testLoggingInWithInvalidCredentialsReturnsUnauthorizedResponse(): void
@@ -42,7 +41,6 @@ class AuthTest extends IntegrationTestCase
     {
         $response = $this->post('/demo/auth/logout');
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
-        // TODO: Add assertion that checks if a cookie was unset
-        $this->assertHeaderMatchesRegex('/authToken=;/', $response, 'Set-Cookie');
+        $this->assertCookieIsUnset($response, 'authToken');
     }
 }

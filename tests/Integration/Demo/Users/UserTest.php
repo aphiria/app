@@ -88,7 +88,7 @@ class UserTest extends IntegrationTestCase
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
     }
 
-    public function testGettingPagedUsersReturnsForbiddenResponseForNonAdmins(): void
+    public function testGettingPagedUsersRedirectsToForbiddenPageForNonAdmins(): void
     {
         $nonAdminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
@@ -97,8 +97,8 @@ class UserTest extends IntegrationTestCase
                     ->withAuthenticationSchemeName('cookie');
             })->build();
         $response = $this->actingAs($nonAdminUser)->get('/demo/users');
-        // TODO: This actually redirects to /access-denied, so it's a 302.  Do I want it to redirect?
-        $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
+        $this->assertStatusCodeEquals(HttpStatusCode::Found, $response);
+        $this->assertHeaderEquals('/access-denied', $response, 'Location');
     }
 
     public function testGettingPagedUsersReturnsSuccessfullyForAdmins(): void

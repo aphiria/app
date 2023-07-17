@@ -76,7 +76,7 @@ trait CreateUser
     }
 
     // TODO: Remove this once I've done some PoC work
-    // TODO: I think this logic probably should live in an Aphiria-provided bootstrapper
+    // TODO: I think this logic probably should live in an Aphiria-provided binder
     protected function createTestingAuthenticator(): void
     {
         $this->authenticator = Container::$globalInstance?->resolve(MockAuthenticator::class);
