@@ -121,10 +121,6 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
         $cache = new FileBinderMetadataCollectionCache($cachePath);
         $this->container->bindInstance(IBinderMetadataCollectionCache::class, $cache);
 
-        if (\getenv('APP_ENV') === 'production') {
-            return new LazyBinderDispatcher($cache);
-        }
-
-        return new LazyBinderDispatcher();
+        return new LazyBinderDispatcher(\getenv('APP_ENV') === 'production' ? $cache : null);
     }
 }
