@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo;
 
-use Aphiria\Authentication\AuthenticationSchemeNotFoundException;
 use Aphiria\Authentication\IAuthenticator;
 use Aphiria\DependencyInjection\IContainer;
 use Aphiria\DependencyInjection\ResolutionException;
@@ -24,13 +23,11 @@ trait Authenticates
      * Mocks the next authentication call to act as the input principal
      *
      * @param IPrincipal $user The principal to act as for authentication calls
-     * @param list<string>|string|null $schemeNames The scheme name or names to authenticate with, or null if using the default scheme
-     * @throws AuthenticationSchemeNotFoundException Thrown if any of the scheme names could not be found
      * TODO: This should be moved into the integration test once the PoC is done
      */
-    protected function actingAs(IPrincipal $user, array|string $schemeNames = null): static
+    protected function actingAs(IPrincipal $user): static
     {
-        $this->authenticator->actingAs($user, $schemeNames);
+        $this->authenticator->actingAs($user);
 
         return $this;
     }

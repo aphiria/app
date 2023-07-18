@@ -49,6 +49,14 @@ class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthentic
         IAuthenticationSchemeHandler $schemeHandler
     ): AuthenticationResult {
         if ($this->actor !== null) {
+            // Since we aren't actually calling the scheme handler, be sure to set the scheme name for any identities without one
+            foreach ($this->actor->getIdentities() as $identity) {
+                if ($identity->getAuthenticationSchemeName() === null) {
+                    /** @psalm-suppress InternalMethod TODO: Remove this suppression once this logic lives inside Aphiria proper */
+                    $identity->setAuthenticationSchemeName($scheme->name);
+                }
+            }
+
             return AuthenticationResult::pass($this->actor, $scheme->name);
         }
 
