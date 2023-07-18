@@ -6,9 +6,12 @@ namespace App\Tests\Integration\Demo\Users;
 
 use Aphiria\DependencyInjection\Container;
 use Aphiria\Net\Http\HttpStatusCode;
+use Aphiria\Security\Claim;
+use Aphiria\Security\ClaimType;
 use Aphiria\Security\Identity;
 use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\PrincipalBuilder;
+use Aphiria\Security\User;
 use Aphiria\Security\User as Principal;
 use App\Tests\Integration\Demo\Authenticates;
 use App\Tests\Integration\Demo\CreatesUser;
@@ -113,7 +116,8 @@ class UserTest extends IntegrationTestCase
         $nonAdminUser = (new PrincipalBuilder('example.com'))
             ->withIdentity(function (IdentityBuilder $identity) {
                 $identity->withNameIdentifier(1)
-                    ->withAuthenticationSchemeName('cookie');
+                    // TODO: Need to determine whether I should really need to specify this (I'd like it to default to the default auth scheme, but that's tricky to do if we're passing in an already-created principal with auth schemes (not) set to actingAs())
+                    /*->withAuthenticationSchemeName('cookie')*/;
             })->build();
         $response = $this->actingAs($nonAdminUser)->get('/demo/users');
         $this->assertStatusCodeEquals(HttpStatusCode::Found, $response);

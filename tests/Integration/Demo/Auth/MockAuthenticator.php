@@ -17,21 +17,15 @@ use Aphiria\Security\IPrincipal;
  */
 class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthenticator
 {
-    /** @var bool Whether or not we're acting as a user */
-    private bool $acting = false;
     /** @var IPrincipal|null The principal we're acting as, or null if we are not acting as anyone */
     private ?IPrincipal $actor = null;
-    /** @var list<string>|string|null The scheme name or names the actor is acting as, or null if we are not acting as anyone */
-    private array|string|null $actorSchemes = null;
 
     /**
      * @inheritdoc
      */
-    public function actingAs(IPrincipal $user, array|string $schemeNames = null): void
+    public function actingAs(IPrincipal $user): void
     {
-        $this->acting = true;
         $this->actor = $user;
-        $this->actorSchemes = $schemeNames;
     }
 
     /**
@@ -39,10 +33,9 @@ class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthentic
      */
     public function authenticate(IRequest $request, array|string $schemeNames = null): AuthenticationResult
     {
-        $authResult = parent::authenticate($request, $this->acting ? $this->actorSchemes : $schemeNames);
+        $authResult = parent::authenticate($request, $schemeNames);
         // We only act as a principal for a single authentication call
-        $this->actor = $this->actorSchemes = null;
-        $this->acting = false;
+        $this->actor = null;
 
         return $authResult;
     }
@@ -55,7 +48,7 @@ class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthentic
         AuthenticationScheme $scheme,
         IAuthenticationSchemeHandler $schemeHandler
     ): AuthenticationResult {
-        if ($this->acting && $this->actor !== null) {
+        if ($this->actor !== null) {
             return AuthenticationResult::pass($this->actor, $scheme->name);
         }
 

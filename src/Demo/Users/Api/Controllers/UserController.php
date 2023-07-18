@@ -58,7 +58,7 @@ final class UserController extends Controller
      * @throws HttpException Thrown if the content could not be negotiated
      * @throws PolicyNotFoundException|RequirementHandlerNotFoundException Thrown if there was an error authorizing this request
      */
-    #[Delete('/:id'), Authenticate('cookie')]
+    #[Delete('/:id'), Authenticate()]
     public function deleteUser(int $id): IResponse
     {
         try {
@@ -99,7 +99,7 @@ final class UserController extends Controller
      * @return User The user with the input ID
      * @throws UserNotFoundException Thrown if there was no user with the input ID
      */
-    #[Get(':id'), Authenticate('cookie')]
+    #[Get(':id'), Authenticate()]
     public function getUserById(int $id): User
     {
         return $this->users->getUserById($id);
