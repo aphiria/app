@@ -8,14 +8,12 @@ use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Security\Identity;
 use Aphiria\Security\PrincipalBuilder;
 use Aphiria\Security\User as Principal;
-use App\Tests\Integration\Demo\Authenticates;
 use App\Tests\Integration\Demo\CreatesUser;
 use App\Tests\Integration\Demo\SeedsDatabase;
 use App\Tests\Integration\IntegrationTestCase;
 
 class UserTest extends IntegrationTestCase
 {
-    use Authenticates;
     use CreatesUser;
     use SeedsDatabase;
 
@@ -23,8 +21,6 @@ class UserTest extends IntegrationTestCase
     {
         parent::setUp();
         $this->seedDatabase();
-        // TODO: This should be removed once the mock authenticator is set up in a binder for the testing environment
-        $this->createTestingAuthenticator();
     }
 
     public function testCreatingUsersMakesThemRetrievableAsAdminUser(): void
