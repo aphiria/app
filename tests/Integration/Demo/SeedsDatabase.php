@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo;
 
-use Aphiria\DependencyInjection\IContainer;
+use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\ResolutionException;
 use App\Demo\Database\GlobalDatabaseSeeder;
+use RuntimeException;
 
 /**
  * Defines methods for seeding databases in integration tests
@@ -16,11 +17,15 @@ trait SeedsDatabase
     /**
      * Seeds the database
      *
-     * @param IContainer $container The DI container
+     * @throws RuntimeException Thrown if the global container instance was not set
      * @throws ResolutionException Thrown if the database seeder could not be resolved
      */
-    private function seed(IContainer $container): void
+    private function seedDatabase(): void
     {
+        if (($container = Container::$globalInstance) === null) {
+            throw new RuntimeException('No global container instance set');
+        }
+
         $container->resolve(GlobalDatabaseSeeder::class)->seed();
     }
 }

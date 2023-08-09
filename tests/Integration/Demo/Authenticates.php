@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Tests\Integration\Demo;
 
 use Aphiria\Authentication\IAuthenticator;
-use Aphiria\DependencyInjection\IContainer;
+use Aphiria\DependencyInjection\Container;
 use Aphiria\DependencyInjection\ResolutionException;
 use Aphiria\Security\IPrincipal;
 use App\Tests\Integration\Demo\Auth\IMockedAuthenticator;
 use App\Tests\Integration\Demo\Auth\MockAuthenticator;
 use Closure;
+use RuntimeException;
 
 /**
  * Defines methods for authenticating in integration tests
@@ -37,13 +38,17 @@ trait Authenticates
     /**
      * Creates the testing authenticator
      *
-     * @param IContainer $container The DI container
+     * @throws RuntimeException Thrown if the global container instance was not set
      * @throws ResolutionException Thrown if the authenticator could not be resolved
      * TODO: Remove this once I've done some PoC work
      * TODO: I think this logic probably should live in an Aphiria-provided binder
      */
-    protected function createTestingAuthenticator(IContainer $container): void
+    private function createTestingAuthenticator(): void
     {
+        if (($container = Container::$globalInstance) === null) {
+            throw new RuntimeException('No global container instance set');
+        }
+
         $this->authenticator = $container->resolve(MockAuthenticator::class);
 
         // Bind these mocks to the container

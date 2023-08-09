@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Integration\Demo\Users;
 
-use Aphiria\DependencyInjection\Container;
 use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Security\Identity;
 use Aphiria\Security\PrincipalBuilder;
@@ -13,7 +12,6 @@ use App\Tests\Integration\Demo\Authenticates;
 use App\Tests\Integration\Demo\CreatesUser;
 use App\Tests\Integration\Demo\SeedsDatabase;
 use App\Tests\Integration\IntegrationTestCase;
-use RuntimeException;
 
 class UserTest extends IntegrationTestCase
 {
@@ -24,14 +22,9 @@ class UserTest extends IntegrationTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        if (($container = Container::$globalInstance) === null) {
-            throw new RuntimeException('No global container instance set');
-        }
-
-        // TODO: Where should this live once the PoC is done?
-        $this->seed($container);
-        $this->createTestingAuthenticator($container);
+        $this->seedDatabase();
+        // TODO: This should be removed once the mock authenticator is set up in a binder for the testing environment
+        $this->createTestingAuthenticator();
     }
 
     public function testCreatingUsersMakesThemRetrievableAsAdminUser(): void
