@@ -20,6 +20,7 @@ trait DatabaseComponents
      * @param IApplicationBuilder $appBuilder The application builder
      * @param class-string<IDatabaseSeeder>|list<class-string<IDatabaseSeeder>> $classNames The name or names of database seeder classes to add
      * @return static For chaining
+     * @throws RuntimeException Thrown if the global container instance was not set
      */
     protected function withDatabaseSeeders(IApplicationBuilder $appBuilder, string|array $classNames): static
     {

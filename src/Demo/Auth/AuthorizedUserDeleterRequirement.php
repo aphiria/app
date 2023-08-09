@@ -13,7 +13,7 @@ final readonly class AuthorizedUserDeleterRequirement
     public array $authorizedRoles;
 
     /**
-     * @param string|list<string> $authorizedRoles The role or list of roles that are authorized to delete other users' accounts
+     * @param list<string>|string $authorizedRoles The role or list of roles that are authorized to delete other users' accounts
      */
     public function __construct(array|string $authorizedRoles)
     {

@@ -8,7 +8,6 @@ use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\AuthenticationScheme;
 use Aphiria\Authentication\Schemes\BasicAuthenticationHandler as BaseBasicAuthenticationHandler;
 use Aphiria\Net\Http\IRequest;
-use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\PrincipalBuilder;
 use App\Demo\Users\IUserService;
 
@@ -38,13 +37,11 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
         }
 
         return AuthenticationResult::pass(
-            (new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name))
-                ->withIdentity(function (IdentityBuilder $identity) use ($user, $scheme) {
-                    $identity->withNameIdentifier($user->id)
-                        ->withEmail($user->email)
-                        ->withRoles($user->roles)
-                        ->withAuthenticationSchemeName($scheme->name);
-                })->build(),
+            (new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name))->withNameIdentifier($user->id)
+                ->withEmail($user->email)
+                ->withRoles($user->roles)
+                ->withAuthenticationSchemeName($scheme->name)
+                ->build(),
             $scheme->name
         );
     }

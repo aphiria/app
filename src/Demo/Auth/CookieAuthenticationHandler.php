@@ -10,7 +10,6 @@ use Aphiria\Authentication\Schemes\CookieAuthenticationHandler as BaseCookieAuth
 use Aphiria\Authentication\Schemes\CookieAuthenticationOptions;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\IResponse;
-use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\IPrincipal;
 use Aphiria\Security\PrincipalBuilder;
 use App\Demo\Users\IUserService;
@@ -92,13 +91,11 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
         $user = $this->users->getUserById($userId);
 
         return AuthenticationResult::pass(
-            (new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name))
-                ->withIdentity(function (IdentityBuilder $identity) use ($user, $scheme) {
-                    $identity->withNameIdentifier($user->id)
-                        ->withEmail($user->email)
-                        ->withRoles($user->roles)
-                        ->withAuthenticationSchemeName($scheme->name);
-                })->build(),
+            (new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name))->withNameIdentifier($user->id)
+                ->withEmail($user->email)
+                ->withRoles($user->roles)
+                ->withAuthenticationSchemeName($scheme->name)
+                ->build(),
             $scheme->name
         );
     }
