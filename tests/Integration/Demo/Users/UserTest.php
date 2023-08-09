@@ -9,7 +9,6 @@ use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Security\Identity;
 use Aphiria\Security\IdentityBuilder;
 use Aphiria\Security\PrincipalBuilder;
-use Aphiria\Security\User;
 use Aphiria\Security\User as Principal;
 use App\Tests\Integration\Demo\Authenticates;
 use App\Tests\Integration\Demo\CreatesUser;
