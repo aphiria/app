@@ -14,7 +14,7 @@ use Aphiria\Authorization\RequirementHandlers\RolesRequirementHandler;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\Headers\SameSiteMode;
 use Aphiria\Net\Http\HttpStatusCode;
-use App\Auth\Binders\AuthServiceBinder;
+use App\Auth\Binders\AuthBinder;
 use App\Auth\Policies\OwnerOrAdminRequirement;
 use App\Auth\Policies\OwnerOrAdminRequirementHandler;
 use App\Auth\Schemes\BasicAuthenticationHandler;
@@ -30,7 +30,7 @@ final class AuthModule extends AphiriaModule
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
-        $this->withBinders($appBuilder, new AuthServiceBinder())
+        $this->withBinders($appBuilder, new AuthBinder())
             // Add our default authentication scheme
             ->withAuthenticationScheme(
                 $appBuilder,
