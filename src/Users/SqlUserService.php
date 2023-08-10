@@ -134,20 +134,6 @@ SQL
     /**
      * @inheritdoc
      */
-    public function getUserByEmail(string $email): ?User
-    {
-        $rows = $this->queryUserByEmail($email);
-
-        if (\count($rows) !== 1) {
-            return null;
-        }
-
-        return self::createUserFromRow($rows[0]);
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function getUserByEmailAndPassword(string $email, string $password): ?User
     {
         $rows = $this->queryUserByEmail($email);

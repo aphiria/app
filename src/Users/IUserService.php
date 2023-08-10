@@ -36,14 +36,6 @@ interface IUserService
     public function getPagedUsers(int $pageNumber = 1, int $pageSize = 100): array;
 
     /**
-     * Gets a user with the input email address
-     *
-     * @param string $email The email address to look up
-     * @return User|null The user if one was found, otherwise null
-     */
-    public function getUserByEmail(string $email): ?User;
-
-    /**
      * Gets a user with the input credentials
      *
      * @param string $email The email address to look up
