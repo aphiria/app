@@ -30,7 +30,7 @@ interface IUserService
      *
      * @param int $pageNumber The page number (0-indexed) to retrieve from
      * @param int $pageSize The size of the page
-     * @return User The page of users
+     * @return list<User> The page of users
      * @throws InvalidPageException Thrown if the page number or size was invalid
      */
     public function getPagedUsers(int $pageNumber = 1, int $pageSize = 100): array;
