@@ -81,7 +81,7 @@ class UserTest extends IntegrationTestCase
     {
         $adminUser = (new PrincipalBuilder('example.com'))->withRoles('admin')
             ->build();
-        $response = $this->actingAs($adminUser, fn () => $this->get('/users/0'));
+        $response = $this->actingAs($adminUser, fn () => $this->delete('/users/0'));
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
