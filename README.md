@@ -32,10 +32,6 @@ php aphiria app:serve
 
 This app comes with a simple demo that can store, retrieve, and authenticate users from a local SQLite database.
 
-### Removing Demo Code
-
-To remove the built-in demo code, simply delete the [_src/Demo_](src/Demo) and [_tests/Integration/Demo_](tests/Integration/Demo) directories, and remove `DatabaseModule`, `UserModule`, and `AuthModule` from [_src/GlobalModule.php_](src/GlobalModule.php).
-
 ## Learn More
 
 To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/1.x/introduction.html).

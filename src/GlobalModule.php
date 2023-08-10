@@ -35,9 +35,9 @@ use Aphiria\Framework\Serialization\Binders\SymfonySerializerBinder;
 use Aphiria\Framework\Validation\Binders\ValidationBinder;
 use Aphiria\Middleware\MiddlewareBinding;
 use Aphiria\Net\Http\HttpException;
-use App\Demo\Auth\AuthModule;
-use App\Demo\Database\DatabaseModule;
-use App\Demo\Users\UserModule;
+use App\Auth\AuthModule;
+use App\Database\DatabaseModule;
+use App\Users\UserModule;
 use Exception;
 use Psr\Log\LogLevel;
 
