@@ -16,6 +16,7 @@ use Aphiria\Routing\Attributes\Delete;
 use Aphiria\Routing\Attributes\Get;
 use Aphiria\Routing\Attributes\Post;
 use Aphiria\Routing\Attributes\RouteGroup;
+use Aphiria\Security\User as Principal;
 use App\Users\InvalidPageException;
 use App\Users\IUserService;
 use App\Users\NewUser;
@@ -47,7 +48,9 @@ final class UserController extends Controller
     #[Post('')]
     public function createUser(NewUser $user): User
     {
-        return $this->users->createUser($user);
+        $authResult = $this->authority->authorize($this->getUser() ?? new Principal([]), 'authorized-user-role-giver');
+
+        return $this->users->createUser($user, $authResult->passed);
     }
 
     /**

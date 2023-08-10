@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth;
+namespace App\Auth\Policies;
 
 use Aphiria\Authorization\AuthorizationContext;
 use Aphiria\Authorization\IAuthorizationRequirementHandler;

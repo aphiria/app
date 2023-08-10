@@ -35,6 +35,26 @@ class UserTest extends IntegrationTestCase
         ];
     }
 
+    public function testCreatingUserAsAdminRetainsRoles(): void
+    {
+        $createdUser = $this->createUser(roles: ['foo']);
+        $nonAdminUser = (new PrincipalBuilder('example.com'))->withRoles('admin')
+            ->build();
+        $response = $this->actingAs($nonAdminUser, fn () => $this->get("/users/$createdUser->id"));
+        $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
+        $this->assertParsedBodyEquals($createdUser, $response);
+    }
+
+    public function testCreatingUserAsNonAdminRemovesRoles(): void
+    {
+        $createdUser = $this->createUser(roles: ['foo']);
+        $createdUserWithoutRoles = new User($createdUser->id, $createdUser->email, []);
+        $nonAdminUser = (new PrincipalBuilder('example.com'))->build();
+        $response = $this->actingAs($nonAdminUser, fn () => $this->get("/users/$createdUser->id"));
+        $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
+        $this->assertParsedBodyEquals($createdUserWithoutRoles, $response);
+    }
+
     public function testCreatingUsersMakesThemRetrievableAsAdminUser(): void
     {
         $createdUser = $this->createUser();

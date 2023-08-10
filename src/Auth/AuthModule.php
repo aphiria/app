@@ -15,6 +15,10 @@ use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\Headers\SameSiteMode;
 use Aphiria\Net\Http\HttpStatusCode;
 use App\Auth\Binders\AuthServiceBinder;
+use App\Auth\Policies\AuthorizedUserDeleterRequirement;
+use App\Auth\Policies\AuthorizedUserDeleterRequirementHandler;
+use App\Auth\Schemes\BasicAuthenticationHandler;
+use App\Auth\Schemes\CookieAuthenticationHandler;
 
 /**
  * Defines the auth module
@@ -65,6 +69,13 @@ final class AuthModule extends AphiriaModule
                 $appBuilder,
                 RolesRequirement::class,
                 new RolesRequirementHandler()
+            )
+            ->withAuthorizationPolicy(
+                $appBuilder,
+                new AuthorizationPolicy(
+                    'authorized-user-role-giver',
+                    new RolesRequirement('admin')
+                )
             )
             ->withAuthorizationPolicy(
                 $appBuilder,

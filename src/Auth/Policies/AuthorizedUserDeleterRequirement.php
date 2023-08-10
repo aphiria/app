@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth;
+namespace App\Auth\Policies;
 
 /**
  * Defines the requirement for users to delete other users' accounts
