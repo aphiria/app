@@ -15,8 +15,8 @@ use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\Headers\SameSiteMode;
 use Aphiria\Net\Http\HttpStatusCode;
 use App\Auth\Binders\AuthServiceBinder;
-use App\Auth\Policies\AuthorizedUserDeleterRequirement;
-use App\Auth\Policies\AuthorizedUserDeleterRequirementHandler;
+use App\Auth\Policies\OwnerOrAdminRequirement;
+use App\Auth\Policies\OwnerOrAdminRequirementHandler;
 use App\Auth\Schemes\BasicAuthenticationHandler;
 use App\Auth\Schemes\CookieAuthenticationHandler;
 
@@ -62,8 +62,8 @@ final class AuthModule extends AphiriaModule
             )
             ->withAuthorizationRequirementHandler(
                 $appBuilder,
-                AuthorizedUserDeleterRequirement::class,
-                new AuthorizedUserDeleterRequirementHandler()
+                OwnerOrAdminRequirement::class,
+                new OwnerOrAdminRequirementHandler()
             )
             ->withAuthorizationRequirementHandler(
                 $appBuilder,
@@ -73,15 +73,15 @@ final class AuthModule extends AphiriaModule
             ->withAuthorizationPolicy(
                 $appBuilder,
                 new AuthorizationPolicy(
-                    'authorized-user-role-giver',
+                    'authorized-user-role-granter',
                     new RolesRequirement('admin')
                 )
             )
             ->withAuthorizationPolicy(
                 $appBuilder,
                 new AuthorizationPolicy(
-                    'authorized-user-deleter',
-                    new AuthorizedUserDeleterRequirement('admin')
+                    'owner-or-admin',
+                    new OwnerOrAdminRequirement('admin')
                 )
             )
             ->withProblemDetails(

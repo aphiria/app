@@ -6,6 +6,7 @@ namespace App\Users\Api\Controllers;
 
 use Aphiria\Api\Controllers\Controller;
 use Aphiria\Authentication\Attributes\Authenticate;
+use Aphiria\Authentication\IAuthenticator;
 use Aphiria\Authorization\Attributes\AuthorizeRoles;
 use Aphiria\Authorization\IAuthority;
 use Aphiria\Authorization\PolicyNotFoundException;
@@ -16,12 +17,12 @@ use Aphiria\Routing\Attributes\Delete;
 use Aphiria\Routing\Attributes\Get;
 use Aphiria\Routing\Attributes\Post;
 use Aphiria\Routing\Attributes\RouteGroup;
-use Aphiria\Security\User as Principal;
 use App\Users\InvalidPageException;
 use App\Users\IUserService;
 use App\Users\NewUser;
 use App\Users\User;
 use App\Users\UserNotFoundException;
+use Exception;
 
 /**
  * Defines the user controller
@@ -31,10 +32,12 @@ final class UserController extends Controller
 {
     /**
      * @param IUserService $users The user service
+     * @param IAuthenticator $authenticator The authenticator
      * @param IAuthority $authority The authority
      */
     public function __construct(
         private readonly IUserService $users,
+        private readonly IAuthenticator $authenticator,
         private readonly IAuthority $authority
     ) {
     }
@@ -44,13 +47,21 @@ final class UserController extends Controller
      *
      * @param NewUser $user The user to create
      * @return User The created user
+     * @throws Exception Thrown if there was an error authenticating or authorizing this request
      */
     #[Post('')]
     public function createUser(NewUser $user): User
     {
-        $authResult = $this->authority->authorize($this->getUser() ?? new Principal([]), 'authorized-user-role-giver');
+        $canGrantRoles = false;
+        /** @psalm-suppress PossiblyNullArgument The user will be set */
+        $authenticationResult = $this->authenticator->authenticate($this->request, 'cookie');
 
-        return $this->users->createUser($user, $authResult->passed);
+        if ($authenticationResult->passed) {
+            /** @psalm-suppress PossiblyNullArgument The user will be set */
+            $canGrantRoles = $this->authority->authorize($authenticationResult->user, 'authorized-user-role-granter')->passed;
+        }
+
+        return $this->users->createUser($user, $canGrantRoles);
     }
 
     /**
@@ -67,11 +78,12 @@ final class UserController extends Controller
         try {
             $userToDelete = $this->users->getUserById($id);
         } catch (UserNotFoundException $ex) {
-            return $this->notFound();
+            // To hide prevent iterating over our users, we'll just return a 403
+            return $this->forbidden();
         }
 
         /** @psalm-suppress PossiblyNullArgument The user will be set */
-        if (!$this->authority->authorize($this->getUser(), 'authorized-user-deleter', $userToDelete)->passed) {
+        if (!$this->authority->authorize($this->getUser(), 'owner-or-admin', $userToDelete)->passed) {
             return $this->forbidden();
         }
 
@@ -99,12 +111,25 @@ final class UserController extends Controller
      * Gets a user with the input ID
      *
      * @param int $id The ID of the user to get
-     * @return User The user with the input ID
+     * @return IResponse The response with the user
      * @throws UserNotFoundException Thrown if there was no user with the input ID
+     * @throws Exception Thrown if there was an error authenticating or authorizing the user
      */
     #[Get(':id'), Authenticate()]
-    public function getUserById(int $id): User
+    public function getUserById(int $id): IResponse
     {
-        return $this->users->getUserById($id);
+        try {
+            $userToGet = $this->users->getUserById($id);
+        } catch (UserNotFoundException) {
+            // To hide prevent iterating over our users, we'll just return a 403
+            return $this->forbidden();
+        }
+
+        /** @psalm-suppress PossiblyNullArgument The user will be set */
+        if (!$this->authority->authorize($this->getUser(), 'owner-or-admin', $userToGet)->passed) {
+            return $this->forbidden();
+        }
+
+        return $this->ok($this->users->getUserById($id));
     }
 }

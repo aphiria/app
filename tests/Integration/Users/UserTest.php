@@ -6,6 +6,7 @@ namespace App\Tests\Integration\Users;
 
 use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Security\Identity;
+use Aphiria\Security\IPrincipal;
 use Aphiria\Security\PrincipalBuilder;
 use Aphiria\Security\User as Principal;
 use App\Tests\Integration\CreatesUser;
@@ -37,10 +38,11 @@ class UserTest extends IntegrationTestCase
 
     public function testCreatingUserAsAdminRetainsRoles(): void
     {
-        $createdUser = $this->createUser(roles: ['foo']);
-        $nonAdminUser = (new PrincipalBuilder('example.com'))->withRoles('admin')
-            ->build();
-        $response = $this->actingAs($nonAdminUser, fn () => $this->get("/users/$createdUser->id"));
+        $createdUser = $this->createUser(createAsAdmin: true, roles: ['foo']);
+        $response = $this->actingAs(
+            self::createPrincipalFromUser($createdUser),
+            fn () => $this->get("/users/$createdUser->id")
+        );
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertParsedBodyEquals($createdUser, $response);
     }
@@ -49,20 +51,12 @@ class UserTest extends IntegrationTestCase
     {
         $createdUser = $this->createUser(roles: ['foo']);
         $createdUserWithoutRoles = new User($createdUser->id, $createdUser->email, []);
-        $nonAdminUser = (new PrincipalBuilder('example.com'))->build();
-        $response = $this->actingAs($nonAdminUser, fn () => $this->get("/users/$createdUser->id"));
+        $response = $this->actingAs(
+            self::createPrincipalFromUser($createdUser),
+            fn () => $this->get("/users/$createdUser->id")
+        );
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertParsedBodyEquals($createdUserWithoutRoles, $response);
-    }
-
-    public function testCreatingUsersMakesThemRetrievableAsAdminUser(): void
-    {
-        $createdUser = $this->createUser();
-        $adminUser = (new PrincipalBuilder('example.com'))->withRoles('admin')
-            ->build();
-        $response = $this->actingAs($adminUser, fn () => $this->get("/users/$createdUser->id"));
-        $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
-        $this->assertParsedBodyEquals($createdUser, $response);
     }
 
     public function testDeletingAnotherUserAsAdminReturns204(): void
@@ -77,34 +71,35 @@ class UserTest extends IntegrationTestCase
     public function testDeletingAnotherUserAsNonAdminReturns403(): void
     {
         $createdUserId = $this->createUser()->id;
-        $nonAdminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(1)
+        $nonAdminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(10000)
             ->build();
         $response = $this->actingAs($nonAdminUser, fn () => $this->delete("/users/$createdUserId"));
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
-    public function testDeletingNonExistentUserReturns404(): void
+    public function testDeletingNonExistentUserReturns403(): void
     {
         $adminUser = (new PrincipalBuilder('example.com'))->withRoles('admin')
             ->build();
         $response = $this->actingAs($adminUser, fn () => $this->get('/users/0'));
-        $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
+        $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
     public function testDeletingYourOwnUserReturns204(): void
     {
-        $createdUserId = $this->createUser()->id;
-        $createdUser = (new PrincipalBuilder('example.com'))->withNameIdentifier($createdUserId)
-            ->build();
-        $response = $this->actingAs($createdUser, fn () => $this->delete("/users/$createdUserId"));
+        $createdUser = $this->createUser();
+        $response = $this->actingAs(
+            self::createPrincipalFromUser($createdUser),
+            fn () => $this->delete("/users/$createdUser->id")
+        );
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $response);
     }
 
-    public function testGettingInvalidUserReturns404(): void
+    public function testGettingInvalidUserReturns403(): void
     {
         $user = new Principal(new Identity());
         $response = $this->actingAs($user, fn () => $this->get('/users/0'));
-        $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
+        $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
     public function testGettingPagedUsersRedirectsToForbiddenPageForNonAdmins(): void
@@ -144,5 +139,52 @@ class UserTest extends IntegrationTestCase
             fn () => $this->get("/users?pageSize=$pageSize&pageNumber=$pageNumber")
         );
         $this->assertStatusCodeEquals(HttpStatusCode::BadRequest, $response);
+    }
+
+    public function testGettingUserDoesNotWorkForNonOwnerNonAdmin(): void
+    {
+        $createdUser = $this->createUser();
+        $nonAdminNonOwnerUser = (new PrincipalBuilder('example.com'))->build();
+        $response = $this->actingAs(
+            $nonAdminNonOwnerUser,
+            fn () => $this->get("/users/$createdUser->id")
+        );
+        $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
+    }
+
+    public function testGettingUserWorksForAdmin(): void
+    {
+        $createdUser = $this->createUser();
+        $admin = (new PrincipalBuilder('example.com'))->withRoles('admin')
+            ->build();
+        $response = $this->actingAs(
+            $admin,
+            fn () => $this->get("/users/$createdUser->id")
+        );
+        $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
+    }
+
+    public function testGettingUserWorksForOwner(): void
+    {
+        $createdUser = $this->createUser();
+        $response = $this->actingAs(
+            self::createPrincipalFromUser($createdUser),
+            fn () => $this->get("/users/$createdUser->id")
+        );
+        $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
+    }
+
+    /**
+     * Creates a principal from a user
+     *
+     * @param User $user The user to create a principal from
+     * @return IPrincipal The created principal
+     */
+    private static function createPrincipalFromUser(User $user): IPrincipal
+    {
+        return (new PrincipalBuilder('example.com'))->withNameIdentifier($user->id)
+            ->withEmail($user->email)
+            ->withRoles($user->roles)
+            ->build();
     }
 }
