@@ -18,7 +18,8 @@ readonly class User
      */
     public function __construct(
         public int $id,
-        #[Email] public string $email,
+        #[Email]
+        public string $email,
         public array $roles
     ) {
     }

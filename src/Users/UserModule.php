@@ -7,7 +7,6 @@ namespace App\Users;
 use Aphiria\Application\IApplicationBuilder;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\HttpStatusCode;
-use App\Database\Components\DatabaseComponents;
 use App\Users\Binders\UserServiceBinder;
 use Psr\Log\LogLevel;
 
@@ -16,15 +15,12 @@ use Psr\Log\LogLevel;
  */
 final class UserModule extends AphiriaModule
 {
-    use DatabaseComponents;
-
     /**
      * @inheritdoc
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
         $this->withBinders($appBuilder, new UserServiceBinder())
-            ->withDatabaseSeeders($appBuilder, SqlUserSeeder::class)
             ->withProblemDetails(
                 $appBuilder,
                 UserNotFoundException::class,
