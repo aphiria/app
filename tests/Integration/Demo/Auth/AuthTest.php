@@ -23,9 +23,15 @@ class AuthTest extends IntegrationTestCase
     public function testLoggingInAndOutUnsetsTokenCookie(): void
     {
         $user = $this->createUser(password: 'foo');
-        $loginResponse = $this->post('/demo/auth/login', ['Authorization' => 'Basic ' . \base64_encode("$user->email:foo")]);
+        $loginResponse = $this->post(
+            '/demo/auth/login',
+            ['Authorization' => 'Basic ' . \base64_encode("$user->email:foo")]
+        );
         $this->assertHasCookie($loginResponse, 'authToken');
-        $logoutResponse = $this->post('/demo/auth/logout', ['Cookie' => (string)$this->responseParser->parseCookies($loginResponse)->get('authToken')->value]);
+        $logoutResponse = $this->post(
+            '/demo/auth/logout',
+            ['Cookie' => (string)$this->responseParser->parseCookies($loginResponse)->get('authToken')->value]
+        );
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $logoutResponse);
         $this->assertCookieIsUnset($logoutResponse, 'authToken');
     }

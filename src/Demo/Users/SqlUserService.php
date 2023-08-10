@@ -103,6 +103,10 @@ SQL
             throw new InvalidPageException('Page number must begin at 0');
         }
 
+        if ($pageSize < 1) {
+            throw new InvalidPageException('Page size must be greater than 0');
+        }
+
         if ($pageSize > self::MAX_PAGE_SIZE) {
             throw new InvalidPageException('Page size cannot exceed ' . self::MAX_PAGE_SIZE);
         }

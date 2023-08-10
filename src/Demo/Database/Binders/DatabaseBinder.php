@@ -18,9 +18,12 @@ final class DatabaseBinder extends Binder
      */
     public function bind(IContainer $container): void
     {
+        $dbPath = (string)\getenv('DB_PATH');
+        $dsn = 'sqlite:' . ($dbPath === ':memory:' ? $dbPath : __DIR__ . "/../../../../$dbPath");
         $container->bindFactory(
             PDO::class,
-            fn () => new PDO('sqlite:' . __DIR__ . '/../../../../' . (string)\getenv('DB_PATH'))
+            fn () => new PDO($dsn),
+            true
         );
     }
 }
