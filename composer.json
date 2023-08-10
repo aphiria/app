@@ -46,7 +46,8 @@
         ],
         "post-create-project-cmd": [
             "php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
-            "php -r \"echo 'Important: make ' . __DIR__ . DIRECTORY_SEPARATOR . 'tmp writable' . PHP_EOL;\""
+            "php -r \"echo 'Important: make ' . __DIR__ . DIRECTORY_SEPARATOR . 'tmp writable' . PHP_EOL;\"",
+            "php aphiria user:generate-default-credentials"
         ],
         "post-install-cmd": [
             "php -r \"shell_exec((file_exists(getcwd() . '/composer.phar') ? PHP_BINARY . ' composer.phar' : 'composer') . ' dump-autoload -o');\"",

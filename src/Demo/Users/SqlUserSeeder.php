@@ -13,17 +13,16 @@ use PDOException;
  */
 final class SqlUserSeeder implements IDatabaseSeeder
 {
-    /** @var string The default user's email address */
-    private const DEFAULT_USER_EMAIL = 'admin@example.com';
-    /** @var string This is a dummy default user password (in real applications, this should come from an environment variable) */
-    private const DEFAULT_USER_PASSWORD = 'abc123';
-
     /**
      * @param SqlUserService $users The user service to seed
      * @param PDO $pdo The database instance
      */
-    public function __construct(private readonly SqlUserService $users, private readonly PDO $pdo)
-    {
+    public function __construct(
+        private readonly SqlUserService $users,
+        private readonly PDO $pdo,
+        private readonly string $defaultUserEmail,
+        private readonly string $defaultUserPassword
+    ) {
     }
 
     /**
@@ -34,9 +33,9 @@ final class SqlUserSeeder implements IDatabaseSeeder
         $this->createTables();
 
         // Only create the user if they do not exist already
-        if ($this->users->getUserByEmail(self::DEFAULT_USER_EMAIL) === null) {
+        if ($this->users->getUserByEmail($this->defaultUserEmail) === null) {
             $this->users->createUser(
-                new NewUser(self::DEFAULT_USER_EMAIL, self::DEFAULT_USER_PASSWORD, ['admin']),
+                new NewUser($this->defaultUserEmail, $this->defaultUserPassword, ['admin']),
                 true
             );
         }
