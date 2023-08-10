@@ -32,7 +32,7 @@ class AuthTest extends IntegrationTestCase
         $this->assertCookieIsUnset($logoutResponse, 'authToken');
     }
 
-    public function testLoggingInWithInvalidCredentialsReturnsUnauthorizedResponse(): void
+    public function testLoggingInWithInvalidCredentialsReturns401(): void
     {
         $user = $this->createUser(password: 'foo');
         $response = $this->post('/auth/login', ['Authorization' => 'Basic ' . \base64_encode("$user->email:bar")]);

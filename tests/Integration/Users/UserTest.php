@@ -7,7 +7,6 @@ namespace App\Tests\Integration\Users;
 use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Security\IPrincipal;
 use Aphiria\Security\PrincipalBuilder;
-use Aphiria\Security\User as Principal;
 use App\Tests\Integration\CreatesUser;
 use App\Tests\Integration\IntegrationTestCase;
 use App\Tests\Integration\MigratesDatabase;
