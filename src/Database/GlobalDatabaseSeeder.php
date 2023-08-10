@@ -10,7 +10,7 @@ namespace App\Database;
 final class GlobalDatabaseSeeder implements IDatabaseSeeder
 {
     /**
-     * @param IDatabaseSeeder $databaseSeeders The list of database seeders
+     * @param list<IDatabaseSeeder> $databaseSeeders The list of database seeders
      */
     public function __construct(private readonly array $databaseSeeders)
     {
