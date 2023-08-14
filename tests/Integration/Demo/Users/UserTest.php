@@ -45,7 +45,7 @@ class UserTest extends IntegrationTestCase
                 $identity->withNameIdentifier(1)
                     ->withRoles('admin');
             })->build();
-        $response = $this->actingAs($adminUser)->get("/demo/users/{$createdUser->id}");
+        $response = $this->actingAs($adminUser, fn () => $this->get("/demo/users/$createdUser->id"));
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertParsedBodyEquals($createdUser, $response);
     }
@@ -60,7 +60,7 @@ class UserTest extends IntegrationTestCase
                 $identity->withNameIdentifier(1)
                     ->withRoles('admin');
             })->build();
-        $response = $this->actingAs($adminUser)->delete("/demo/users/$createdUser->id");
+        $response = $this->actingAs($adminUser, fn () => $this->delete("/demo/users/$createdUser->id"));
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $response);
     }
 
@@ -73,7 +73,7 @@ class UserTest extends IntegrationTestCase
             ->withIdentity(function (IdentityBuilder $identity) {
                 $identity->withNameIdentifier(1);
             })->build();
-        $response = $this->actingAs($nonAdminUser)->delete("/demo/users/$createdUser->id");
+        $response = $this->actingAs($nonAdminUser, fn () => $this->delete("/demo/users/$createdUser->id"));
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
 
@@ -85,7 +85,7 @@ class UserTest extends IntegrationTestCase
                     ->withRoles('admin');
             })->build();
         // Pass in a dummy user ID
-        $response = $this->actingAs($adminUser)->delete('/demo/users/0');
+        $response = $this->actingAs($adminUser, fn () => $this->get('/demo/users/0'));
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
     }
 
@@ -98,13 +98,14 @@ class UserTest extends IntegrationTestCase
             ->withIdentity(function (IdentityBuilder $identity) use ($createdUser) {
                 $identity->withNameIdentifier($createdUser->id);
             })->build();
-        $response = $this->actingAs($createdUserPrincipal)->delete("/demo/users/$createdUser->id");
+        $response = $this->actingAs($createdUserPrincipal, fn () => $this->delete("/demo/users/$createdUser->id"));
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $response);
     }
 
     public function testGettingInvalidUserReturns404(): void
     {
-        $response = $this->actingAs(new Principal(new Identity([])))->get('/demo/users/0');
+        $nonAdminUser = new Principal(new Identity([]));
+        $response = $this->actingAs($nonAdminUser, fn () => $this->get('/demo/users/0'));
         $this->assertStatusCodeEquals(HttpStatusCode::NotFound, $response);
     }
 
@@ -114,7 +115,7 @@ class UserTest extends IntegrationTestCase
             ->withIdentity(function (IdentityBuilder $identity) {
                 $identity->withNameIdentifier(1);
             })->build();
-        $response = $this->actingAs($nonAdminUser)->get('/demo/users');
+        $response = $this->actingAs($nonAdminUser, fn () => $this->get('/demo/users'));
         $this->assertStatusCodeEquals(HttpStatusCode::Found, $response);
         $this->assertHeaderEquals('/access-denied', $response, 'Location');
     }
@@ -129,7 +130,7 @@ class UserTest extends IntegrationTestCase
                 $identity->withNameIdentifier(1)
                     ->withRoles('admin');
             })->build();
-        $response = $this->actingAs($adminUser)->get('/demo/users');
+        $response = $this->actingAs($adminUser, fn () => $this->get('/demo/users'));
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertNotEmpty($response->getBody()?->readAsString());
     }

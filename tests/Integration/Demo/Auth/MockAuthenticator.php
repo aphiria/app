@@ -6,16 +6,18 @@ namespace App\Tests\Integration\Demo\Auth;
 
 use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\AuthenticationScheme;
+use Aphiria\Authentication\Authenticator;
 use Aphiria\Authentication\Schemes\IAuthenticationSchemeHandler;
 use Aphiria\Net\Http\IRequest;
 use Aphiria\Security\IPrincipal;
+use Closure;
 
 /**
  * Defines the mock authenticator for use in tests
  *
  * TODO: This should likely be refactored into Aphiria
  */
-class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthenticator
+class MockAuthenticator extends Authenticator implements IMockedAuthenticator
 {
     /** @var IPrincipal|null The principal we're acting as, or null if we are not acting as anyone */
     private ?IPrincipal $actor = null;
@@ -23,9 +25,13 @@ class MockAuthenticator extends UpdatedAuthenticator implements IMockedAuthentic
     /**
      * @inheritdoc
      */
-    public function actingAs(IPrincipal $user): void
+    public function actingAs(IPrincipal $user, Closure $callback): mixed
     {
         $this->actor = $user;
+        $returnValue = $callback();
+        $this->actor = null;
+
+        return $returnValue;
     }
 
     /**
