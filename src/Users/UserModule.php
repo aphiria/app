@@ -2,35 +2,38 @@
 
 declare(strict_types=1);
 
-namespace App\Demo;
+namespace App\Users;
 
 use Aphiria\Application\IApplicationBuilder;
-use Aphiria\Authentication\AuthenticationScheme;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\HttpStatusCode;
-use App\Demo\Auth\DummyAuthenticationHandler;
-use App\Demo\Binders\UserServiceBinder;
+use App\Database\Components\DatabaseComponents;
+use App\Users\Binders\UserServiceBinder;
 use Psr\Log\LogLevel;
 
 /**
- * Defines the demo module
+ * Defines the user
  */
-final class DemoModule extends AphiriaModule
+final class UserModule extends AphiriaModule
 {
+    use DatabaseComponents;
+
     /**
      * @inheritdoc
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
         $this->withBinders($appBuilder, new UserServiceBinder())
-            ->withAuthenticationScheme(
-                $appBuilder,
-                new AuthenticationScheme('dummy', DummyAuthenticationHandler::class)
-            )
+            ->withDatabaseSeeders($appBuilder, SqlUserSeeder::class)
             ->withProblemDetails(
                 $appBuilder,
                 UserNotFoundException::class,
                 status: HttpStatusCode::NotFound
+            )
+            ->withProblemDetails(
+                $appBuilder,
+                InvalidPageException::class,
+                status: HttpStatusCode::BadRequest
             )
             ->withLogLevelFactory(
                 $appBuilder,

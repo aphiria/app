@@ -27,6 +27,8 @@
     "require": {
         "aphiria/aphiria": "1.x-dev",
         "ext-mbstring": "*",
+        "ext-pdo": "*",
+        "ext-sqlite3": "*",
         "php": ">=8.2",
         "symfony/dotenv": "^6.1"
     },
@@ -43,7 +45,9 @@
             "php -r \"file_exists('.env') || copy('.env.dist', '.env');\""
         ],
         "post-create-project-cmd": [
-            "php -r \"echo 'Important: make ' . __DIR__ . DIRECTORY_SEPARATOR . 'tmp writable' . PHP_EOL;\""
+            "php -r \"file_exists('database/database.sqlite') || touch('database/database.sqlite');\"",
+            "php -r \"echo 'Important: make ' . __DIR__ . DIRECTORY_SEPARATOR . 'tmp writable' . PHP_EOL;\"",
+            "php aphiria user:generate-default-credentials"
         ],
         "post-install-cmd": [
             "php -r \"shell_exec((file_exists(getcwd() . '/composer.phar') ? PHP_BINARY . ' composer.phar' : 'composer') . ' dump-autoload -o');\"",

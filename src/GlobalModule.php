@@ -35,7 +35,9 @@ use Aphiria\Framework\Serialization\Binders\SymfonySerializerBinder;
 use Aphiria\Framework\Validation\Binders\ValidationBinder;
 use Aphiria\Middleware\MiddlewareBinding;
 use Aphiria\Net\Http\HttpException;
-use App\Demo\DemoModule;
+use App\Auth\AuthModule;
+use App\Database\DatabaseModule;
+use App\Users\UserModule;
 use Exception;
 use Psr\Log\LogLevel;
 
@@ -100,7 +102,9 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
                 return $ex->response->getStatusCode()->value >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
             })
             ->withModules($appBuilder, [
-                new DemoModule()
+                new DatabaseModule(),
+                new UserModule(),
+                new AuthModule()
             ]);
     }
 
@@ -117,10 +121,6 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
         $cache = new FileBinderMetadataCollectionCache($cachePath);
         $this->container->bindInstance(IBinderMetadataCollectionCache::class, $cache);
 
-        if (\getenv('APP_ENV') === 'production') {
-            return new LazyBinderDispatcher($cache);
-        }
-
-        return new LazyBinderDispatcher();
+        return new LazyBinderDispatcher(\getenv('APP_ENV') === 'production' ? $cache : null);
     }
 }
