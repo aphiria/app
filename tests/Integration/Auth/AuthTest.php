@@ -7,18 +7,14 @@ namespace App\Tests\Integration\Auth;
 use Aphiria\Net\Http\HttpStatusCode;
 use App\Tests\Integration\CreatesUser;
 use App\Tests\Integration\IntegrationTestCase;
+use App\Tests\Integration\MigratesDatabase;
 use App\Tests\Integration\SeedsDatabase;
 
 class AuthTest extends IntegrationTestCase
 {
     use CreatesUser;
+    use MigratesDatabase;
     use SeedsDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seedDatabase();
-    }
 
     public function testLoggingInAndOutUnsetsTokenCookie(): void
     {

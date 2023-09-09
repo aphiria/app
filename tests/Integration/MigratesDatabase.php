@@ -10,19 +10,19 @@ use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\NullOutput;
 
 /**
- * Defines methods for seeding databases in integration tests
+ * Defines methods for migrating databases in integration tests
  */
-trait SeedsDatabase
+trait MigratesDatabase
 {
     /**
-     * Seeds the database
+     * Migrates the database
      *
-     * @throws Exception Thrown if the database could not be seeded
+     * @throws Exception Thrown if the database could not be migrated
      */
-    protected function seedDatabase(): void
+    protected function migrateDatabase(): void
     {
         $app = new PhinxApplication();
         $app->setAutoExit(false);
-        $app->run(new StringInput('seed:run'), new NullOutput());
+        $app->run(new StringInput('migrate'), new NullOutput());
     }
 }

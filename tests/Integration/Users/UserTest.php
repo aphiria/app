@@ -10,6 +10,7 @@ use Aphiria\Security\PrincipalBuilder;
 use Aphiria\Security\User as Principal;
 use App\Tests\Integration\CreatesUser;
 use App\Tests\Integration\IntegrationTestCase;
+use App\Tests\Integration\MigratesDatabase;
 use App\Tests\Integration\SeedsDatabase;
 use App\Users\User;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -17,13 +18,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
 class UserTest extends IntegrationTestCase
 {
     use CreatesUser;
+    use MigratesDatabase;
     use SeedsDatabase;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->seedDatabase();
-    }
 
     /**
      * Provides invalid page size and number parameters

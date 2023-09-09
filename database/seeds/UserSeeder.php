@@ -21,22 +21,26 @@ class UserSeeder extends AbstractSeed
             ['email' => \getenv('USER_DEFAULT_EMAIL')]
         );
 
-        if (empty($queryForDefaultUser->fetchAll())) {
-            $this->insert(
-                'users',
-                [
-                    'email' => (string)\getenv('USER_DEFAULT_EMAIL'),
-                    'hashed_password' => \password_hash((string)\getenv('USER_DEFAULT_PASSWORD'), PASSWORD_ARGON2ID)
-                ]
-            );
-            $this->insert(
-                'user_roles',
-                [
-                    'user_id' => $this->getAdapter()->getConnection()->lastInsertId(),
-                    'role' => 'admin'
-                ]
-            );
+        if (!empty($queryForDefaultUser->fetchAll())) {
+            $this->output->writeln('<info>Default user already exists, skipping seeding...</info>');
+
+            return;
         }
-        echo 'here';
+
+        $this->output->writeln('<info>Inserting default user</info>');
+        $this->insert(
+            'users',
+            [
+                'email' => (string)\getenv('USER_DEFAULT_EMAIL'),
+                'hashed_password' => \password_hash((string)\getenv('USER_DEFAULT_PASSWORD'), PASSWORD_ARGON2ID)
+            ]
+        );
+        $this->insert(
+            'user_roles',
+            [
+                'user_id' => (int)$this->getAdapter()->getConnection()->lastInsertId(),
+                'role' => 'admin'
+            ]
+        );
     }
 }
