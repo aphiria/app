@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth;
+namespace App\Auth\Policies;
 
 use Aphiria\Authorization\AuthorizationContext;
 use Aphiria\Authorization\IAuthorizationRequirementHandler;
@@ -12,29 +12,29 @@ use App\Users\User;
 use InvalidArgumentException;
 
 /**
- * Defines the requirement handler that checks if a user is authorized to delete another user's account
+ * Defines the requirement handler that checks if a user is the owner or an admin
  *
- * @implements IAuthorizationRequirementHandler<AuthorizedUserDeleterRequirement, User>
+ * @implements IAuthorizationRequirementHandler<OwnerOrAdminRequirement, User>
  */
-final class AuthorizedUserDeleterRequirementHandler implements IAuthorizationRequirementHandler
+final class OwnerOrAdminRequirementHandler implements IAuthorizationRequirementHandler
 {
     /**
      * @inheritdoc
      */
     public function handle(IPrincipal $user, object $requirement, AuthorizationContext $authorizationContext): void
     {
-        if (!$requirement instanceof AuthorizedUserDeleterRequirement) {
-            throw new InvalidArgumentException('Requirement must be of type ' . AuthorizedUserDeleterRequirement::class);
+        if (!$requirement instanceof OwnerOrAdminRequirement) {
+            throw new InvalidArgumentException('Requirement must be of type ' . OwnerOrAdminRequirement::class);
         }
 
-        $userToDelete = $authorizationContext->resource;
+        $userBeingAccessed = $authorizationContext->resource;
 
-        if (!$userToDelete instanceof User) {
+        if (!$userBeingAccessed instanceof User) {
             throw new InvalidArgumentException('Resource must be of type ' . User::class);
         }
 
-        if ($userToDelete->id === (int)$user->getPrimaryIdentity()?->getNameIdentifier()) {
-            // The user being deleted is the current user
+        if ($userBeingAccessed->id === (int)$user->getPrimaryIdentity()?->getNameIdentifier()) {
+            // The user being accessed is the current user
             $authorizationContext->requirementPassed($requirement);
 
             return;
@@ -42,7 +42,7 @@ final class AuthorizedUserDeleterRequirementHandler implements IAuthorizationReq
 
         foreach ($requirement->authorizedRoles as $authorizedRole) {
             if ($user->hasClaim(ClaimType::Role, $authorizedRole)) {
-                // The user is authorized to delete the user's account
+                // The user is authorized to access the user's account
                 $authorizationContext->requirementPassed($requirement);
 
                 return;

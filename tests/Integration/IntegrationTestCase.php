@@ -16,6 +16,24 @@ use TypeError;
  */
 class IntegrationTestCase extends BaseIntegrationTestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // Auto-call certain trait methods if the test case uses them
+        $traits = \class_uses($this) ?: [];
+
+        if (isset($traits[MigratesDatabase::class])) {
+            /** @psalm-suppress UndefinedMethod This method will exist because it uses the migration trait */
+            $this->migrateDatabase();
+        }
+
+        if (isset($traits[SeedsDatabase::class])) {
+            /** @psalm-suppress UndefinedMethod This method will exist because it uses the seed trait */
+            $this->seedDatabase();
+        }
+    }
+
     /**
      * @inheritdoc
      */

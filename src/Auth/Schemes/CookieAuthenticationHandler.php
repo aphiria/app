@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Auth;
+namespace App\Auth\Schemes;
 
 use Aphiria\Authentication\AuthenticationResult;
 use Aphiria\Authentication\AuthenticationScheme;
@@ -12,6 +12,8 @@ use Aphiria\Net\Http\IRequest;
 use Aphiria\Net\Http\IResponse;
 use Aphiria\Security\IPrincipal;
 use Aphiria\Security\PrincipalBuilder;
+use App\Auth\InvalidCredentialsException;
+use App\Auth\ITokenService;
 use App\Users\IUserService;
 use App\Users\UserNotFoundException;
 use JsonException;

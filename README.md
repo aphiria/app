@@ -30,7 +30,12 @@ php aphiria app:serve
 
 ## Demo
 
-This app comes with a simple demo that can store, retrieve, and authenticate users from a local SQLite database.
+This app comes with a simple demo that can store, retrieve, and authenticate users from a local SQLite database.  It uses <a href="https://book.cakephp.org/phinx/0/en/contents.html" target="_blank">Phinx</a> to manage database migrations and seeding, which can be executed with the following commands, respectively:
+
+* `vendor/bin/phinx migrate`
+* `vendor/bin/phinx seed:run`
+
+Phinx-specific configuration settings, eg the paths to migration and seed files, are located in _phinx.php_.
 
 ## Learn More
 

@@ -10,16 +10,15 @@ use App\Auth\ITokenService;
 use App\Auth\SqlTokenService;
 
 /**
- * Defines the auth service binder
+ * Defines the auth binder
  */
-final class AuthServiceBinder extends Binder
+final class AuthBinder extends Binder
 {
     /**
      * @inheritdoc
      */
     public function bind(IContainer $container): void
     {
-        // Configure the token service
         $container->bindClass(ITokenService::class, SqlTokenService::class);
     }
 }

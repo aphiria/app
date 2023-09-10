@@ -30,6 +30,7 @@
         "ext-pdo": "*",
         "ext-sqlite3": "*",
         "php": ">=8.2",
+        "robmorgan/phinx": "1.x-dev",
         "symfony/dotenv": "^6.1"
     },
     "require-dev": {
@@ -40,7 +41,7 @@
     "scripts": {
         "phpcs-test": "@phpcs-fix --dry-run",
         "phpcs-fix": "php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --diff",
-        "phpunit": "php vendor/phpunit/phpunit/phpunit --coverage-clover ./.coverage/clover.xml",
+        "phpunit": "XDEBUG_MODE=coverage php vendor/phpunit/phpunit/phpunit --coverage-clover=./.coverage/clover.xml",
         "post-root-package-install": [
             "php -r \"file_exists('.env') || copy('.env.dist', '.env');\""
         ],

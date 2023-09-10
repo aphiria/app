@@ -14,23 +14,23 @@ use Aphiria\Authorization\RequirementHandlers\RolesRequirementHandler;
 use Aphiria\Framework\Application\AphiriaModule;
 use Aphiria\Net\Http\Headers\SameSiteMode;
 use Aphiria\Net\Http\HttpStatusCode;
-use App\Auth\Binders\AuthServiceBinder;
-use App\Database\Components\DatabaseComponents;
+use App\Auth\Binders\AuthBinder;
+use App\Auth\Policies\OwnerOrAdminRequirement;
+use App\Auth\Policies\OwnerOrAdminRequirementHandler;
+use App\Auth\Schemes\BasicAuthenticationHandler;
+use App\Auth\Schemes\CookieAuthenticationHandler;
 
 /**
  * Defines the auth module
  */
 final class AuthModule extends AphiriaModule
 {
-    use DatabaseComponents;
-
     /**
      * @inheritdoc
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
-        $this->withBinders($appBuilder, new AuthServiceBinder())
-            ->withDatabaseSeeders($appBuilder, SqlTokenSeeder::class)
+        $this->withBinders($appBuilder, new AuthBinder())
             // Add our default authentication scheme
             ->withAuthenticationScheme(
                 $appBuilder,
@@ -62,8 +62,8 @@ final class AuthModule extends AphiriaModule
             )
             ->withAuthorizationRequirementHandler(
                 $appBuilder,
-                AuthorizedUserDeleterRequirement::class,
-                new AuthorizedUserDeleterRequirementHandler()
+                OwnerOrAdminRequirement::class,
+                new OwnerOrAdminRequirementHandler()
             )
             ->withAuthorizationRequirementHandler(
                 $appBuilder,
@@ -73,8 +73,15 @@ final class AuthModule extends AphiriaModule
             ->withAuthorizationPolicy(
                 $appBuilder,
                 new AuthorizationPolicy(
-                    'authorized-user-deleter',
-                    new AuthorizedUserDeleterRequirement('admin')
+                    'authorized-user-role-granter',
+                    new RolesRequirement('admin')
+                )
+            )
+            ->withAuthorizationPolicy(
+                $appBuilder,
+                new AuthorizationPolicy(
+                    'owner-or-admin',
+                    new OwnerOrAdminRequirement('admin')
                 )
             )
             ->withProblemDetails(

@@ -17,7 +17,8 @@ final readonly class NewUser
      * @param list<string> $roles The user's roles
      */
     public function __construct(
-        #[Email] public string $email,
+        #[Email]
+        public string $email,
         public string $password,
         public array $roles = []
     ) {
