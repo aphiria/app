@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Users\Api\Controllers;
 
-use Aphiria\Api\Controllers\Controller;
+use Aphiria\Api\Controllers\Controller as BaseController;
 use Aphiria\Authentication\Attributes\Authenticate;
 use Aphiria\Authentication\IAuthenticator;
 use Aphiria\Authorization\Attributes\AuthorizeRoles;
@@ -13,10 +13,10 @@ use Aphiria\Authorization\PolicyNotFoundException;
 use Aphiria\Authorization\RequirementHandlerNotFoundException;
 use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IResponse;
+use Aphiria\Routing\Attributes\Controller;
 use Aphiria\Routing\Attributes\Delete;
 use Aphiria\Routing\Attributes\Get;
 use Aphiria\Routing\Attributes\Post;
-use Aphiria\Routing\Attributes\RouteGroup;
 use App\Users\InvalidPageException;
 use App\Users\IUserService;
 use App\Users\NewUser;
@@ -27,8 +27,8 @@ use Exception;
 /**
  * Defines the user controller
  */
-#[RouteGroup('/users')]
-final class UserController extends Controller
+#[Controller('/users')]
+final class UserController extends BaseController
 {
     /**
      * @param IUserService $users The user service
