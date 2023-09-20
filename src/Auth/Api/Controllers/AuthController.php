@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Auth\Api\Controllers;
 
-use Aphiria\Api\Controllers\Controller;
+use Aphiria\Api\Controllers\Controller as BaseController;
 use Aphiria\Authentication\Attributes\Authenticate;
 use Aphiria\Authentication\IAuthenticator;
 use Aphiria\Net\Http\IResponse;
 use Aphiria\Net\Http\Response;
+use Aphiria\Routing\Attributes\Controller;
 use Aphiria\Routing\Attributes\Post;
-use Aphiria\Routing\Attributes\RouteGroup;
 use Exception;
 
 /**
  * Defines the auth controller
  */
-#[RouteGroup('/auth')]
-final class AuthController extends Controller
+#[Controller('/auth')]
+final class AuthController extends BaseController
 {
     /**
      * @param IAuthenticator $authenticator The authenticator
