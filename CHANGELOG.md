@@ -1,10 +1,20 @@
 # Changelog
 
-## [v1.0.0-alpha5](https://github.com/aphiria/app/compare/v1.0.0-alpha4...v1.0.0-alpha5) (?)
+## [v1.0.0-alpha6](https://github.com/aphiria/app/compare/v1.0.0-alpha5...v1.0.0-alpha6) (?)
 
 ### Added
 
-- Added auth and user scaffolding, backed by a SQLite database ([#34](https://github.com/aphiria/app/pull/34))
+- Nothing
+
+### Changed
+
+- Nothing
+
+## [v1.0.0-alpha5](https://github.com/aphiria/app/compare/v1.0.0-alpha4...v1.0.0-alpha5) (2023-09-24)
+
+### Added
+
+- Added auth and user scaffolding, backed by a SQLite database and Phinx ([#34](https://github.com/aphiria/app/pull/34), [#37](https://github.com/aphiria/app/pull/37))
 
 ### Changed
 
