@@ -53,7 +53,7 @@ final class UserController extends BaseController
     public function createUser(NewUser $user): User
     {
         $canGrantRoles = false;
-        /** @psalm-suppress PossiblyNullArgument The user will be set */
+        /** @psalm-suppress PossiblyNullArgument The request will be set */
         $authenticationResult = $this->authenticator->authenticate($this->request, 'cookie');
 
         if ($authenticationResult->passed) {
