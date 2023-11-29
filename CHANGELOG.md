@@ -8,7 +8,7 @@
 
 ### Changed
 
-- Nothing
+- Required PHP 8.3 ([#??](asdf))
 
 ## [v1.0.0-alpha5](https://github.com/aphiria/app/compare/v1.0.0-alpha4...v1.0.0-alpha5) (2023-09-24)
 
