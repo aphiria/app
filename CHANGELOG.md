@@ -9,6 +9,7 @@
 ### Changed
 
 - Required PHP 8.3 ([#42](https://github.com/aphiria/app/pull/42))
+- Updated to Symfony 7.0 ([#43](https://github.com/aphiria/app/pull/43))
 
 ## [v1.0.0-alpha5](https://github.com/aphiria/app/compare/v1.0.0-alpha4...v1.0.0-alpha5) (2023-09-24)
 
