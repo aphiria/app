@@ -12,7 +12,7 @@ use PDO;
 final class SqlTokenService implements ITokenService
 {
     /** @var int The length of generated tokens */
-    private const TOKEN_LENGTH = 32;
+    private const int TOKEN_LENGTH = 32;
 
     /**
      * @param PDO $pdo The PDO instance to use to connect to the database

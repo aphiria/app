@@ -24,7 +24,7 @@ use JsonException;
 final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
 {
     /** @var int The default cookie TTL in case one is not set in the cookie options */
-    private const DEFAULT_COOKIE_TTL_SECONDS = 3600;
+    private const int DEFAULT_COOKIE_TTL_SECONDS = 3600;
 
     /**
      * @param ITokenService $tokens The token service to create/retrieve tokens from
