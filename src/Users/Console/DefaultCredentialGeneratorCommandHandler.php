@@ -22,7 +22,7 @@ use RuntimeException;
 final class DefaultCredentialGeneratorCommandHandler implements ICommandHandler
 {
     /** @const The length of the default user password */
-    private const DEFAULT_USER_PASSWORD_LENGTH = 32;
+    private const int DEFAULT_USER_PASSWORD_LENGTH = 32;
 
     /**
      * @inheritdoc

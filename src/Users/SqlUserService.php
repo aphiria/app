@@ -12,7 +12,7 @@ use PDO;
 final class SqlUserService implements IUserService
 {
     /** @var int The max allowed page size when paging through users */
-    private const MAX_PAGE_SIZE = 100;
+    private const int MAX_PAGE_SIZE = 100;
 
     /**
      * @param PDO $pdo The PDO instance to use to connect to the database
