@@ -21,7 +21,8 @@ class IntegrationTestCase extends BaseIntegrationTestCase
         parent::setUp();
 
         // Auto-call certain trait methods if the test case uses them
-        $traits = \class_uses($this) ?: [];
+        $traits = \class_uses($this);
+        $traits = $traits === false ? [] : $traits;
 
         if (isset($traits[MigratesDatabase::class])) {
             /** @psalm-suppress UndefinedMethod This method will exist because it uses the migration trait */

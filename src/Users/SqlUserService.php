@@ -161,7 +161,7 @@ SQL
         $statement->execute(['id' => $id]);
         $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if (empty($row)) {
+        if ($row === false || \count($row) === 0) {
             throw new UserNotFoundException("No user found with ID $id");
         }
 
