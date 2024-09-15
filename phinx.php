@@ -20,9 +20,9 @@ if (($container = Container::$globalInstance) === null) {
     $container->bindInstance([IServiceResolver::class, IContainer::class, Container::class], $container);
 
     // Ensure our environment variables are set
-    (new DotEnvBootstrapper(__DIR__ . '/.env'))->bootstrap();
+    new DotEnvBootstrapper(__DIR__ . '/.env')->bootstrap();
     // Ensure our database connection is configured
-    (new DatabaseBinder())->bind($container);
+    new DatabaseBinder()->bind($container);
 }
 
 return [
