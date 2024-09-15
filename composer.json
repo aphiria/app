@@ -29,7 +29,7 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-sqlite3": "*",
-        "php": ">=8.3",
+        "php": ">=8.4",
         "robmorgan/phinx": "0.x-dev",
         "symfony/dotenv": "^7.0"
     },
@@ -40,7 +40,7 @@
     },
     "scripts": {
         "phpcs-test": "@phpcs-fix --dry-run",
-        "phpcs-fix": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --diff",
+        "phpcs-fix": "php-cs-fixer fix --config=.php-cs-fixer.dist.php -v --diff",
         "phpunit": "XDEBUG_MODE=coverage php vendor/phpunit/phpunit/phpunit --coverage-clover=./.coverage/clover.xml",
         "post-root-package-install": [
             "php -r \"file_exists('.env') || copy('.env.dist', '.env');\""

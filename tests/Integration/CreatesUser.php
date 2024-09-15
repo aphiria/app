@@ -38,7 +38,7 @@ trait CreatesUser
         $createUserResponse = $this->actingAs($actingAs, fn () => $this->post('/users', body: $newUser));
 
         if ($createUserResponse->getStatusCode() !== HttpStatusCode::Ok) {
-            $newUserResponseBody = $createUserResponse->getBody();
+            $newUserResponseBody = $createUserResponse->body;
             $exceptionMessage = 'Failed to create new user';
             $exceptionMessage .= $newUserResponseBody === null ? '' : ': ' . $newUserResponseBody->readAsString();
 

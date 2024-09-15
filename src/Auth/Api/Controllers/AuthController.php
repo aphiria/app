@@ -38,7 +38,7 @@ final class AuthController extends BaseController
         // We authenticate via basic auth, and then log in using cookies for future requests
         $response = new Response();
         /** @psalm-suppress PossiblyNullArgument The user will be set by the basic auth handler */
-        $this->authenticator->logIn($this->getUser(), $this->request, $response, 'cookie');
+        $this->authenticator->logIn($this->user, $this->request, $response, 'cookie');
 
         return $response;
     }

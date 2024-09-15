@@ -99,7 +99,7 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
                 new AuthorizationBinder()
             ])
             ->withLogLevelFactory($appBuilder, HttpException::class, static function (HttpException $ex): string {
-                return $ex->response->getStatusCode()->value >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
+                return $ex->response->statusCode->value >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
             })
             ->withModules($appBuilder, [
                 new DatabaseModule(),

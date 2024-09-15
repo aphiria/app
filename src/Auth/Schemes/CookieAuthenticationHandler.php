@@ -110,7 +110,7 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
     protected function createCookieValueForUser(IPrincipal $user, AuthenticationScheme $scheme): string|int|float
     {
         $cookieTtlSeconds = $scheme->options->cookieMaxAge ?? self::DEFAULT_COOKIE_TTL_SECONDS;
-        $userId = (int)$user->getPrimaryIdentity()?->getNameIdentifier();
+        $userId = (int)$user->primaryIdentity?->nameIdentifier;
         $token = $this->tokens->createToken($userId, $cookieTtlSeconds);
 
         return \base64_encode(\json_encode(['userId' => $userId, 'token' => $token], JSON_THROW_ON_ERROR));

@@ -83,7 +83,7 @@ final class UserController extends BaseController
         }
 
         /** @psalm-suppress PossiblyNullArgument The user will be set */
-        if (!$this->authority->authorize($this->getUser(), 'owner-or-admin', $userToDelete)->passed) {
+        if (!$this->authority->authorize($this->user, 'owner-or-admin', $userToDelete)->passed) {
             return $this->forbidden();
         }
 
@@ -125,8 +125,8 @@ final class UserController extends BaseController
             return $this->forbidden();
         }
 
-        /** @psalm-suppress PossiblyNullArgument The user will be set */
-        if (!$this->authority->authorize($this->getUser(), 'owner-or-admin', $userToGet)->passed) {
+        /** @psalm-suppress PossiblyNullArgument The user will be set by the authentication middleware */
+        if (!$this->authority->authorize($this->user, 'owner-or-admin', $userToGet)->passed) {
             return $this->forbidden();
         }
 
