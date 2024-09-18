@@ -34,14 +34,17 @@ return [
         'default_migration_table' => 'phinxlog',
         'default_environment' => \getenv('APP_ENV'),
         'production' => [
+            'adapter' => 'sqlite',
             'name' => 'database',
             'connection' => $container->resolve(PDO::class)
         ],
         'testing' => [
+            'adapter' => 'sqlite',
             'name' => 'database',
             'connection' => $container->resolve(PDO::class)
         ],
         'development' => [
+            'adapter' => 'sqlite',
             'name' => 'database',
             'connection' => $container->resolve(PDO::class)
         ]
