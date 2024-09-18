@@ -58,9 +58,9 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
      */
     public function bootstrap(): void
     {
-        $globalConfigurationBuilder = (new GlobalConfigurationBuilder())->withEnvironmentVariables()
+        $globalConfigurationBuilder = new GlobalConfigurationBuilder()->withEnvironmentVariables()
             ->withPhpFileConfigurationSource(__DIR__ . '/../config.php');
-        (new BootstrapperCollection())->addMany([
+        new BootstrapperCollection()->addMany([
             new DotEnvBootstrapper(__DIR__ . '/../.env'),
             new ConfigurationBootstrapper($globalConfigurationBuilder),
             new GlobalExceptionHandlerBootstrapper($this->container)
