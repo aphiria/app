@@ -29,7 +29,7 @@
         "ext-mbstring": "*",
         "ext-pdo": "*",
         "ext-sqlite3": "*",
-        "php": ">=8.4",
+        "php": "^8.4",
         "robmorgan/phinx": "0.x-dev",
         "symfony/dotenv": "^7.0"
     },
