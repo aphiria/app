@@ -60,7 +60,7 @@ class UserTest extends IntegrationTestCase
     public function testDeletingAnotherUserAsAdminReturns204(): void
     {
         $createdUser = $this->createUser();
-        $adminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $adminUser = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->withRoles('admin')
             ->build();
         $response = $this->actingAs($adminUser, fn () => $this->delete("/users/$createdUser->id"));
@@ -70,7 +70,7 @@ class UserTest extends IntegrationTestCase
     public function testDeletingAnotherUserAsNonAdminReturns403(): void
     {
         $createdUser = $this->createUser();
-        $nonAdminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $nonAdminUser = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->build();
         $response = $this->actingAs($nonAdminUser, fn () => $this->delete("/users/$createdUser->id"));
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
@@ -78,7 +78,7 @@ class UserTest extends IntegrationTestCase
 
     public function testDeletingNonExistentUserReturns403(): void
     {
-        $adminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $adminUser = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->withRoles('admin')
             ->build();
         $response = $this->actingAs($adminUser, fn () => $this->delete('/users/0'));
@@ -97,7 +97,7 @@ class UserTest extends IntegrationTestCase
 
     public function testGettingInvalidUserReturns403(): void
     {
-        $user = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $user = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->build();
         $response = $this->actingAs($user, fn () => $this->get('/users/0'));
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
@@ -105,7 +105,7 @@ class UserTest extends IntegrationTestCase
 
     public function testGettingPagedUsersRedirectsToForbiddenPageForNonAdmins(): void
     {
-        $nonAdminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $nonAdminUser = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->build();
         $response = $this->actingAs($nonAdminUser, fn () => $this->get('/users'));
         $this->assertStatusCodeEquals(HttpStatusCode::Found, $response);
@@ -115,7 +115,7 @@ class UserTest extends IntegrationTestCase
     public function testGettingPagedUsersReturnsSuccessfullyForAdmins(): void
     {
         $this->createUser();
-        $adminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $adminUser = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->withRoles('admin')
             ->build();
         $response = $this->actingAs($adminUser, fn () => $this->get('/users'));
@@ -135,7 +135,7 @@ class UserTest extends IntegrationTestCase
     #[DataProvider('provideInvalidPageSizes')]
     public function testGettingPagedUsersWithInvalidPageSizesReturnsBadRequests(int $pageSize, int $pageNumber): void
     {
-        $adminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $adminUser = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->withRoles('admin')
             ->build();
         $response = $this->actingAs(
@@ -148,7 +148,7 @@ class UserTest extends IntegrationTestCase
     public function testGettingUserDoesNotWorkForNonOwnerNonAdmin(): void
     {
         $createdUser = $this->createUser();
-        $nonAdminNonOwnerUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $nonAdminNonOwnerUser = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->build();
         $response = $this->actingAs(
             $nonAdminNonOwnerUser,
@@ -160,7 +160,7 @@ class UserTest extends IntegrationTestCase
     public function testGettingUserWorksForAdmin(): void
     {
         $createdUser = $this->createUser();
-        $adminUser = (new PrincipalBuilder('example.com'))->withNameIdentifier(0)
+        $adminUser = new PrincipalBuilder('example.com')->withNameIdentifier(0)
             ->withRoles('admin')
             ->build();
         $response = $this->actingAs(
@@ -190,7 +190,7 @@ class UserTest extends IntegrationTestCase
      */
     private static function createPrincipalFromUser(User $user): IPrincipal
     {
-        return (new PrincipalBuilder('example.com'))->withNameIdentifier($user->id)
+        return new PrincipalBuilder('example.com')->withNameIdentifier($user->id)
             ->withEmail($user->email)
             ->withRoles($user->roles)
             ->build();

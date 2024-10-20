@@ -33,7 +33,7 @@ final class OwnerOrAdminRequirementHandler implements IAuthorizationRequirementH
             throw new InvalidArgumentException('Resource must be of type ' . User::class);
         }
 
-        if ($userBeingAccessed->id === (int)$user->getPrimaryIdentity()?->getNameIdentifier()) {
+        if ($userBeingAccessed->id === (int)$user->primaryIdentity?->nameIdentifier) {
             // The user being accessed is the current user
             $authorizationContext->requirementPassed($requirement);
 

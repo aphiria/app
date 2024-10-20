@@ -29,7 +29,7 @@ class OwnerOrAdminRequirementHandlerTest extends TestCase
         $requirement = new OwnerOrAdminRequirement('admin');
         $context = new AuthorizationContext($userAccessing, [$requirement], $userToAccess);
         $this->requirementHandler->handle($userAccessing, $requirement, $context);
-        $this->assertFalse($context->allRequirementsPassed());
+        $this->assertFalse($context->allRequirementsPassed);
     }
 
     public function testBeingOwnerPasses(): void
@@ -40,7 +40,7 @@ class OwnerOrAdminRequirementHandlerTest extends TestCase
         $requirement = new OwnerOrAdminRequirement('admin');
         $context = new AuthorizationContext($userAccessing, [$requirement], $userToAccess);
         $this->requirementHandler->handle($userAccessing, $requirement, $context);
-        $this->assertTrue($context->allRequirementsPassed());
+        $this->assertTrue($context->allRequirementsPassed);
     }
 
     public function testHavingAnAdminRolePasses(): void
@@ -51,7 +51,7 @@ class OwnerOrAdminRequirementHandlerTest extends TestCase
         $requirement = new OwnerOrAdminRequirement('admin');
         $context = new AuthorizationContext($userAccessing, [$requirement], $userToAccess);
         $this->requirementHandler->handle($userAccessing, $requirement, $context);
-        $this->assertTrue($context->allRequirementsPassed());
+        $this->assertTrue($context->allRequirementsPassed);
     }
 
     public function testRequirementOfIncorrectTypeThrowsException(): void
