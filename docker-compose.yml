@@ -1,0 +1,37 @@
+networks:
+  aphiria:
+
+services:
+  app:
+    build:
+      context: ./infrastructure/docker
+      dockerfile: nginx.dockerfile
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - php
+    ports:
+      - "80:80"
+    networks:
+      - aphiria
+
+  php:
+    build:
+      context: ./infrastructure/docker
+      dockerfile: php.dockerfile
+    volumes:
+      - ./:/var/www/html
+    ports:
+      - "9003:9003"
+    networks:
+      - aphiria
+
+  aphiria:
+    build:
+      context: ./infrastructure/docker
+      dockerfile: php.dockerfile
+    volumes:
+      - ./:/var/www/html
+    entrypoint: [ 'php', '/var/www/html/aphiria' ]
+    networks:
+      - aphiria
