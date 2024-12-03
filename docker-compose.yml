@@ -24,8 +24,9 @@ services:
       dockerfile: php.dockerfile
     volumes:
       - ./:/usr/share/nginx/html
+      - ./infrastructure/docker/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     ports:
-      - "9003:9003"
+      - "9004:9004"
     networks:
       - aphiria
 
