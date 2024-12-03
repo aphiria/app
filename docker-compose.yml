@@ -7,7 +7,9 @@ services:
       context: ./infrastructure/docker
       dockerfile: nginx.dockerfile
     volumes:
-      - ./:/var/www/html
+      - ./:/usr/share/nginx/html
+    command: >
+      sh -c "chmod -R 777 /usr/share/nginx/html/tmp && nginx -g 'daemon off;'"
     depends_on:
       - php
     ports:
@@ -20,9 +22,9 @@ services:
       context: ./infrastructure/docker
       dockerfile: php.dockerfile
     volumes:
-      - ./:/var/www/html
-    ports:
-      - "9003:9003"
+      - ./:/usr/share/nginx/html
+    #ports:
+    #  - "9003:9003"
     networks:
       - aphiria
 
@@ -31,7 +33,7 @@ services:
       context: ./infrastructure/docker
       dockerfile: php.dockerfile
     volumes:
-      - ./:/var/www/html
-    entrypoint: [ 'php', '/var/www/html/aphiria' ]
+      - ./:/usr/share/nginx/html
+    entrypoint: [ 'php', '/usr/share/nginx/html/aphiria' ]
     networks:
       - aphiria
