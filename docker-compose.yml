@@ -8,12 +8,13 @@ services:
       dockerfile: nginx.dockerfile
     volumes:
       - ./:/usr/share/nginx/html
+      - ./infrastructure/docker/nginx.conf:/etc/nginx/conf.d/default.conf
     command: >
       sh -c "chmod -R 777 /usr/share/nginx/html/tmp && nginx -g 'daemon off;'"
     depends_on:
       - php
     ports:
-      - "80:80"
+      - "8080:80"
     networks:
       - aphiria
 
@@ -23,8 +24,8 @@ services:
       dockerfile: php.dockerfile
     volumes:
       - ./:/usr/share/nginx/html
-    #ports:
-    #  - "9003:9003"
+    ports:
+      - "9003:9003"
     networks:
       - aphiria
 
