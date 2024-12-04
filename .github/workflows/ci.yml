@@ -50,7 +50,7 @@ jobs:
         include:
           - php: '8.4'
             stability: prefer-stable
-    name: Run Tests in Docker
+    name: Docker Compose ${{ matrix.php }} - ${{ matrix.stability }}
     steps:
       - name: Check Out Code
         uses: actions/checkout@v4
@@ -62,8 +62,12 @@ jobs:
         run: docker compose up -d
       - name: Install Dependencies
         run: docker compose run --rm composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
-      - name: Run Tests Inside PHP Container
+      - name: Run Tests
         run: docker compose run --rm composer phpunit
+      #- name: Run Linter
+      #  run: docker compose run --rm composer phpcs-test
+      #- name: Run Psalm Static Analysis
+      #  run: docker compose run --rm composer psalm -- --shepherd
       - name: Stop Docker Compose
         if: always()
         run: docker compose down
