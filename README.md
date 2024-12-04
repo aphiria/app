@@ -22,11 +22,23 @@ composer create-project aphiria/app --prefer-dist --stability dev
 
 ## Running Locally
 
-You can run your app locally (defaults to http://localhost:8080):
+You can run your app locally either directly via the built-in PHP web server or via Docker Compose.  Both solutions result in your app being hosted at http://localhost:8080.
 
-```php
+### Built-In PHP Web Server
+
+```
 php aphiria app:serve
 ```
+
+### Docker Compose Web Server
+
+This app comes bundled with a Docker Compose setup meant to ease local development.  It is not meant for production, but can get you up and running quickly with an nginx web server running your application along with Xdebug for debugging.  Simply run:
+
+```
+docker compose up -d --build app
+```
+
+To start debugging with Xdebug, configure your IDE to map your checked out Aphiria code to the /app directory within the php service created by Docker Compose.  Ensure that your IDE is configured to listen to port 9004 for Xdebug connections.
 
 ## Demo
 
