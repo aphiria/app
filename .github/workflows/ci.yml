@@ -44,6 +44,12 @@ jobs:
           php-coveralls --coverage_clover=./.coverage/clover.xml --json_path=./coveralls-upload.json -v
   docker-ci:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - php: '8.4'
+            stability: prefer-stable
     name: Run Tests in Docker
     steps:
       - name: Check Out Code
