@@ -1,10 +1,20 @@
 # Changelog
 
-## [v1.0.0-alpha6](https://github.com/aphiria/app/compare/v1.0.0-alpha5...v1.0.0-alpha6) (?)
+## [v1.0.0-alpha7](https://github.com/aphiria/app/compare/v1.0.0-alpha6...v1.0.0-alpha7) (?)
 
 ### Added
 
 - Nothing
+
+### Changed
+
+- Nothing
+
+## [v1.0.0-alpha6](https://github.com/aphiria/app/compare/v1.0.0-alpha5...v1.0.0-alpha6) (2024-12-03)
+
+### Added
+
+- Added support for running the skeleton app via Docker Compose ([#47](https://github.com/aphiria/app/pull/47))
 
 ### Changed
 
