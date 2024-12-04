@@ -50,6 +50,9 @@ services:
       - ./:/app
     depends_on:
       - php
+    environment:
+      # Necessary so that Composer can tell what version of the app it's running
+      - COMPOSER_ROOT_VERSION=1.0.0
     entrypoint: [ 'composer', '--ignore-platform-reqs' ]
     networks:
       - aphiria
