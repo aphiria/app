@@ -35,7 +35,21 @@ services:
       context: ./infrastructure/docker
       dockerfile: php.dockerfile
     volumes:
-      - ./:/usr/share/nginx/html
-    entrypoint: [ 'php', '/usr/share/nginx/html/aphiria' ]
+      - ./:/app
+    depends_on:
+      - php
+    entrypoint: [ 'php', '/app/aphiria' ]
+    networks:
+      - aphiria
+
+  composer:
+    build:
+      context: ./infrastructure/docker
+      dockerfile: php.dockerfile
+    volumes:
+      - ./:/app
+    depends_on:
+      - php
+    entrypoint: [ 'composer', '--ignore-platform-reqs' ]
     networks:
       - aphiria

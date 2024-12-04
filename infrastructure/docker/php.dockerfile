@@ -3,7 +3,7 @@ FROM php:8.4-fpm
 WORKDIR /app
 
 # Install dependencies and extensions
-RUN apt-get update && apt-get install -y git libxml2-dev libpq-dev libzip-dev
+RUN apt-get update && apt-get install -y git libxml2-dev libpq-dev libzip-dev unzip
 RUN docker-php-ext-install dom intl opcache zip
 
 # Install Xdebug via PECL

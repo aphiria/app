@@ -42,3 +42,20 @@ jobs:
         run: |
           composer global require php-coveralls/php-coveralls
           php-coveralls --coverage_clover=./.coverage/clover.xml --json_path=./coveralls-upload.json -v
+  docker-ci:
+    runs-on: ubuntu-latest
+    name: Run Tests in Docker
+    steps:
+      - name: Check Out Code
+        uses: actions/checkout@v4
+      - name: Set Up Docker
+        uses: docker/setup-buildx-action@v2
+      - name: Build Docker Images
+        run: docker-compose build
+      - name: Start Docker Compose
+        run: docker-compose up -d
+      - name: Run Tests Inside PHP Container
+        run: docker-compose run --rm composer phpunit
+      - name: Stop Docker Compose
+        if: always()
+        run: docker-compose down
