@@ -56,11 +56,11 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker compose --version
       - name: Build Docker Images
-        run: docker-compose build
+        run: docker compose build
       - name: Start Docker Compose
-        run: docker-compose up -d
+        run: docker compose up -d
       - name: Run Tests Inside PHP Container
-        run: docker-compose run --rm composer phpunit
+        run: docker compose run --rm composer phpunit
       - name: Stop Docker Compose
         if: always()
-        run: docker-compose down
+        run: docker compose down
