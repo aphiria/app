@@ -44,13 +44,7 @@ jobs:
           php-coveralls --coverage_clover=./.coverage/clover.xml --json_path=./coveralls-upload.json -v
   docker-ci:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        include:
-          - php: '8.4'
-            stability: prefer-stable
-    name: Docker Compose ${{ matrix.php }} - ${{ matrix.stability }}
+    name: Docker Compose
     steps:
       - name: Check Out Code
         uses: actions/checkout@v4
@@ -61,7 +55,7 @@ jobs:
       - name: Start Docker Compose
         run: docker compose up -d
       - name: Install Dependencies
-        run: docker compose run --rm composer update --${{ matrix.stability }} --prefer-dist --no-interaction --no-progress --ignore-platform-reqs
+        run: docker compose run --rm composer update --prefer-stable --no-interaction --no-progress --ignore-platform-reqs
       - name: Run Tests
         run: docker compose run --rm composer phpunit
       #- name: Run Linter
