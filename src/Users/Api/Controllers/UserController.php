@@ -17,6 +17,7 @@ use Aphiria\Routing\Attributes\Controller;
 use Aphiria\Routing\Attributes\Delete;
 use Aphiria\Routing\Attributes\Get;
 use Aphiria\Routing\Attributes\Post;
+use Aphiria\Routing\Attributes\QueryString;
 use App\Users\InvalidPageException;
 use App\Users\IUserService;
 use App\Users\NewUser;
@@ -72,7 +73,7 @@ final class UserController extends BaseController
      * @throws HttpException Thrown if the content could not be negotiated
      * @throws PolicyNotFoundException|RequirementHandlerNotFoundException Thrown if there was an error authorizing this request
      */
-    #[Delete('/:id'), Authenticate()]
+    #[Delete('/:id'), Authenticate]
     public function deleteUser(int $id): IResponse
     {
         try {
@@ -102,7 +103,7 @@ final class UserController extends BaseController
      * @throws InvalidPageException Thrown if the pagination parameters were invalid
      */
     #[Get(''), AuthorizeRoles('admin')]
-    public function getPagedUsers(int $pageNumber = 1, int $pageSize = 100): IResponse
+    public function getPagedUsers(#[QueryString] int $pageNumber = 1, #[QueryString] int $pageSize = 100): IResponse
     {
         return $this->ok($this->users->getPagedUsers($pageNumber, $pageSize));
     }
@@ -115,7 +116,7 @@ final class UserController extends BaseController
      * @throws UserNotFoundException Thrown if there was no user with the input ID
      * @throws Exception Thrown if there was an error authenticating or authorizing the user
      */
-    #[Get(':id'), Authenticate()]
+    #[Get(':id'), Authenticate]
     public function getUserById(int $id): IResponse
     {
         try {
