@@ -38,7 +38,7 @@ This app comes bundled with a Docker Compose setup meant to ease local developme
 docker compose up -d --build app
 ```
 
-To start debugging with Xdebug, configure your IDE to map your checked out Aphiria code to the _/app_ directory within the php service created by Docker Compose.  Ensure that your IDE is configured to listen to port 9004 for Xdebug connections.
+To start debugging with Xdebug, configure your IDE to map your checked out Aphiria code to the _/app_ directory within the php service created by Docker Compose.  Ensure that your IDE is configured to listen to port 9003 for Xdebug connections.
 
 ## Demo
 

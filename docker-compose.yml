@@ -17,7 +17,6 @@ services:
       - "8080:80"
     networks:
       - aphiria
-
   php:
     build:
       context: ./infrastructure/docker
@@ -26,10 +25,9 @@ services:
       - ./:/usr/share/nginx/html
       - ./infrastructure/docker/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
     ports:
-      - "9004:9004"
+      - "9003:9003"
     networks:
       - aphiria
-
   aphiria:
     build:
       context: ./infrastructure/docker
@@ -41,7 +39,6 @@ services:
     entrypoint: [ 'php', '/app/aphiria' ]
     networks:
       - aphiria
-
   composer:
     build:
       context: ./infrastructure/docker
