@@ -24,8 +24,6 @@ services:
     volumes:
       - ./:/usr/share/nginx/html
       - ./infrastructure/docker/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
-    ports:
-      - "9003"
     networks:
       - aphiria
   aphiria:
