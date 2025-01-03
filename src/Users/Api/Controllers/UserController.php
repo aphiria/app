@@ -79,7 +79,7 @@ final class UserController extends BaseController
         try {
             $userToDelete = $this->users->getUserById($id);
         } catch (UserNotFoundException $ex) {
-            // To hide prevent iterating over our users, we'll just return a 403
+            // To prevent iterating over our users, we'll just return a 403
             return $this->forbidden();
         }
 
@@ -122,7 +122,7 @@ final class UserController extends BaseController
         try {
             $userToGet = $this->users->getUserById($id);
         } catch (UserNotFoundException) {
-            // To hide prevent iterating over our users, we'll just return a 403
+            // To prevent iterating over our users, we'll just return a 403
             return $this->forbidden();
         }
 
