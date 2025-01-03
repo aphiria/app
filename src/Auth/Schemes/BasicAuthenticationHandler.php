@@ -37,7 +37,7 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
         }
 
         return AuthenticationResult::pass(
-            (new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name))->withNameIdentifier($user->id)
+            new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name)->withNameIdentifier($user->id)
                 ->withEmail($user->email)
                 ->withRoles($user->roles)
                 ->withAuthenticationSchemeName($scheme->name)
