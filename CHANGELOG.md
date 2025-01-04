@@ -4,7 +4,7 @@
 
 ### Added
 
-- Nothing
+- Added `aphiria.serialization.dateTimeFormat`
 
 ### Changed
 

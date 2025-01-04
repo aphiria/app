@@ -144,10 +144,11 @@ return [
 
         /**
          * ----------------------------------------------------------
-         * Configure the Symfony serializer
+         * Configure serialization
          * ----------------------------------------------------------
          *
          * dateFormat => The format to use for all dates
+         * dateTimeFormat => The format to use for all date times
          * encoders => The list of encoders the serializer will use
          * nameConverter => The property name converter (can be null)
          * normalizers => The list of normalizers the serializer will use
@@ -155,7 +156,8 @@ return [
          * xml.rootNodeName => The name of the default XML root node
          */
         'serialization' => [
-            'dateFormat' => DateTime::ATOM,
+            'dateFormat' => 'Y-m-d',
+            'dateTimeFormat' => DateTime::ATOM,
             'encoders' => [
                 JsonEncoder::class,
                 XmlEncoder::class
