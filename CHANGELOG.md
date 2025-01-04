@@ -4,7 +4,7 @@
 
 ### Added
 
-- Added `aphiria.serialization.dateTimeFormat`
+- Added `aphiria.serialization.dateTimeFormat` ([#49](https://github.com/aphiria/app/pull/49))
 
 ### Changed
 
