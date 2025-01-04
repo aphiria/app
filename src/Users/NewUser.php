@@ -21,6 +21,5 @@ final readonly class NewUser
         public string $email,
         public string $password,
         public array $roles = []
-    ) {
-    }
+    ) {}
 }

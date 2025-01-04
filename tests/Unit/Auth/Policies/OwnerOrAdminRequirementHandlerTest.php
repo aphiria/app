@@ -24,7 +24,8 @@ class OwnerOrAdminRequirementHandlerTest extends TestCase
     public function testBeingNeitherAdminNorOwnerFails(): void
     {
         $userToAccess = new User(1, 'foo@example.com', []);
-        $userAccessing = (new PrincipalBuilder('example.com'))->withNameIdentifier(2)
+        $userAccessing = new PrincipalBuilder('example.com')
+            ->withNameIdentifier(2)
             ->build();
         $requirement = new OwnerOrAdminRequirement('admin');
         $context = new AuthorizationContext($userAccessing, [$requirement], $userToAccess);
@@ -35,7 +36,8 @@ class OwnerOrAdminRequirementHandlerTest extends TestCase
     public function testBeingOwnerPasses(): void
     {
         $userToAccess = new User(1, 'foo@example.com', []);
-        $userAccessing = (new PrincipalBuilder('example.com'))->withNameIdentifier(1)
+        $userAccessing = new PrincipalBuilder('example.com')
+            ->withNameIdentifier(1)
             ->build();
         $requirement = new OwnerOrAdminRequirement('admin');
         $context = new AuthorizationContext($userAccessing, [$requirement], $userToAccess);
@@ -46,7 +48,8 @@ class OwnerOrAdminRequirementHandlerTest extends TestCase
     public function testHavingAnAdminRolePasses(): void
     {
         $userToAccess = new User(1, 'foo@example.com', []);
-        $userAccessing = (new PrincipalBuilder('example.com'))->withRoles('admin')
+        $userAccessing = new PrincipalBuilder('example.com')
+            ->withRoles('admin')
             ->build();
         $requirement = new OwnerOrAdminRequirement('admin');
         $context = new AuthorizationContext($userAccessing, [$requirement], $userToAccess);
@@ -59,7 +62,8 @@ class OwnerOrAdminRequirementHandlerTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Requirement must be of type ' . OwnerOrAdminRequirement::class);
         $userToAccess = new User(1, 'foo@example.com', []);
-        $userAccessing = (new PrincipalBuilder('example.com'))->withRoles('admin')
+        $userAccessing = new PrincipalBuilder('example.com')
+            ->withRoles('admin')
             ->build();
         $requirement = $this;
         $context = new AuthorizationContext($userAccessing, [$requirement], $userToAccess);
@@ -71,7 +75,7 @@ class OwnerOrAdminRequirementHandlerTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Resource must be of type ' . User::class);
-        $userAccessing = (new PrincipalBuilder('example.com'))->build();
+        $userAccessing = new PrincipalBuilder('example.com')->build();
         $requirement = new OwnerOrAdminRequirement('admin');
         $context = new AuthorizationContext($userAccessing, [$requirement], $this);
         /** @psalm-suppress InvalidArgument Purposely testing this */

@@ -11,6 +11,4 @@ use Exception;
  *
  * TODO: Should this be moved into Aphiria?
  */
-final class InvalidCredentialsException extends Exception
-{
-}
+final class InvalidCredentialsException extends Exception {}
