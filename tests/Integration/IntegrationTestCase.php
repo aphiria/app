@@ -56,7 +56,8 @@ class IntegrationTestCase extends BaseIntegrationTestCase
             throw new TypeError('Environment variable "APP_BUILDER_API" must implement ' . IApplicationBuilder::class);
         }
 
-        return $container->resolve($appBuilderClass)
+        return $container
+            ->resolve($appBuilderClass)
             ->withModule($globalModule)
             ->build();
     }
