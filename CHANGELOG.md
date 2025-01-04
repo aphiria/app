@@ -8,7 +8,7 @@
 
 ### Changed
 
-- Nothing
+- Updated to use PER CS 2.0 coding standards ([#50](https://github.com/aphiria/app/pull/50))
 
 ## [v1.0.0-alpha6](https://github.com/aphiria/app/compare/v1.0.0-alpha5...v1.0.0-alpha6) (2024-12-03)
 
