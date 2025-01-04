@@ -37,7 +37,7 @@ return [
          * localhostRouterPath => The path to the localhost router file
          */
         'api' => [
-            'localhostRouterPath' => __DIR__ . '/localhost_router.php'
+            'localhostRouterPath' => __DIR__ . '/localhost-router.php'
         ],
 
         /**
@@ -157,7 +157,7 @@ return [
          */
         'serialization' => [
             'dateFormat' => 'Y-m-d',
-            'dateTimeFormat' => DateTime::ATOM,
+            'dateTimeFormat' => DateTimeInterface::ATOM,
             'encoders' => [
                 JsonEncoder::class,
                 XmlEncoder::class
