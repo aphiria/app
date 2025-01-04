@@ -9,6 +9,4 @@ use Exception;
 /**
  * Defines an invalid page exception
  */
-final class InvalidPageException extends Exception
-{
-}
+final class InvalidPageException extends Exception {}

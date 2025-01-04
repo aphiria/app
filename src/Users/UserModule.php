@@ -20,7 +20,8 @@ final class UserModule extends AphiriaModule
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
-        $this->withBinders($appBuilder, new UserServiceBinder())
+        $this
+            ->withBinders($appBuilder, new UserServiceBinder())
             ->withProblemDetails(
                 $appBuilder,
                 UserNotFoundException::class,
@@ -34,7 +35,7 @@ final class UserModule extends AphiriaModule
             ->withLogLevelFactory(
                 $appBuilder,
                 UserNotFoundException::class,
-                static fn (UserNotFoundException $ex): string => LogLevel::INFO
+                static fn(UserNotFoundException $ex): string => LogLevel::INFO
             );
     }
 }

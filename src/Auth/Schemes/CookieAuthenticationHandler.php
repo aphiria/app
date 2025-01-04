@@ -93,7 +93,8 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
         $user = $this->users->getUserById($userId);
 
         return AuthenticationResult::pass(
-            new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name)->withNameIdentifier($user->id)
+            new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name)
+                ->withNameIdentifier($user->id)
                 ->withEmail($user->email)
                 ->withRoles($user->roles)
                 ->withAuthenticationSchemeName($scheme->name)

@@ -17,9 +17,7 @@ final class SqlTokenService implements ITokenService
     /**
      * @param PDO $pdo The PDO instance to use to connect to the database
      */
-    public function __construct(private readonly PDO $pdo)
-    {
-    }
+    public function __construct(private readonly PDO $pdo) {}
 
     /**
      * @inheritdoc

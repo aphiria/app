@@ -19,9 +19,7 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
     /**
      * @param IUserService $users The user service
      */
-    public function __construct(private readonly IUserService $users)
-    {
-    }
+    public function __construct(private readonly IUserService $users) {}
 
     /**
      * @inheritdoc
@@ -37,7 +35,8 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
         }
 
         return AuthenticationResult::pass(
-            new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name)->withNameIdentifier($user->id)
+            new PrincipalBuilder($scheme->options->claimsIssuer ?? $scheme->name)
+                ->withNameIdentifier($user->id)
                 ->withEmail($user->email)
                 ->withRoles($user->roles)
                 ->withAuthenticationSchemeName($scheme->name)

@@ -2,7 +2,7 @@
 
 return new PhpCsFixer\Config()
     ->setRules([
-        '@PSR12' => true,
+        '@PER-CS2.0' => true,
         'array_syntax' => ['syntax' => 'short'],
         'blank_line_after_opening_tag' => true,
         'compact_nullable_type_declaration' => true,

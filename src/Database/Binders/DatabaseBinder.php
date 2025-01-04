@@ -22,7 +22,7 @@ final class DatabaseBinder extends Binder
         $dsn = 'sqlite:' . ($dbPath === ':memory:' ? $dbPath : __DIR__ . "/../../../$dbPath");
         $container->bindFactory(
             PDO::class,
-            fn () => new PDO($dsn),
+            fn() => new PDO($dsn),
             true
         );
     }

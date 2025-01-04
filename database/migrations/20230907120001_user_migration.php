@@ -14,7 +14,8 @@ class UserMigration extends AbstractMigration
      */
     public function change(): void
     {
-        $this->table('users')
+        $this
+            ->table('users')
             ->addColumn('email', 'text', ['null' => false])
             ->addColumn('hashed_password', 'text', ['null' => false])
             ->addIndex('email', ['unique' => true])

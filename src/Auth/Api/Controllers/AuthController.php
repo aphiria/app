@@ -22,9 +22,7 @@ final class AuthController extends BaseController
     /**
      * @param IAuthenticator $authenticator The authenticator
      */
-    public function __construct(private readonly IAuthenticator $authenticator)
-    {
-    }
+    public function __construct(private readonly IAuthenticator $authenticator) {}
 
     /**
      * Attempts to log in a user with basic auth and sets an auth token cookie on success

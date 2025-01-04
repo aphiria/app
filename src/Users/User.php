@@ -21,6 +21,5 @@ readonly class User
         #[Email]
         public string $email,
         public array $roles
-    ) {
-    }
+    ) {}
 }

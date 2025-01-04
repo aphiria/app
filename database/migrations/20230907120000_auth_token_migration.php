@@ -14,7 +14,8 @@ class AuthTokenMigration extends AbstractMigration
      */
     public function change(): void
     {
-        $this->table('auth_tokens')
+        $this
+            ->table('auth_tokens')
             ->addColumn('user_id', 'integer', ['null' => false])
             ->addColumn('hashed_token', 'text', ['null' => false])
             ->addColumn('expiration', 'integer', ['null' => false])

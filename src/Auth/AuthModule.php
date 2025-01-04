@@ -30,7 +30,8 @@ final class AuthModule extends AphiriaModule
      */
     public function configure(IApplicationBuilder $appBuilder): void
     {
-        $this->withBinders($appBuilder, new AuthBinder())
+        $this
+            ->withBinders($appBuilder, new AuthBinder())
             // Add our default authentication scheme
             ->withAuthenticationScheme(
                 $appBuilder,
