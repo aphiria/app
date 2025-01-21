@@ -2,8 +2,6 @@
 
 declare(strict_types=1);
 
-namespace infrastructure\database\migrations;
-
 use Phinx\Migration\AbstractMigration;
 
 /**
