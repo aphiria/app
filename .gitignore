@@ -6,7 +6,7 @@
 /.phpunit.result.cache
 /composer.lock
 /composer.phar
-/database/database.sqlite
+/infrastructure/database/database.sqlite
 /nbproject/
 /phpunit.phar
 /vendor/

@@ -27,8 +27,8 @@ if (($container = Container::$globalInstance) === null) {
 
 return [
     'paths' => [
-        'migrations' => '%%PHINX_CONFIG_DIR%%/database/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/database/seeds'
+        'migrations' => '%%PHINX_CONFIG_DIR%%/infrastructure/database/migrations',
+        'seeds' => '%%PHINX_CONFIG_DIR%%/infrastructure/database/seeds'
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',

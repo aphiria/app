@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+namespace infrastructure\database\seeds;
+
+use PDOStatement;
 use Phinx\Seed\AbstractSeed;
 
 /**
