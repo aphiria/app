@@ -53,8 +53,13 @@ final class DefaultCredentialGeneratorCommandHandler implements ICommandHandler
         }
 
         $dotEnvContents = \file_get_contents($dotEnvFilePath);
-        $dotEnvContents = \preg_replace('/^USER_DEFAULT_EMAIL=.*$/m', "USER_DEFAULT_EMAIL=$defaultUserEmail", $dotEnvContents);
-        $dotEnvContents = \preg_replace('/^USER_DEFAULT_PASSWORD=.*$/m', "USER_DEFAULT_PASSWORD=$defaultUserPassword", $dotEnvContents);
+
+        if (!\is_string($dotEnvContents)) {
+            throw new RuntimeException("Failed to read .env file at $dotEnvFilePath");
+        }
+
+        $dotEnvContents = \preg_replace('/^USER_DEFAULT_EMAIL=.*$/m', "USER_DEFAULT_EMAIL=$defaultUserEmail", $dotEnvContents) ?? throw new RuntimeException('Failed to update .env file');
+        $dotEnvContents = \preg_replace('/^USER_DEFAULT_PASSWORD=.*$/m', "USER_DEFAULT_PASSWORD=$defaultUserPassword", $dotEnvContents) ?? throw new RuntimeException('Failed to update .env file');
         \file_put_contents($dotEnvFilePath, $dotEnvContents);
 
         $output->writeln('<success>.env file updated</success>');

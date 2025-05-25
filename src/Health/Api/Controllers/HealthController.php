@@ -9,6 +9,10 @@ use Aphiria\Net\Http\HttpException;
 use Aphiria\Net\Http\IResponse;
 use Aphiria\Routing\Attributes\Get;
 
+/**
+ * Defines the health controller
+ * @psalm-suppress PropertyNotSetInConstructor We intentionally set properties after instantiation for a better developer experience
+ */
 class HealthController extends Controller
 {
     /**

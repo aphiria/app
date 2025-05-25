@@ -27,6 +27,7 @@ use Exception;
 
 /**
  * Defines the user controller
+ * @psalm-suppress PropertyNotSetInConstructor We intentionally set properties after instantiation for a better developer experience
  */
 #[Controller('/users')]
 final class UserController extends BaseController
@@ -53,7 +54,6 @@ final class UserController extends BaseController
     public function createUser(NewUser $user): User
     {
         $canGrantRoles = false;
-        /** @psalm-suppress PossiblyNullArgument The request will be set */
         $authenticationResult = $this->authenticator->authenticate($this->request, 'cookie');
 
         if ($authenticationResult->passed) {
