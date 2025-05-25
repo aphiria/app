@@ -6,7 +6,6 @@ namespace App\Tests\Integration;
 
 use Aphiria\Net\Http\HttpStatusCode;
 use Aphiria\Net\Http\IBody;
-use Aphiria\Net\Http\IResponse;
 use Aphiria\Security\PrincipalBuilder;
 use App\Users\NewUser;
 use App\Users\User;
