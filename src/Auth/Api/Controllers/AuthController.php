@@ -15,6 +15,7 @@ use Exception;
 
 /**
  * Defines the auth controller
+ * @psalm-suppress PropertyNotSetInConstructor We intentionally set properties after instantiation for a better developer experience
  */
 #[Controller('/auth')]
 final class AuthController extends BaseController
@@ -51,7 +52,6 @@ final class AuthController extends BaseController
     public function logOut(): IResponse
     {
         $response = new Response();
-        /** @psalm-suppress PossiblyNullArgument The request will be set */
         $this->authenticator->logOut($this->request, $response, 'cookie');
 
         return $response;

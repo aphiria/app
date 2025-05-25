@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Integration;
 
 use Aphiria\Net\Http\HttpStatusCode;
+use Aphiria\Net\Http\IBody;
+use Aphiria\Net\Http\IResponse;
 use Aphiria\Security\PrincipalBuilder;
 use App\Users\NewUser;
 use App\Users\User;
@@ -39,6 +41,7 @@ trait CreatesUser
         $createUserResponse = $this->actingAs($actingAs, fn() => $this->post('/users', body: $newUser));
 
         if ($createUserResponse->statusCode !== HttpStatusCode::Ok) {
+            /** @var IBody|null $newUserResponseBody */
             $newUserResponseBody = $createUserResponse->body;
             $exceptionMessage = 'Failed to create new user';
             $exceptionMessage .= $newUserResponseBody === null ? '' : ': ' . $newUserResponseBody->readAsString();

@@ -14,13 +14,31 @@
         <directory name="tests" />
         <file name="aphiria" />
         <file name="config.php" />
-        <file name="localhost_router.php" />
+        <file name="localhost-router.php" />
         <file name="public/index.php" />
         <ignoreFiles>
             <directory name="vendor" />
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
+        <ClassMustBeFinal>
+            <errorLevel type="suppress">
+                <directory name="src" />
+                <directory name="tests" />
+            </errorLevel>
+        </ClassMustBeFinal>
+        <MissingOverrideAttribute>
+            <errorLevel type="suppress">
+                <directory name="src" />
+                <directory name="tests" />
+            </errorLevel>
+        </MissingOverrideAttribute>
+        <NoInterfaceProperties>
+            <errorLevel type="suppress">
+                <directory name="src" />
+                <directory name="tests" />
+            </errorLevel>
+        </NoInterfaceProperties>
         <RedundantCastGivenDocblockType>
             <errorLevel type="suppress">
                 <directory name="src" />
