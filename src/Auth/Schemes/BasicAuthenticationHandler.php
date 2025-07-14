@@ -28,7 +28,7 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
         string $username,
         string $password,
         IRequest $request,
-        AuthenticationScheme $scheme
+        AuthenticationScheme $scheme,
     ): AuthenticationResult {
         if (($user = $this->users->getUserByEmailAndPassword($username, $password)) === null) {
             return AuthenticationResult::fail('Invalid credentials', $scheme->name);
@@ -41,7 +41,7 @@ final class BasicAuthenticationHandler extends BaseBasicAuthenticationHandler
                 ->withRoles($user->roles)
                 ->withAuthenticationSchemeName($scheme->name)
                 ->build(),
-            $scheme->name
+            $scheme->name,
         );
     }
 }

@@ -21,12 +21,12 @@ class AuthTest extends IntegrationTestCase
         $user = $this->createUser(password: 'foo');
         $loginResponse = $this->post(
             '/auth/login',
-            ['Authorization' => 'Basic ' . \base64_encode("$user->email:foo")]
+            ['Authorization' => 'Basic ' . \base64_encode("$user->email:foo")],
         );
         $this->assertHasCookie($loginResponse, 'authToken');
         $logoutResponse = $this->post(
             '/auth/logout',
-            ['Cookie' => (string)$this->responseParser->parseCookies($loginResponse)->get('authToken')->value]
+            ['Cookie' => (string) $this->responseParser->parseCookies($loginResponse)->get('authToken')->value],
         );
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $logoutResponse);
         $this->assertCookieIsUnset($logoutResponse, 'authToken');

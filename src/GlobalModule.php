@@ -49,9 +49,7 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
     /**
      * @param IContainer $container The application's DI container
      */
-    public function __construct(private readonly IContainer $container)
-    {
-    }
+    public function __construct(private readonly IContainer $container) {}
 
     /**
      * Bootstraps our application, which is the first thing done when starting an application
@@ -65,7 +63,7 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
             ->addMany([
                 new DotEnvBootstrapper(__DIR__ . '/../.env'),
                 new ConfigurationBootstrapper($globalConfigurationBuilder),
-                new GlobalExceptionHandlerBootstrapper($this->container)
+                new GlobalExceptionHandlerBootstrapper($this->container),
             ])
             ->bootstrapAll();
     }
@@ -85,7 +83,7 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
             ->withValidatorAttributes($appBuilder)
             ->withCommandAttributes($appBuilder)
             ->withGlobalMiddleware($appBuilder, [
-                new MiddlewareBinding(ExceptionHandler::class)
+                new MiddlewareBinding(ExceptionHandler::class),
             ])
             ->withBinders($appBuilder, [
                 new ExceptionHandlerBinder(),
@@ -100,7 +98,7 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
                 new CommandBinder(),
                 new CommandHandlerBinder(),
                 new AuthenticationBinder(),
-                new AuthorizationBinder()
+                new AuthorizationBinder(),
             ])
             ->withLogLevelFactory($appBuilder, HttpException::class, static function (HttpException $ex): string {
                 return $ex->response->statusCode->value >= 500 ? LogLevel::ERROR : LogLevel::DEBUG;
@@ -108,7 +106,7 @@ final class GlobalModule extends AphiriaModule implements IBootstrapper
             ->withModules($appBuilder, [
                 new DatabaseModule(),
                 new UserModule(),
-                new AuthModule()
+                new AuthModule(),
             ]);
     }
 

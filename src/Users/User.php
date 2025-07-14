@@ -20,6 +20,6 @@ readonly class User
         public int $id,
         #[Email]
         public string $email,
-        public array $roles
+        public array $roles,
     ) {}
 }

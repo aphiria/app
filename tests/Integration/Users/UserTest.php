@@ -30,7 +30,7 @@ class UserTest extends IntegrationTestCase
         return [
             [0, 1],
             [101, 1],
-            [1, -1]
+            [1, -1],
         ];
     }
 
@@ -39,7 +39,7 @@ class UserTest extends IntegrationTestCase
         $createdUser = $this->createUser(createAsAdmin: true, roles: ['foo']);
         $response = $this->actingAs(
             self::createPrincipalFromUser($createdUser),
-            fn() => $this->get("/users/$createdUser->id")
+            fn() => $this->get("/users/$createdUser->id"),
         );
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertParsedBodyEquals($createdUser, $response);
@@ -51,7 +51,7 @@ class UserTest extends IntegrationTestCase
         $createdUserWithoutRoles = new User($createdUser->id, $createdUser->email, []);
         $response = $this->actingAs(
             self::createPrincipalFromUser($createdUser),
-            fn() => $this->get("/users/$createdUser->id")
+            fn() => $this->get("/users/$createdUser->id"),
         );
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertParsedBodyEquals($createdUserWithoutRoles, $response);
@@ -93,7 +93,7 @@ class UserTest extends IntegrationTestCase
         $createdUser = $this->createUser();
         $response = $this->actingAs(
             self::createPrincipalFromUser($createdUser),
-            fn() => $this->delete("/users/$createdUser->id")
+            fn() => $this->delete("/users/$createdUser->id"),
         );
         $this->assertStatusCodeEquals(HttpStatusCode::NoContent, $response);
     }
@@ -130,7 +130,7 @@ class UserTest extends IntegrationTestCase
         $this->assertParsedBodyPassesCallback(
             $response,
             User::class . '[]',
-            fn(array $users): bool => \count($users) > 0
+            fn(array $users): bool => \count($users) > 0,
         );
     }
 
@@ -147,7 +147,7 @@ class UserTest extends IntegrationTestCase
             ->build();
         $response = $this->actingAs(
             $adminUser,
-            fn() => $this->get("/users?pageSize=$pageSize&pageNumber=$pageNumber")
+            fn() => $this->get("/users?pageSize=$pageSize&pageNumber=$pageNumber"),
         );
         $this->assertStatusCodeEquals(HttpStatusCode::BadRequest, $response);
     }
@@ -160,7 +160,7 @@ class UserTest extends IntegrationTestCase
             ->build();
         $response = $this->actingAs(
             $nonAdminNonOwnerUser,
-            fn() => $this->get("/users/$createdUser->id")
+            fn() => $this->get("/users/$createdUser->id"),
         );
         $this->assertStatusCodeEquals(HttpStatusCode::Forbidden, $response);
     }
@@ -174,7 +174,7 @@ class UserTest extends IntegrationTestCase
             ->build();
         $response = $this->actingAs(
             $adminUser,
-            fn() => $this->get("/users/$createdUser->id")
+            fn() => $this->get("/users/$createdUser->id"),
         );
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertParsedBodyEquals($createdUser, $response);
@@ -185,7 +185,7 @@ class UserTest extends IntegrationTestCase
         $createdUser = $this->createUser();
         $response = $this->actingAs(
             self::createPrincipalFromUser($createdUser),
-            fn() => $this->get("/users/$createdUser->id")
+            fn() => $this->get("/users/$createdUser->id"),
         );
         $this->assertStatusCodeEquals(HttpStatusCode::Ok, $response);
         $this->assertParsedBodyEquals($createdUser, $response);

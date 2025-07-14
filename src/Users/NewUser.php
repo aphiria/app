@@ -20,6 +20,6 @@ final readonly class NewUser
         #[Email]
         public string $email,
         public string $password,
-        public array $roles = []
+        public array $roles = [],
     ) {}
 }

@@ -42,53 +42,53 @@ final class AuthModule extends AphiriaModule
                         cookieName: 'authToken',
                         cookieMaxAge: 3600,
                         cookiePath: '/',
-                        cookieDomain: (string)\getenv('APP_COOKIE_DOMAIN'),
-                        cookieIsSecure: (bool)\getenv('APP_COOKIE_SECURE'),
+                        cookieDomain: (string) \getenv('APP_COOKIE_DOMAIN'),
+                        cookieIsSecure: (bool) \getenv('APP_COOKIE_SECURE'),
                         cookieIsHttpOnly: true,
                         cookieSameSite: SameSiteMode::Strict,
                         loginPagePath: '/login',
                         forbiddenPagePath: '/access-denied',
-                        claimsIssuer: (string)\getenv('APP_COOKIE_DOMAIN')
-                    )
+                        claimsIssuer: (string) \getenv('APP_COOKIE_DOMAIN'),
+                    ),
                 ),
-                true
+                true,
             )
             ->withAuthenticationScheme(
                 $appBuilder,
                 new AuthenticationScheme(
                     'basic',
                     BasicAuthenticationHandler::class,
-                    new BasicAuthenticationOptions((string)\getenv('APP_URL'))
-                )
+                    new BasicAuthenticationOptions((string) \getenv('APP_URL')),
+                ),
             )
             ->withAuthorizationRequirementHandler(
                 $appBuilder,
                 OwnerOrAdminRequirement::class,
-                new OwnerOrAdminRequirementHandler()
+                new OwnerOrAdminRequirementHandler(),
             )
             ->withAuthorizationRequirementHandler(
                 $appBuilder,
                 RolesRequirement::class,
-                new RolesRequirementHandler()
+                new RolesRequirementHandler(),
             )
             ->withAuthorizationPolicy(
                 $appBuilder,
                 new AuthorizationPolicy(
                     'authorized-user-role-granter',
-                    new RolesRequirement('admin')
-                )
+                    new RolesRequirement('admin'),
+                ),
             )
             ->withAuthorizationPolicy(
                 $appBuilder,
                 new AuthorizationPolicy(
                     'owner-or-admin',
-                    new OwnerOrAdminRequirement('admin')
-                )
+                    new OwnerOrAdminRequirement('admin'),
+                ),
             )
             ->withProblemDetails(
                 $appBuilder,
                 InvalidCredentialsException::class,
-                status: HttpStatusCode::BadRequest
+                status: HttpStatusCode::BadRequest,
             );
     }
 }

@@ -36,16 +36,16 @@ final class SqlUserService implements IUserService
         $createUserStatement = $this->pdo->prepare(
             <<<SQL
 INSERT INTO users (email, hashed_password) VALUES (:email, :hashedPassword)
-SQL
+SQL,
         );
         $createUserStatement->execute([
             'email' => $normalizedEmail,
-            'hashedPassword' => self::hashPassword($newUser->password)
+            'hashedPassword' => self::hashPassword($newUser->password),
         ]);
         $createdUser = new User(
-            (int)$this->pdo->lastInsertId(),
+            (int) $this->pdo->lastInsertId(),
             $normalizedEmail,
-            $newUser->roles
+            $newUser->roles,
         );
 
         // Insert the roles
@@ -53,11 +53,11 @@ SQL
             $createRoleStatement = $this->pdo->prepare(
                 <<<SQL
 INSERT INTO user_roles (user_id, role) VALUES (:userId, :role)
-SQL
+SQL,
             );
             $createRoleStatement->execute([
                 'userId' => $createdUser->id,
-                'role' => $role
+                'role' => $role,
             ]);
         }
 
@@ -77,7 +77,7 @@ SQL
         $deleteRolesStatement = $this->pdo->prepare(
             <<<SQL
 DELETE FROM user_roles WHERE user_id = :userId
-SQL
+SQL,
         );
         $deleteRolesStatement->execute(['userId' => $id]);
 
@@ -85,7 +85,7 @@ SQL
         $deleteUserStatement = $this->pdo->prepare(
             <<<SQL
 DELETE FROM users WHERE id = :userId
-SQL
+SQL,
         );
         $deleteUserStatement->execute(['userId' => $id]);
 
@@ -116,7 +116,7 @@ LEFT JOIN user_roles ON user_roles.user_id = users.id
 GROUP BY users.id, users.email
 ORDER BY users.id ASC
 LIMIT :start,:limit
-SQL
+SQL,
         );
         $statement->execute(['start' => ($pageNumber - 1) * $pageSize, 'limit' => $pageSize]);
         $users = [];
@@ -154,7 +154,7 @@ SELECT users.id, users.email, GROUP_CONCAT(user_roles.role) AS roles FROM users
 LEFT JOIN user_roles ON user_roles.user_id = users.id
 WHERE users.id = :id
 GROUP BY users.id, users.email
-SQL
+SQL,
         );
         $statement->execute(['id' => $id]);
         $row = $statement->fetch(PDO::FETCH_ASSOC);
@@ -182,9 +182,9 @@ SQL
         }
 
         return new User(
-            (int)$userRow['id'],
-            (string)$userRow['email'],
-            $roles
+            (int) $userRow['id'],
+            (string) $userRow['email'],
+            $roles,
         );
     }
 
@@ -224,7 +224,7 @@ SELECT users.id, users.email, GROUP_CONCAT(user_roles.role) AS roles, users.hash
 LEFT JOIN user_roles ON user_roles.user_id = users.id
 WHERE users.email = :email
 GROUP BY users.id, users.email, users.hashed_password
-SQL
+SQL,
         );
         $statement->execute(['email' => self::normalizeEmail($email)]);
         /** @var list<array{id: int, email: string, roles: string, hashed_password: string}> $rows */

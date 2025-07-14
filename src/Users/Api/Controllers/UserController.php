@@ -40,7 +40,7 @@ final class UserController extends BaseController
     public function __construct(
         private readonly IUserService $users,
         private readonly IAuthenticator $authenticator,
-        private readonly IAuthority $authority
+        private readonly IAuthority $authority,
     ) {}
 
     /**
