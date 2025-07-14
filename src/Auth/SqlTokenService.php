@@ -28,12 +28,12 @@ final class SqlTokenService implements ITokenService
         $statement = $this->pdo->prepare(
             <<<SQL
 INSERT INTO auth_tokens (user_id, hashed_token, expiration) VALUES (:userId, :hashedToken, :expiration)
-SQL
+SQL,
         );
         $statement->execute([
             'userId' => $userId,
             'hashedToken' => self::hashToken($token),
-            'expiration' => \time() + $ttlSeconds
+            'expiration' => \time() + $ttlSeconds,
         ]);
 
         return $token;
@@ -47,12 +47,12 @@ SQL
         $statement = $this->pdo->prepare(
             <<<SQL
 UPDATE auth_tokens SET expiration = :expiration WHERE user_id = :userId AND hashed_token = :hashedToken
-SQL
+SQL,
         );
         $statement->execute([
             'expiration' => 0,
             'userId' => $userId,
-            'hashToken' => self::hashToken($token)
+            'hashToken' => self::hashToken($token),
         ]);
     }
 
@@ -64,12 +64,12 @@ SQL
         $statement = $this->pdo->prepare(
             <<<SQL
 SELECT * FROM auth_tokens WHERE user_id = :userId AND hashed_token = :hashedToken AND expiration > :time
-SQL
+SQL,
         );
         $statement->execute([
             'userId' => $userId,
             'hashedToken' => self::hashToken($token),
-            'time' => \time()
+            'time' => \time(),
         ]);
 
         return \count($statement->fetchAll()) === 1;

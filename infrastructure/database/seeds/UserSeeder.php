@@ -19,7 +19,7 @@ class UserSeeder extends AbstractSeed
         /** @var PDOStatement $queryForDefaultUser */
         $queryForDefaultUser = $this->query(
             'SELECT * FROM users WHERE email = :email',
-            ['email' => \getenv('USER_DEFAULT_EMAIL')]
+            ['email' => \getenv('USER_DEFAULT_EMAIL')],
         );
 
         if (!empty($queryForDefaultUser->fetchAll())) {
@@ -32,16 +32,16 @@ class UserSeeder extends AbstractSeed
         $this->insert(
             'users',
             [
-                'email' => (string)\getenv('USER_DEFAULT_EMAIL'),
-                'hashed_password' => \password_hash((string)\getenv('USER_DEFAULT_PASSWORD'), PASSWORD_ARGON2ID)
-            ]
+                'email' => (string) \getenv('USER_DEFAULT_EMAIL'),
+                'hashed_password' => \password_hash((string) \getenv('USER_DEFAULT_PASSWORD'), PASSWORD_ARGON2ID),
+            ],
         );
         $this->insert(
             'user_roles',
             [
-                'user_id' => (int)$this->getAdapter()->getConnection()->lastInsertId(),
-                'role' => 'admin'
-            ]
+                'user_id' => (int) $this->getAdapter()->getConnection()->lastInsertId(),
+                'role' => 'admin',
+            ],
         );
     }
 }

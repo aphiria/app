@@ -32,7 +32,7 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
      */
     public function __construct(
         private readonly ITokenService $tokens,
-        private readonly IUserService $users
+        private readonly IUserService $users,
     ) {
         parent::__construct();
     }
@@ -54,7 +54,7 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
                 throw new InvalidCredentialsException('Cookie contained invalid JSON', 0, $ex);
             }
 
-            $userId = isset($decodedCookieValue['userId']) ? (int)$decodedCookieValue['userId'] : null;
+            $userId = isset($decodedCookieValue['userId']) ? (int) $decodedCookieValue['userId'] : null;
             $token = $decodedCookieValue['token'] ?? null;
 
             if ($userId !== null && $token !== null) {
@@ -83,8 +83,8 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
             return AuthenticationResult::fail('Token format is invalid', $scheme->name);
         }
 
-        $userId = (int)$decodedCookieValue['userId'];
-        $token = (string)$decodedCookieValue['token'];
+        $userId = (int) $decodedCookieValue['userId'];
+        $token = (string) $decodedCookieValue['token'];
 
         if (!$this->tokens->validateToken($userId, $token)) {
             return AuthenticationResult::fail('Invalid token', $scheme->name);
@@ -99,7 +99,7 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
                 ->withRoles($user->roles)
                 ->withAuthenticationSchemeName($scheme->name)
                 ->build(),
-            $scheme->name
+            $scheme->name,
         );
     }
 
@@ -111,7 +111,7 @@ final class CookieAuthenticationHandler extends BaseCookieAuthenticationHandler
     protected function createCookieValueForUser(IPrincipal $user, AuthenticationScheme $scheme): string|int|float
     {
         $cookieTtlSeconds = $scheme->options->cookieMaxAge ?? self::DEFAULT_COOKIE_TTL_SECONDS;
-        $userId = (int)$user->primaryIdentity?->nameIdentifier;
+        $userId = (int) $user->primaryIdentity?->nameIdentifier;
         $token = $this->tokens->createToken($userId, $cookieTtlSeconds);
 
         return \base64_encode(\json_encode(['userId' => $userId, 'token' => $token], JSON_THROW_ON_ERROR));

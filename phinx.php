@@ -28,7 +28,7 @@ if (($container = Container::$globalInstance) === null) {
 return [
     'paths' => [
         'migrations' => '%%PHINX_CONFIG_DIR%%/infrastructure/database/migrations',
-        'seeds' => '%%PHINX_CONFIG_DIR%%/infrastructure/database/seeds'
+        'seeds' => '%%PHINX_CONFIG_DIR%%/infrastructure/database/seeds',
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',
@@ -36,18 +36,18 @@ return [
         'production' => [
             'adapter' => 'sqlite',
             'name' => 'database',
-            'connection' => $container->resolve(PDO::class)
+            'connection' => $container->resolve(PDO::class),
         ],
         'testing' => [
             'adapter' => 'sqlite',
             'name' => 'database',
-            'connection' => $container->resolve(PDO::class)
+            'connection' => $container->resolve(PDO::class),
         ],
         'development' => [
             'adapter' => 'sqlite',
             'name' => 'database',
-            'connection' => $container->resolve(PDO::class)
-        ]
+            'connection' => $container->resolve(PDO::class),
+        ],
     ],
-    'version_order' => 'creation'
+    'version_order' => 'creation',
 ];

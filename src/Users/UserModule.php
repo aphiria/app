@@ -25,17 +25,17 @@ final class UserModule extends AphiriaModule
             ->withProblemDetails(
                 $appBuilder,
                 UserNotFoundException::class,
-                status: HttpStatusCode::NotFound
+                status: HttpStatusCode::NotFound,
             )
             ->withProblemDetails(
                 $appBuilder,
                 InvalidPageException::class,
-                status: HttpStatusCode::BadRequest
+                status: HttpStatusCode::BadRequest,
             )
             ->withLogLevelFactory(
                 $appBuilder,
                 UserNotFoundException::class,
-                static fn(UserNotFoundException $ex): string => LogLevel::INFO
+                static fn(UserNotFoundException $ex): string => LogLevel::INFO,
             );
     }
 }

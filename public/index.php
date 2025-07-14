@@ -18,7 +18,7 @@ $container->bindInstance([IServiceResolver::class, IContainer::class, Container:
 // Build and run our application
 $globalModule = new GlobalModule($container);
 $globalModule->bootstrap();
-$appBuilderClass = (string)\getenv('APP_BUILDER_API');
+$appBuilderClass = (string) \getenv('APP_BUILDER_API');
 
 if (!\class_exists($appBuilderClass) || !\is_subclass_of($appBuilderClass, IApplicationBuilder::class)) {
     throw new TypeError('Environment variable "APP_BUILDER_API" must implement ' . IApplicationBuilder::class);
