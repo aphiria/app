@@ -26,8 +26,8 @@ return new PhpCsFixer\Config()
                 'return',
                 'switch_case',
                 'yield',
-                'yield_from'
-            ]
+                'yield_from',
+            ],
         ],
         'no_unused_imports' => true,
         'no_whitespace_in_blank_line' => true,
@@ -57,9 +57,9 @@ return new PhpCsFixer\Config()
                 'method_protected_abstract',
                 'method_protected',
                 'method_private_static',
-                'method_private'
+                'method_private',
             ],
-            'sort_algorithm' => 'alpha'
+            'sort_algorithm' => 'alpha',
         ],
         'ordered_imports' => true,
         'return_type_declaration' => ['space_before' => 'none'],
