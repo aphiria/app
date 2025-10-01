@@ -1,7 +1,7 @@
 FROM php:8.4-fpm
 WORKDIR /app
 
-# Build deps for DOM/intl/zip on PHP 8.4 (Lexbor is vendored; do NOT build it yourself)
+# Build deps for DOM/intl/zip
 RUN apt-get update && apt-get install -y --no-install-recommends \
     $PHPIZE_DEPS git cmake libxml2-dev libpq-dev libzip-dev zlib1g-dev libicu-dev unzip \
  && rm -rf /var/lib/apt/lists/*
