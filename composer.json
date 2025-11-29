@@ -31,7 +31,7 @@
         "ext-sqlite3": "*",
         "php": "^8.4",
         "robmorgan/phinx": "0.x-dev",
-        "symfony/dotenv": "^7.0"
+        "symfony/dotenv": "^8.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.2",
