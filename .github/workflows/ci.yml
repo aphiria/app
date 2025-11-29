@@ -60,8 +60,8 @@ jobs:
         run: docker compose run --rm composer update --prefer-stable --no-interaction --no-progress --ignore-platform-reqs
       - name: Run Tests
         run: docker compose run --rm composer phpunit
-      #- name: Run Linter
-      #  run: docker compose run --rm composer phpcs-test
+      - name: Run Linter
+        run: docker compose run --rm composer phpcs-test
       - name: Run Psalm Static Analysis
         run: docker compose run --rm composer psalm -- --shepherd
       - name: Stop Docker Compose
