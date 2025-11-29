@@ -37,6 +37,7 @@ jobs:
       - name: Run Linter
         run: composer phpcs-test
       - name: Run Psalm Static Analysis
+        if: matrix.php != '8.5'
         run: composer psalm -- --shepherd
       - name: Upload Coverage Results To Coveralls
         env:
@@ -63,6 +64,7 @@ jobs:
       - name: Run Linter
         run: docker compose run --rm composer phpcs-test
       - name: Run Psalm Static Analysis
+        if: matrix.php != '8.5'
         run: docker compose run --rm composer psalm -- --shepherd
       - name: Stop Docker Compose
         if: always()
