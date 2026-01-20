@@ -51,4 +51,4 @@ Phinx-specific configuration settings, eg the paths to migration and seed files,
 
 ## Learn More
 
-To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/1.x/introduction.html).
+To learn more about how to use Aphiria, [read its documentation](https://www.aphiria.com/docs/1.x/introduction).
